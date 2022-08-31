@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Login } from './pages/Login';
+import { HomePage } from './pages/HomePage';
+import { createContext, useState } from 'react';
+
+export const AuthContext = createContext<any>({} as any); //jukser (https://stackoverflow.com/questions/61333188/react-typescript-avoid-context-default-value)
 
 function App() {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const authContextValue = { isUserLoggedIn, setIsUserLoggedIn };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={authContextValue}>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<HomePage />} />
+        </Routes>
+      </Router>
+    </AuthContext.Provider>
   );
 }
 
