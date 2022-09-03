@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { Button, Container } from '@mui/material';
 import styled from '@emotion/styled';
 import { Persons } from './Persons';
+import { Header } from '../components/Header';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -41,15 +42,16 @@ export const HomePage: FC = () => {
 
   return isloggedIn ? (
     <StyledApp>
-      <Button
-        onClick={() => {
-          localStorage.removeItem('token');
-          navigate('/login');
-        }}
-      >
-        Logg ut
-      </Button>
+      <Header />
       <StyledContent>
+        {/* <Routes>
+          <Route path="/" element={<LastRegisteredPersonsPage />} />
+          <Route path="/person/:identifier" element={<PersonPage />} />
+          <Route path="/newperson" element={<NewUser />} />
+          <Route path="/communities" element={<CommunitiesPage />} />
+          <Route path="/addimage" element={<AddImage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes> */}
         <h1>Homepage logget inn: {isloggedIn}</h1>
         <Persons></Persons>
       </StyledContent>

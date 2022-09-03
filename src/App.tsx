@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="*" element={<HomePage />} />
+          <Route path="" element={<HomePage />} />
         </Routes>
       </Router>
     </AuthContext.Provider>
