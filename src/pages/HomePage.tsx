@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
-import { Button, Container } from '@mui/material';
+import { Container } from '@mui/material';
 import styled from '@emotion/styled';
-import { Persons } from './Persons';
 import { Header } from '../components/Header';
+import { Route, Routes } from 'react-router-dom';
+import { PersonPage } from './PersonPage';
+import { NotFoundPage } from './NotFoundPage';
+import { LastRegisteredPersonsPage } from './LastRegisteredPersonsPage';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -21,19 +24,25 @@ const StyledContent = styled(Container)`
   align-items: center;
 `;
 
-const isTokenExpired = (token: string) => {
-  const expiry = JSON.parse(atob(token.split('.')[1])).exp;
-  console.log('Token expires: ', new Date(expiry * 1000).toLocaleString());
+const getTokenExpiry = (token: string | null): number => {
+  if (!token) return 0;
+  return JSON.parse(atob(token.split('.')[1])).exp;
+};
+
+const isTokenExpired = (expiry: number): boolean => {
   return Math.floor(new Date().getTime() / 1000) >= expiry;
 };
 
 export const HomePage: FC = () => {
   const navigate = useNavigate();
   const [isloggedIn, setIsLoggedIn] = useState(false);
+  const [tokenExpiresString, setTokenExpiresString] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token || isTokenExpired(token)) {
+    const tokenExpiry = getTokenExpiry(token);
+    setTokenExpiresString(new Date(tokenExpiry * 1000).toLocaleTimeString());
+    if (!token || isTokenExpired(tokenExpiry)) {
       return navigate('/login');
     } else {
       setIsLoggedIn(true);
@@ -42,18 +51,16 @@ export const HomePage: FC = () => {
 
   return isloggedIn ? (
     <StyledApp>
-      <Header />
+      <Header infoText={tokenExpiresString} />
       <StyledContent>
-        {/* <Routes>
+        <Routes>
           <Route path="/" element={<LastRegisteredPersonsPage />} />
           <Route path="/person/:identifier" element={<PersonPage />} />
-          <Route path="/newperson" element={<NewUser />} />
+          {/* <Route path="/newperson" element={<NewUser />} />
           <Route path="/communities" element={<CommunitiesPage />} />
-          <Route path="/addimage" element={<AddImage />} />
+          <Route path="/addimage" element={<AddImage />} /> */}
           <Route path="*" element={<NotFoundPage />} />
-        </Routes> */}
-        <h1>Homepage logget inn: {isloggedIn}</h1>
-        <Persons></Persons>
+        </Routes>
       </StyledContent>
     </StyledApp>
   ) : (

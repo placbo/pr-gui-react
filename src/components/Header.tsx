@@ -36,7 +36,7 @@ const StyledLink = styled(Link)`
   text-: none;
 `;
 
-export const Header: FC = () => {
+export const Header: FC<{ infoText: string }> = ({ infoText }) => {
   // const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
   // const [isAddCommunityDialogOpen, setIsAddCommunityDialogOpen] = useState(false);
 
@@ -81,6 +81,7 @@ export const Header: FC = () => {
 
           <StyledSeparator />
           {/*<PersonSearch />*/}
+          <pre>Token expires: {infoText}</pre>
           <Button
             style={{ color: 'white' }}
             variant={'text'}
