@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import HeadingWithLine from '../components/HeadingWithLine';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
+import { Person } from '../types/person';
 
 const StyledLayout = styled.div`
   display: flex;
@@ -17,18 +18,18 @@ const StyledLayout = styled.div`
 `;
 
 export const LastRegisteredPersonsPage: FC = () => {
-  const [persons, setpersons] = useState<any>([]);
+  const [persons, setPersons] = useState<Person[]>([]);
 
   useEffect(() => {
     const asyncAxiosFunction = async () => {
-      const result = await axios.get(PERSONS_URL, {
-        headers: {
-          'X-Auth-Token': localStorage.getItem('token') ?? '',
-        },
-      });
-      console.log(result.data.data.length);
-
-      setpersons(result.data.data);
+      const result = (
+        await axios.get(PERSONS_URL, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setPersons(result.persons);
     };
     asyncAxiosFunction();
   }, []);

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
@@ -11,6 +11,8 @@ import { FaCross } from 'react-icons/fa';
 
 import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
+import axios from 'axios';
+import { PERSONS_URL } from '../constants';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -91,6 +93,22 @@ const StyledActions = styled.div`
 export const PersonPage: FC = () => {
   const { identifier } = useParams();
   const [person, setPerson] = useState<Person | undefined>(undefined);
+
+  useEffect(() => {
+    const asyncAxiosFunction = async () => {
+      const result = (
+        await axios.get(`${PERSONS_URL}/${identifier}`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setPerson(result.person);
+    };
+    console.log('OPCB', identifier);
+
+    asyncAxiosFunction();
+  }, [identifier]);
 
   // useEffect(() => {
   //   console.log('HEPP!', persons);
