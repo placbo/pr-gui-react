@@ -13,6 +13,7 @@ import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
+import { personImageFolder, personThumbnailFolder } from '../resources/constants';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -105,7 +106,6 @@ export const PersonPage: FC = () => {
       ).data;
       setPerson(result.person);
     };
-    console.log('OPCB', identifier);
 
     asyncAxiosFunction();
   }, [identifier]);
@@ -156,8 +156,11 @@ export const PersonPage: FC = () => {
         <>
           <StyledHeader>
             <StyledImageWrapper>
-              <Link href={person.mainImage} target="_blank" rel="noopener noreferrer">
-                <StyledImage alt="Person" src={person.mainImage ? person.mainImage : personPlaceholderImage} />
+              <Link href={`${personImageFolder}${person.imageName}`} target="_blank" rel="noopener noreferrer">
+                <StyledImage
+                  alt="Person"
+                  src={person.imageName ? `${personThumbnailFolder}${person.imageName}` : personPlaceholderImage}
+                />
               </Link>
               {/* <div>
                 <StyledLabelButtonFileUpload htmlFor="file-upload">Velg nytt profilbilde</StyledLabelButtonFileUpload>

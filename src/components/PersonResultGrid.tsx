@@ -5,6 +5,7 @@ import { Person } from '../types/person';
 import { Colors, DeviceWidths } from '../theme';
 import placeholder from '../resources/images/person.png';
 import { Link } from 'react-router-dom';
+import { personThumbnailFolder } from '../resources/constants';
 
 const StyledResultList = styled.div`
   display: flex;
@@ -78,7 +79,7 @@ const PersonResultGrid: FC<{ persons: Person[] }> = ({ persons }) => {
           <StyledLink to={`/person/${person.personID}`}>
             <StyledCardActionArea>
               <StyledCardMedia
-                image={person.mainImage ? person.mainImage : placeholder}
+                image={person.mainImage ? `${personThumbnailFolder}${person.mainImage}` : placeholder}
                 title="Profile photo"
               />
               <StyledCardContent>

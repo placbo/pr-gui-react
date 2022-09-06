@@ -7,6 +7,7 @@ export interface Person {
   born: string;
   dead: string;
   mainImage: string;
+  imageName: string;
 }
 
 export const emptyPerson: Person = {
@@ -18,6 +19,7 @@ export const emptyPerson: Person = {
   born: '',
   dead: '',
   mainImage: '',
+  imageName: '',
 };
 
 // "@faker-js/faker": "^7.3.0";|
