@@ -104,7 +104,7 @@ export const PersonPage: FC = () => {
           },
         })
       ).data;
-      setPerson(result.person);
+      setPerson(result);
     };
 
     asyncAxiosFunction();
