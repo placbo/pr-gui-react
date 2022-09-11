@@ -10,6 +10,7 @@ import { Colors, DeviceWidths } from '../theme';
 import { FaCross } from 'react-icons/fa';
 
 import personPlaceholderImage from '../resources/images/person.png';
+// eslint-disable-next-line
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
@@ -75,6 +76,8 @@ const StyledNoteTypography = styled(Typography)`
   margin-top: 2rem;
   font-family: inherit;
 `;
+
+// eslint-disable-next-line
 const StyledLabelButtonFileUpload = styled.label`
   border: 1px solid #ccc;
   display: inline-block;

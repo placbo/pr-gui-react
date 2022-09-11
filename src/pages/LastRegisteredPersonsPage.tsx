@@ -19,25 +19,33 @@ const StyledLayout = styled.div`
 
 export const LastRegisteredPersonsPage: FC = () => {
   const [persons, setPersons] = useState<Person[]>([]);
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     const asyncAxiosFunction = async () => {
       const result = (
-        await axios.get(PERSONS_URL, {
+        await axios.get(PERSONS_URL + '?page=' + page, {
           headers: {
             'X-Auth-Token': localStorage.getItem('token') ?? '',
           },
         })
       ).data;
-      setPersons(result.persons);
+      setPersons((prevState) => {
+        console.log(prevState);
+        return [...prevState, ...result.persons];
+      });
     };
     asyncAxiosFunction();
-  }, []);
+  }, [page]);
+
+  const triggerNextPageFetch = () => {
+    setPage((prevState: number) => prevState + 1);
+  };
 
   return (
     <StyledLayout>
       <HeadingWithLine text="Sist registrerte"></HeadingWithLine>
-      {persons && <PersonResultGrid persons={persons} />}
+      {persons && <PersonResultGrid persons={persons} fetchMorePersons={triggerNextPageFetch} />}
     </StyledLayout>
   );
 };

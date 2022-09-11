@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import { Button, Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { Person } from '../types/person';
@@ -61,7 +61,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const PersonResultGrid: FC<{ persons: Person[] }> = ({ persons }) => {
+const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons: () => void }> = ({ persons, fetchMorePersons }) => {
   const sortedPersons = persons.sort((a, b) =>
     (a.lastName?.toUpperCase() ?? '') > (b.lastName?.toUpperCase() ?? '')
       ? 1
@@ -91,6 +91,9 @@ const PersonResultGrid: FC<{ persons: Person[] }> = ({ persons }) => {
           </StyledLink>
         </StyledCard>
       ))}
+      <StyledCard variant="outlined">
+        <Button onClick={fetchMorePersons}>mer...</Button>
+      </StyledCard>
     </StyledResultList>
   );
 };
