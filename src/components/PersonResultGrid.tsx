@@ -62,6 +62,7 @@ const StyledLink = styled(Link)`
 `;
 
 const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons: () => void }> = ({ persons, fetchMorePersons }) => {
+  /*
   const sortedPersons = persons.sort((a, b) =>
     (a.lastName?.toUpperCase() ?? '') > (b.lastName?.toUpperCase() ?? '')
       ? 1
@@ -71,11 +72,12 @@ const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons: () => void }> 
         : -1
       : -1
   );
+  */
 
   return (
     <StyledResultList>
-      {sortedPersons.map((person: Person, index) => (
-        <StyledCard variant="outlined" key={index}>
+      {persons.map((person: Person, index) => (
+        <StyledCard variant="outlined" key={person.id}>
           <StyledLink to={`/person/${person.id}`}>
             <StyledCardActionArea>
               <StyledCardMedia
