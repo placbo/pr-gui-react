@@ -76,10 +76,10 @@ const PersonResultGrid: FC<{ persons: Person[] }> = ({ persons }) => {
     <StyledResultList>
       {sortedPersons.map((person: Person, index) => (
         <StyledCard variant="outlined" key={index}>
-          <StyledLink to={`/person/${person.personID}`}>
+          <StyledLink to={`/person/${person.id}`}>
             <StyledCardActionArea>
               <StyledCardMedia
-                image={person.mainImage ? `${personThumbnailFolder}${person.mainImage}` : placeholder}
+                image={person.imageName ? `${personThumbnailFolder}${person.imageName}` : placeholder}
                 title="Profile photo"
               />
               <StyledCardContent>

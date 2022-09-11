@@ -1,24 +1,24 @@
 export interface Person {
-  personID: string;
+  id: string;
   firstName: string;
   lastName: string;
-  comment: string;
+  note: string;
   facebookLink: string;
   born: string;
   dead: string;
-  mainImage: string;
+  mainImageId: string;
   imageName: string;
 }
 
 export const emptyPerson: Person = {
-  personID: '',
+  id: '',
   lastName: '',
   firstName: '',
-  comment: '',
+  note: '',
   facebookLink: '',
   born: '',
   dead: '',
-  mainImage: '',
+  mainImageId: '',
   imageName: '',
 };
 

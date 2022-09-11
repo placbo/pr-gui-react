@@ -177,7 +177,7 @@ export const PersonPage: FC = () => {
             </StyledImageWrapper>
             <StyledDetailsWrapper>
               <StyledNameTypography variant="h3">{`${person.firstName} ${person.lastName}`}</StyledNameTypography>
-              {person.comment && <StyledNoteTypography variant="body1">{person.comment}</StyledNoteTypography>}
+              {person.note && <StyledNoteTypography variant="body1">{person.note}</StyledNoteTypography>}
               {(person.born || person.dead) && (
                 <StyledNoteTypography variant="body2">
                   {person.born} - {person.dead === 'x' ? <FaCross /> : <span>{person.dead}</span>}
