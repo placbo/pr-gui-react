@@ -14,7 +14,7 @@ import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
-import { personImageFolder, personThumbnailFolder } from '../resources/constants';
+import { personImageFolder, personImagesMediumFolder } from '../resources/constants';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -162,7 +162,7 @@ export const PersonPage: FC = () => {
               <Link href={`${personImageFolder}${person.imageName}`} target="_blank" rel="noopener noreferrer">
                 <StyledImage
                   alt="Person"
-                  src={person.imageName ? `${personThumbnailFolder}${person.imageName}` : personPlaceholderImage}
+                  src={person.imageName ? `${personImagesMediumFolder}${person.imageName}` : personPlaceholderImage}
                 />
               </Link>
               {/* <div>

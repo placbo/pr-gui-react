@@ -31,7 +31,6 @@ export const LastRegisteredPersonsPage: FC = () => {
         })
       ).data;
       setPersons((prevState) => {
-        console.log(prevState);
         return [...prevState, ...result.persons];
       });
     };

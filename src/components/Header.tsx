@@ -9,6 +9,7 @@ import GroupIcon from '@mui/icons-material/Group';
 // import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
+import { PersonSearch } from './PersonSearch';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -80,7 +81,7 @@ export const Header: FC<{ infoText: string }> = ({ infoText }) => {
           </StyledExtraButtons>
 
           <StyledSeparator />
-          {/*<PersonSearch />*/}
+          <PersonSearch />
           <pre>Token expires: {infoText}</pre>
           <Button
             style={{ color: 'white' }}
