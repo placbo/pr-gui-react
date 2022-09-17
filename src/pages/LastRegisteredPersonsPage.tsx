@@ -6,7 +6,7 @@ import HeadingWithLine from '../components/HeadingWithLine';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
 import { Person } from '../types/person';
-import { PAGE_PARAM, SORT_ASCENDING, SORT_PARAM } from '../types/paramTypes';
+import { PAGE_PARAM, SORT_ASCENDING, SORT_PARAM } from '../types/QueryParams';
 
 const StyledLayout = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ export const LastRegisteredPersonsPage: FC = () => {
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
-    const asyncAxiosFunction = async () => {
+    const getPersons = async () => {
       const result = (
         await axios.get(`${PERSONS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_ASCENDING}`, {
           headers: {
@@ -35,7 +35,7 @@ export const LastRegisteredPersonsPage: FC = () => {
         return [...prevState, ...result.persons];
       });
     };
-    asyncAxiosFunction();
+    getPersons();
   }, [page]);
 
   const triggerNextPageFetch = () => {

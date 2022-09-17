@@ -10,3 +10,6 @@ export const COMMUNITIES_URL = BASE_URL + '/api/communities';
 export const PERSON_THUMBNAIL_URL = IMAGES_URL + '/persons/thumbs/thumbnail.';
 export const PERSON_IMAGES_MEDIUM_URL = IMAGES_URL + '/persons/medium/';
 export const PERSON_IMAGE_URL = IMAGES_URL + '/persons/';
+export const COMMUNITY_THUMBNAIL_URL = IMAGES_URL + '/communities/thumbs/thumbnail.';
+export const COMMUNITY_IMAGES_MEDIUM_URL = IMAGES_URL + '/communities/medium/';
+export const COMMUNITY_IMAGE_URL = IMAGES_URL + '/communities/';

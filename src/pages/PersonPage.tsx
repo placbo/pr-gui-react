@@ -14,6 +14,8 @@ import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import axios from 'axios';
 import { PERSONS_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
+import HeadingWithLine from '../components/HeadingWithLine';
+import CommunityResultGrid from '../components/CommunityResultGrid';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -207,8 +209,8 @@ export const PersonPage: FC = () => {
             </StyledDetailsWrapper>
           </StyledHeader>
 
-          {/*<HeadingWithLine text="Grupper" />*/}
-          {/*<CommunityResultGrid personId={person.id} />*/}
+          <HeadingWithLine text="Grupper" />
+          <CommunityResultGrid personId={person.id} />
 
           {/*<EditPersonDialog*/}
           {/*  isEditDialogOpen={isEditDialogOpen}*/}

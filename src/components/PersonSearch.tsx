@@ -8,7 +8,7 @@ import { Colors } from '../theme';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
 import _ from 'lodash';
-import { QUERY_PARAM, SORT_ASCENDING, SORT_DESCENDING, SORT_PARAM } from '../types/paramTypes';
+import { QUERY_PARAM } from '../types/QueryParams';
 
 const StyledSearchBox = styled.div`
   display: flex;

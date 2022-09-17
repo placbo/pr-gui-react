@@ -1,8 +1,8 @@
 import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, Typography } from '@mui/material';
 import React, { FC } from 'react';
-import { Person } from '../types/person';
 import { Link } from 'react-router-dom';
 import { PERSON_THUMBNAIL_URL } from '../constants';
+import { Person } from '../types/person';
 
 const PersonResultList: FC<{ persons: Person[] }> = ({ persons }) => {
   return (
