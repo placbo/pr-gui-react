@@ -13,8 +13,7 @@ import personPlaceholderImage from '../resources/images/person.png';
 // eslint-disable-next-line
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import axios from 'axios';
-import { PERSONS_URL } from '../constants';
-import { personImageFolder, personImagesMediumFolder } from '../resources/constants';
+import { PERSONS_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -159,10 +158,10 @@ export const PersonPage: FC = () => {
         <>
           <StyledHeader>
             <StyledImageWrapper>
-              <Link href={`${personImageFolder}${person.imageName}`} target="_blank" rel="noopener noreferrer">
+              <Link href={`${PERSON_IMAGES_MEDIUM_URL}${person.imageName}`} target="_blank" rel="noopener noreferrer">
                 <StyledImage
                   alt="Person"
-                  src={person.imageName ? `${personImagesMediumFolder}${person.imageName}` : personPlaceholderImage}
+                  src={person.imageName ? `${PERSON_IMAGE_URL}${person.imageName}` : personPlaceholderImage}
                 />
               </Link>
               {/* <div>

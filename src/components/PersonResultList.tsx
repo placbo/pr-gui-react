@@ -2,7 +2,8 @@ import { Avatar, Button, Typography } from '@mui/material';
 import React, { FC } from 'react';
 import styled from '@emotion/styled';
 import { Person } from '../types/person';
-import { IMAGE_BASE_URL } from '../resources/constants';
+import { Link } from 'react-router-dom';
+import { PERSON_THUMBNAIL_URL } from '../constants';
 
 const StyledResultList = styled.ul`
   padding: 0.5rem;
@@ -27,17 +28,23 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;
+
 const PersonResultList: FC<{ persons: Person[] }> = ({ persons }) => {
   return (
     <StyledResultList>
       {persons.map((person: Person) => (
         <StyledResultListItem key={person.id}>
-          <StyledButton href={`/person/${person.id}`}>
-            <Avatar src={`${IMAGE_BASE_URL}/persons/thumbs/thumbnail.${person.imageName}`} />
-            <StyledResultListName variant="body1">
-              {[person.lastName, person.firstName].filter(Boolean).join(', ')}
-            </StyledResultListName>
-          </StyledButton>
+          <StyledLink to={`/person/${person.id}`}>
+            <StyledButton>
+              <Avatar src={`${PERSON_THUMBNAIL_URL}${person.imageName}`} />
+              <StyledResultListName variant="body1">
+                {[person.lastName, person.firstName].filter(Boolean).join(', ')}
+              </StyledResultListName>
+            </StyledButton>
+          </StyledLink>
         </StyledResultListItem>
       ))}
     </StyledResultList>

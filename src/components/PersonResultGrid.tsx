@@ -5,7 +5,7 @@ import { Person } from '../types/person';
 import { Colors, DeviceWidths } from '../theme';
 import placeholder from '../resources/images/person.png';
 import { Link } from 'react-router-dom';
-import { personThumbnailFolder } from '../resources/constants';
+import { PERSON_THUMBNAIL_URL } from '../constants';
 
 const StyledResultList = styled.div`
   display: flex;
@@ -76,12 +76,12 @@ const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons: () => void }> 
 
   return (
     <StyledResultList>
-      {persons.map((person: Person, index) => (
+      {persons.map((person: Person) => (
         <StyledCard variant="outlined" key={person.id}>
           <StyledLink to={`/person/${person.id}`}>
             <StyledCardActionArea>
               <StyledCardMedia
-                image={person.imageName ? `${personThumbnailFolder}${person.imageName}` : placeholder}
+                image={person.imageName ? `${PERSON_THUMBNAIL_URL}${person.imageName}` : placeholder}
                 title="Profile photo"
               />
               <StyledCardContent>
