@@ -1,5 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { InputBase, Paper, Typography } from '@mui/material';
+import { Button, CircularProgress, InputBase, Paper, Typography } from '@mui/material';
+
 import PersonResultList from './PersonResultList';
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
@@ -7,44 +8,36 @@ import { Colors } from '../theme';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
 import _ from 'lodash';
+import { QUERY_PARAM, SORT_ASCENDING, SORT_PARAM } from '../types/paramTypes';
 
 const StyledSearchBox = styled.div`
-  position: relative;
+  display: flex;
+  padding: 0.5rem;
+  width: 10rem;
+  flex-direction: row;
   border-radius: 0.3rem;
   background-color: rgba(255, 255, 255, 0.2);
   &:hover {
     background-color: rgba(255, 255, 255, 0.3);
   }
+  align-items: center;
 `;
 
-const StyledSearchIconWrapper = styled.div`
-  padding: 0 1rem;
-  height: 100%;
-  position: absolute;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const LoadingIconWrapper = styled.div`
+  width: 1.5rem;
 `;
 
 const StyledInputBase = styled(InputBase)`
   & input {
-    padding: 0.7rem 1rem 0.7rem 3rem;
-    width: 100%;
+    padding: 0 0.7rem;
     color: white;
-    font-weight: bold;
   }
 `;
 
-const ErrorText = styled(Typography)`
-  color: #fc4445;
-`;
-
-const StyledPaper = styled(Paper)`
+const FloatingResultListContainer = styled(Paper)`
   position: absolute;
   top: 4.5rem;
   right: 0.5rem;
-  max-height: 40rem;
   width: 20rem;
   overflow: hidden;
   z-index: 2;
@@ -61,7 +54,7 @@ export const PersonSearch: FC = () => {
       try {
         setIsSearching(true);
         const result = (
-          await axios.get(`${PERSONS_URL}?q=${event.target.value}`, {
+          await axios.get(`${PERSONS_URL}?${QUERY_PARAM}=${event.target.value}&${SORT_PARAM}=${SORT_ASCENDING}`, {
             headers: {
               'X-Auth-Token': localStorage.getItem('token') ?? '',
             },
@@ -85,23 +78,31 @@ export const PersonSearch: FC = () => {
   return (
     <>
       <StyledSearchBox>
-        <StyledSearchIconWrapper>
-          <SearchIcon />
-        </StyledSearchIconWrapper>
+        <SearchIcon />
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleSearchTermChange}
           autoComplete="off"
         />
+        <LoadingIconWrapper>{isSearching && <CircularProgress color="inherit" size={'1rem'} />}</LoadingIconWrapper>
       </StyledSearchBox>
-
-      {isSearching && <Typography variant="body1">Søker...</Typography>}
-      {searchError && <ErrorText variant="body1">{searchError.message}</ErrorText>}
+      {searchError && (
+        <Typography color="red" variant="body1">
+          {searchError.message}
+        </Typography>
+      )}
       {persons && persons.length > 0 && (
-        <StyledPaper>
+        <FloatingResultListContainer>
           <PersonResultList persons={persons} />
-        </StyledPaper>
+          <Button
+            onClick={() => {
+              setPersons([]); //todo: autoclose
+            }}
+          >
+            Close
+          </Button>
+        </FloatingResultListContainer>
       )}
     </>
   );

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import { Header } from '../components/Header';
 import { Route, Routes } from 'react-router-dom';
@@ -8,20 +8,31 @@ import { PersonPage } from './PersonPage';
 import { NotFoundPage } from './NotFoundPage';
 import { LastRegisteredPersonsPage } from './LastRegisteredPersonsPage';
 
-const StyledApp = styled.div`
+const App = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   flex-flow: column nowrap;
   align-items: stretch;
+  justify-content: space-between;
 `;
 
-const StyledContent = styled(Container)`
+const Content = styled(Container)`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const Footer = styled.footer`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  background-color: aliceblue;
 `;
 
 const getTokenExpiry = (token: string | null): number => {
@@ -50,9 +61,9 @@ export const HomePage: FC = () => {
   }, [navigate]);
 
   return isloggedIn ? (
-    <StyledApp>
-      <Header infoText={tokenExpiresString} />
-      <StyledContent>
+    <App>
+      <Header />
+      <Content>
         <Routes>
           <Route path="/" element={<LastRegisteredPersonsPage />} />
           <Route path="/person/:identifier" element={<PersonPage />} />
@@ -61,8 +72,11 @@ export const HomePage: FC = () => {
           <Route path="/addimage" element={<AddImage />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </StyledContent>
-    </StyledApp>
+      </Content>
+      <Footer>
+        <Typography>Token expires: {tokenExpiresString}</Typography>
+      </Footer>
+    </App>
   ) : (
     <div></div>
   );

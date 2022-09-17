@@ -14,6 +14,7 @@ import { PersonSearch } from './PersonSearch';
 const StyledToolbar = styled(Toolbar)`
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
   @media (max-width: ${DeviceWidths.sm}) {
     justify-content: flex-start;
   } ;
@@ -34,10 +35,9 @@ const StyledSeparator = styled.div`
 
 const StyledLink = styled(Link)`
   color: ${Colors.Background};
-  text-: none;
 `;
 
-export const Header: FC<{ infoText: string }> = ({ infoText }) => {
+export const Header: FC = () => {
   // const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
   // const [isAddCommunityDialogOpen, setIsAddCommunityDialogOpen] = useState(false);
 
@@ -50,7 +50,7 @@ export const Header: FC<{ infoText: string }> = ({ infoText }) => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <header>
       <AppBar position="static">
         <StyledToolbar>
           <StyledLink to="/">
@@ -82,9 +82,8 @@ export const Header: FC<{ infoText: string }> = ({ infoText }) => {
 
           <StyledSeparator />
           <PersonSearch />
-          <pre>Token expires: {infoText}</pre>
           <Button
-            style={{ color: 'white' }}
+            style={{ color: 'black', backgroundColor: 'white' }}
             variant={'text'}
             onClick={() => {
               localStorage.removeItem('token');
@@ -97,6 +96,6 @@ export const Header: FC<{ infoText: string }> = ({ infoText }) => {
       </AppBar>
       {/*<EditPersonDialog isEditDialogOpen={isAddPersonDialogOpen} handleToggleDialog={toggleAddPersonDialog} />*/}
       {/*<EditCommunityDialog isEditDialogOpen={isAddCommunityDialogOpen} handleToggleDialog={toggleAddCommunityDialog} />*/}
-    </>
+    </header>
   );
 };
