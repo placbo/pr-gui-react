@@ -8,7 +8,7 @@ import { Colors } from '../theme';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
 import _ from 'lodash';
-import { QUERY_PARAM, SORT_ASCENDING, SORT_PARAM } from '../types/paramTypes';
+import { QUERY_PARAM, SORT_ASCENDING, SORT_DESCENDING, SORT_PARAM } from '../types/paramTypes';
 
 const StyledSearchBox = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ export const PersonSearch: FC = () => {
       try {
         setIsSearching(true);
         const result = (
-          await axios.get(`${PERSONS_URL}?${QUERY_PARAM}=${event.target.value}&${SORT_PARAM}=${SORT_ASCENDING}`, {
+          await axios.get(`${PERSONS_URL}?${QUERY_PARAM}=${event.target.value}`, {
             headers: {
               'X-Auth-Token': localStorage.getItem('token') ?? '',
             },
