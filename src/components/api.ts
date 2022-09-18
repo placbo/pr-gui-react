@@ -1,4 +1,4 @@
-import { PERSONS_URL } from '../constants';
+import { COMMUNITIES_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
 import { QUERY_PARAM } from '../types/QueryParams';
@@ -11,6 +11,15 @@ const fetcher = (url: string) =>
       },
     })
     .then((res) => res.data);
+
+export const useCommunities = () => {
+  const { data, error } = useSWR(`${COMMUNITIES_URL}`, fetcher);
+  return {
+    communities: data,
+    isLoading: !error && !data,
+    loadingError: error,
+  };
+};
 
 export const useCommunitiesForPerson = (personId: string) => {
   const { data, error } = useSWR(`${PERSONS_URL}\\${personId}\\communities`, fetcher);

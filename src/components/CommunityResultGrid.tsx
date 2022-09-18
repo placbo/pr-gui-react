@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Community } from '../types/community';
 import { Colors, DeviceWidths } from '../theme';
 import communityPlaceholderImage from '../resources/images/group.webp';
 import styled from '@emotion/styled';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
-import { COMMUNITY_THUMBNAIL_URL } from '../constants';
-import { useCommunitiesForPerson } from './api';
+import { COMMUNITIES_URL, COMMUNITY_THUMBNAIL_URL, PERSONS_URL } from '../constants';
+//import { useCommunities, useCommunitiesForPerson } from './api';
+import axios from 'axios';
 // import { Add } from '@mui/icons-material';
 
 const StyledResultList = styled.div`
@@ -90,7 +91,7 @@ const StyledTypography = styled(Typography)`
 // `;
 
 interface CommunityResultGridProps {
-  personId: string;
+  personId?: string;
 }
 
 const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
@@ -98,23 +99,34 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
   // const [isAddCommunityToPersonDialogOpen, setIsAddCommunityToPersonDialogOpen] = useState(false);
   // const [allCommunities, setAllCommunities] = useState<Community[]>([]);
   // const [selectedCommunityToAdd, setSelectedCommunityToAdd] = useState<Community | null>(null);
-  //const [communities, setCommunities] = useState([]);
+  const [communities, setCommunities] = useState([]);
 
-  // useEffect(() => {
-  //   const getCommunities = async () => {
-  //     const result = (
-  //       await axios.get(`${PERSONS_URL}\\${personId}\\communities`, {
-  //         headers: {
-  //           'X-Auth-Token': localStorage.getItem('token') ?? '',
-  //         },
-  //       })
-  //     ).data;
-  //     setCommunities(result);
-  //   };
-  //   getCommunities();
-  // }, [personId]);
+  useEffect(() => {
+    const getCommunitiesForPerson = async () => {
+      const result = (
+        await axios.get(`${PERSONS_URL}\\${personId}\\communities`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setCommunities(result);
+    };
+    const getAllCommunities = async () => {
+      const result = (
+        await axios.get(`${COMMUNITIES_URL}`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setCommunities(result);
+    };
 
-  const { communities, isLoading, loadingError } = useCommunitiesForPerson(personId);
+    personId ? getCommunitiesForPerson() : getAllCommunities();
+  }, [personId]);
+
+  // const { communities, isLoading, loadingError } = useCommunities(personId);
 
   // const loadCommunities = (personId: string | undefined) => {
   //   if (personId) {
@@ -165,8 +177,8 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
 
   return (
     <StyledResultList>
-      {loadingError && <pre>ERROR! ({loadingError.message})</pre>}
-      {isLoading && <pre>LOADING!</pre>}
+      {/* {loadingError && <pre>ERROR! ({loadingError.message})</pre>}
+      {isLoading && <pre>LOADING!</pre>} */}
       {communities &&
         communities.length > 0 &&
         communities.map((community: Community) => (

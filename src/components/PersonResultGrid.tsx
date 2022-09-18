@@ -61,7 +61,7 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons: () => void }> = ({ persons, fetchMorePersons }) => {
+const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons?: () => void }> = ({ persons, fetchMorePersons }) => {
   /*
   const sortedPersons = persons.sort((a, b) =>
     (a.lastName?.toUpperCase() ?? '') > (b.lastName?.toUpperCase() ?? '')
@@ -93,9 +93,11 @@ const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons: () => void }> 
           </StyledLink>
         </StyledCard>
       ))}
-      <StyledCard variant="outlined">
-        <Button onClick={fetchMorePersons}>mer...</Button>
-      </StyledCard>
+      {fetchMorePersons && (
+        <StyledCard variant="outlined">
+          <Button onClick={fetchMorePersons}>mer...</Button>
+        </StyledCard>
+      )}
     </StyledResultList>
   );
 };
