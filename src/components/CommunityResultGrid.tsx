@@ -8,6 +8,7 @@ import { COMMUNITIES_URL, COMMUNITY_THUMBNAIL_URL, PERSONS_URL } from '../consta
 //import { useCommunities, useCommunitiesForPerson } from './api';
 import axios from 'axios';
 // import { Add } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const StyledResultList = styled.div`
   display: flex;
@@ -52,6 +53,11 @@ const StyledCardContent = styled(CardContent)`
   padding: 0.5rem;
   text-align: center;
   font-weight: bold;
+`;
+
+const StyledLink = styled(Link)`
+  color: ${Colors.PrimaryText};
+  text-decoration: none;
 `;
 
 const StyledTypography = styled(Typography)`
@@ -183,19 +189,21 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
         communities.length > 0 &&
         communities.map((community: Community) => (
           <StyledCard key={community.id}>
-            <StyledCardActionArea href={`/community/${community.id}`}>
-              <StyledCardMedia
-                image={
-                  community.imageURL ? `${COMMUNITY_THUMBNAIL_URL}${community.imageURL}` : communityPlaceholderImage
-                }
-                title="community photo"
-              />
-              <StyledCardContent>
-                <StyledTypography gutterBottom variant="body2">
-                  {community.name}
-                </StyledTypography>
-              </StyledCardContent>
-            </StyledCardActionArea>
+            <StyledLink to={`/community/${community.id}`}>
+              <StyledCardActionArea>
+                <StyledCardMedia
+                  image={
+                    community.imageURL ? `${COMMUNITY_THUMBNAIL_URL}${community.imageURL}` : communityPlaceholderImage
+                  }
+                  title="community photo"
+                />
+                <StyledCardContent>
+                  <StyledTypography gutterBottom variant="body2">
+                    {community.name}
+                  </StyledTypography>
+                </StyledCardContent>
+              </StyledCardActionArea>
+            </StyledLink>
           </StyledCard>
         ))}
 
