@@ -67,12 +67,11 @@ export const PersonSearch: FC = () => {
         setIsSearching(false);
       }
     };
-
     const getPersonsByQueryDebounced = _.debounce(getPersonsByQuery, 500);
-
     if (event.target.value.length > 2) {
       getPersonsByQueryDebounced();
     }
+    //TODO: set "query" as a usestate -  trigger a "usePersonsQuery" on that
   };
 
   return (
@@ -97,7 +96,7 @@ export const PersonSearch: FC = () => {
           <PersonResultList persons={persons} />
           <Button
             onClick={() => {
-              setPersons([]); //todo: autoclose
+              setPersons([]); //todo: autoclose (use Dialog)
             }}
           >
             Close

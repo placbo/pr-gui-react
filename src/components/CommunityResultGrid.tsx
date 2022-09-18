@@ -1,11 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { Community } from '../types/community';
 import { Colors, DeviceWidths } from '../theme';
 import communityPlaceholderImage from '../resources/images/group.webp';
 import styled from '@emotion/styled';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
-import { COMMUNITY_THUMBNAIL_URL, PERSONS_URL } from '../constants';
-import axios from 'axios';
+import { COMMUNITY_THUMBNAIL_URL } from '../constants';
+import { useCommunitiesForPerson } from './api';
 // import { Add } from '@mui/icons-material';
 
 const StyledResultList = styled.div`
@@ -90,7 +90,7 @@ const StyledTypography = styled(Typography)`
 // `;
 
 interface CommunityResultGridProps {
-  personId?: string;
+  personId: string;
 }
 
 const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
@@ -98,21 +98,23 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
   // const [isAddCommunityToPersonDialogOpen, setIsAddCommunityToPersonDialogOpen] = useState(false);
   // const [allCommunities, setAllCommunities] = useState<Community[]>([]);
   // const [selectedCommunityToAdd, setSelectedCommunityToAdd] = useState<Community | null>(null);
-  const [communities, setCommunities] = useState([]);
+  //const [communities, setCommunities] = useState([]);
 
-  useEffect(() => {
-    const getCommunities = async () => {
-      const result = (
-        await axios.get(`${PERSONS_URL}\\${personId}\\communities`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setCommunities(result);
-    };
-    getCommunities();
-  }, [personId]);
+  // useEffect(() => {
+  //   const getCommunities = async () => {
+  //     const result = (
+  //       await axios.get(`${PERSONS_URL}\\${personId}\\communities`, {
+  //         headers: {
+  //           'X-Auth-Token': localStorage.getItem('token') ?? '',
+  //         },
+  //       })
+  //     ).data;
+  //     setCommunities(result);
+  //   };
+  //   getCommunities();
+  // }, [personId]);
+
+  const { communities, isLoading, loadingError } = useCommunitiesForPerson(personId);
 
   // const loadCommunities = (personId: string | undefined) => {
   //   if (personId) {
@@ -163,6 +165,8 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
 
   return (
     <StyledResultList>
+      {loadingError && <pre>ERROR! ({loadingError.message})</pre>}
+      {isLoading && <pre>LOADING!</pre>}
       {communities &&
         communities.length > 0 &&
         communities.map((community: Community) => (
