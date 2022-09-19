@@ -1,6 +1,6 @@
 import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
 
 // import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
@@ -10,6 +10,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import { PersonSearch } from './PersonSearch';
+import EditPersonDialog from './EditPersonDialog';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -38,12 +39,12 @@ const StyledLink = styled(Link)`
 `;
 
 export const Header: FC = () => {
-  // const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
+  const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
   // const [isAddCommunityDialogOpen, setIsAddCommunityDialogOpen] = useState(false);
 
-  // const toggleAddPersonDialog = () => {
-  //   setIsAddPersonDialogOpen(!isAddPersonDialogOpen);
-  // };
+  const toggleAddPersonDialog = () => {
+    setIsAddPersonDialogOpen(!isAddPersonDialogOpen);
+  };
   // const toggleAddCommunityDialog = () => {
   //   setIsAddCommunityDialogOpen(!isAddCommunityDialogOpen);
   // };
@@ -67,14 +68,14 @@ export const Header: FC = () => {
             {/*<IconButton href="/person/1" color="inherit" size="large">*/}
             {/*  <AccessibilityNewIcon />*/}
             {/*</IconButton>*/}
-            {/*<IconButton onClick={toggleAddPersonDialog} color="inherit" size="large">*/}
-            {/*  <PersonAddIcon />*/}
-            {/*</IconButton>*/}
-            <StyledLink to="/newperson">
+            <IconButton onClick={toggleAddPersonDialog} color="inherit" size="large">
+              <PersonAddIcon />
+            </IconButton>
+            {/* <StyledLink to="/newperson">
               <IconButton color="inherit" size="large">
                 <PersonAddIcon />
               </IconButton>
-            </StyledLink>
+            </StyledLink> */}
             {/*<IconButton onClick={toggleAddCommunityDialog} color="inherit" size="large">*/}
             {/*  <GroupAddIcon />*/}
             {/*</IconButton>*/}
@@ -94,7 +95,7 @@ export const Header: FC = () => {
           </Button>
         </StyledToolbar>
       </AppBar>
-      {/*<EditPersonDialog isEditDialogOpen={isAddPersonDialogOpen} handleToggleDialog={toggleAddPersonDialog} />*/}
+      <EditPersonDialog isEditDialogOpen={isAddPersonDialogOpen} handleToggleDialog={toggleAddPersonDialog} />
       {/*<EditCommunityDialog isEditDialogOpen={isAddCommunityDialogOpen} handleToggleDialog={toggleAddCommunityDialog} />*/}
     </header>
   );

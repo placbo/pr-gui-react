@@ -49,6 +49,7 @@ const StyledTypography = styled(Typography)`
 `;
 
 const StyledLink = styled(Link)`
+  width: 100%;
   color: ${Colors.PrimaryText};
   text-decoration: none;
 `;
@@ -59,7 +60,7 @@ interface Props {
 
 const PersonCard: FC<Props> = ({ person }) => {
   return (
-    <StyledCard variant="outlined" key={person.id}>
+    <StyledCard variant="outlined">
       <StyledLink to={`/person/${person.id}`}>
         <StyledCardActionArea>
           <StyledCardMedia

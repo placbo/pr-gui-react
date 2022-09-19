@@ -3,8 +3,8 @@ import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
-// import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { Colors, DeviceWidths } from '../theme';
 import { FaCross } from 'react-icons/fa';
@@ -17,6 +17,7 @@ import { PERSONS_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../cons
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
 import PersonCard from '../components/PersonCard';
+import EditPersonDialog from '../components/EditPersonDialog';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -139,27 +140,24 @@ export const PersonPage: FC = () => {
     getChildren();
   }, [identifier]);
 
-  // useEffect(() => {
-  //   console.log('HEPP!', persons);
-  //   if (persons && persons.length > 0)
-  //     setPerson(persons.find((_person: Person) => _person.id === identifier) ?? emptyPerson);
-  // }, [persons]);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  // const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const handleDeleteClick = () => {
+    if (window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
+      console.log('DELETING', person?.firstName);
 
-  // const handleDeleteClick = () => {
-  //   // if (window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
-  //   //   deletePerson(identifier)
-  //   //     .then(() => {
-  //   //       history.push('/');
-  //   //     })
-  //   //     .catch((error: any) => console.error(error.message));
-  //   // }
-  // };
+      // deletePerson(identifier)
+      //   .then(() => {
+      //     history.push('/');
+      //   })
+      //   .catch((error: any) => console.error(error.message));
+    }
+  };
 
-  // const handleToggleEditDialog = () => {
-  //   setIsEditDialogOpen(!isEditDialogOpen);
-  // };
+  const handleToggleEditDialog = () => {
+    setIsEditDialogOpen(!isEditDialogOpen);
+  };
+
   // const [isUploading, setIsUploading] = useState(false);
   // const handleFileUpload = async (file: File | null) => {
   //   if (!file) return;
@@ -216,7 +214,7 @@ export const PersonPage: FC = () => {
               <StyledActions>
                 {person.facebookLink && (
                   <IconButton
-                    style={{ color: 'blue' }}
+                    style={{ color: Colors.Primary }}
                     href={`https://www.facebook.com/${person.facebookLink}`}
                     target="_blank"
                     aria-label="facebook link"
@@ -224,12 +222,12 @@ export const PersonPage: FC = () => {
                     <FacebookIcon />
                   </IconButton>
                 )}
-                {/*<IconButton aria-label="" onClick={handleDeleteClick}>*/}
-                {/*  <DeleteIcon />*/}
-                {/*</IconButton>*/}
-                {/*<IconButton aria-label="" onClick={handleToggleEditDialog}>*/}
-                {/*  <EditOutlinedIcon />*/}
-                {/*</IconButton>*/}
+                <IconButton aria-label="" onClick={handleDeleteClick}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton aria-label="" onClick={handleToggleEditDialog}>
+                  <EditOutlinedIcon />
+                </IconButton>
               </StyledActions>
             </StyledDetailsWrapper>
           </StyledHeader>
@@ -245,12 +243,12 @@ export const PersonPage: FC = () => {
             <PersonCard person={children}></PersonCard>
           ))}
 
-          {/*<EditPersonDialog*/}
-          {/*  isEditDialogOpen={isEditDialogOpen}*/}
-          {/*  handleToggleDialog={handleToggleEditDialog}*/}
-          {/*  person={person}*/}
-          {/*  setPerson={setPerson}*/}
-          {/*/>*/}
+          <EditPersonDialog
+            isEditDialogOpen={isEditDialogOpen}
+            handleToggleDialog={handleToggleEditDialog}
+            person={person}
+            setPerson={setPerson}
+          />
         </>
       )}
     </StyledPersonPresentation>

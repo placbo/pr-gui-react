@@ -30,7 +30,7 @@ const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons?: () => void }>
   return (
     <StyledResultList>
       {persons.map((person: Person) => (
-        <PersonCard person={person}></PersonCard>
+        <PersonCard person={person} key={person.id}></PersonCard>
       ))}
       {fetchMorePersons && <Button onClick={fetchMorePersons}>mer...</Button>}
     </StyledResultList>
