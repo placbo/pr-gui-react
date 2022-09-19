@@ -16,6 +16,7 @@ import axios from 'axios';
 import { PERSONS_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
+import PersonCard from '../components/PersonCard';
 //import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
@@ -98,9 +99,11 @@ const StyledActions = styled.div`
 export const PersonPage: FC = () => {
   const { identifier } = useParams();
   const [person, setPerson] = useState<Person | undefined>(undefined);
+  const [parents, setParents] = useState<Person[]>([]);
+  const [children, setChildren] = useState<Person[]>([]);
 
   useEffect(() => {
-    const asyncAxiosFunction = async () => {
+    const getPerson = async () => {
       const result = (
         await axios.get(`${PERSONS_URL}/${identifier}`, {
           headers: {
@@ -110,8 +113,30 @@ export const PersonPage: FC = () => {
       ).data;
       setPerson(result);
     };
+    const getParents = async () => {
+      const result = (
+        await axios.get(`${PERSONS_URL}/${identifier}/parents`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setParents(result);
+    };
+    const getChildren = async () => {
+      const result = (
+        await axios.get(`${PERSONS_URL}/${identifier}/children`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setChildren(result);
+    };
 
-    asyncAxiosFunction();
+    getPerson();
+    getParents();
+    getChildren();
   }, [identifier]);
 
   // useEffect(() => {
@@ -211,6 +236,14 @@ export const PersonPage: FC = () => {
 
           <HeadingWithLine text="Grupper" />
           <CommunityResultGrid personId={person.id} />
+
+          <HeadingWithLine text="Familie" />
+          {parents.map((parent: Person) => (
+            <PersonCard person={parent}></PersonCard>
+          ))}
+          {children.map((children: Person) => (
+            <PersonCard person={children}></PersonCard>
+          ))}
 
           {/*<EditPersonDialog*/}
           {/*  isEditDialogOpen={isEditDialogOpen}*/}
