@@ -8,7 +8,7 @@ const axiosConfigWithToken = {
   headers: { 'X-Auth-Token': localStorage.getItem('token') ?? '' },
 };
 
-export const fetcher = (url: string) =>
+export const SWRfetcher = (url: string) =>
   axios
     .get(url, {
       headers: {
@@ -18,7 +18,7 @@ export const fetcher = (url: string) =>
     .then((res) => res.data);
 
 export const useCommunities = () => {
-  const { data, error } = useSWR(`${COMMUNITIES_URL}`, fetcher);
+  const { data, error } = useSWR(`${COMMUNITIES_URL}`, SWRfetcher);
   return {
     communities: data,
     isLoading: !error && !data,
@@ -27,7 +27,7 @@ export const useCommunities = () => {
 };
 
 export const useCommunitiesForPerson = (personId: string) => {
-  const { data, error } = useSWR(`${PERSONS_URL}\\${personId}\\communities`, fetcher);
+  const { data, error } = useSWR(`${PERSONS_URL}\\${personId}\\communities`, SWRfetcher);
   return {
     communities: data,
     isLoading: !error && !data,
@@ -35,8 +35,17 @@ export const useCommunitiesForPerson = (personId: string) => {
   };
 };
 
+export const usePerson = (personId: string | null | undefined) => {
+  const { data, error } = useSWR(personId ? `${PERSONS_URL}/${personId}` : null, SWRfetcher);
+  return {
+    person: data,
+    isLoading: !error && !data && personId,
+    loadingError: error,
+  };
+};
+
 export const usePersonsQuery = (query: string | null) => {
-  const { data, error } = useSWR(query ? `${PERSONS_URL}?${QUERY_PARAM}=${query}` : null, fetcher);
+  const { data, error } = useSWR(query ? `${PERSONS_URL}?${QUERY_PARAM}=${query}` : null, SWRfetcher);
   return {
     persons: data?.persons,
     isLoading: !error && !data && query,

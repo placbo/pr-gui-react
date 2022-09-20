@@ -9,6 +9,7 @@ import { NotFoundPage } from './NotFoundPage';
 import { LastRegisteredPersonsPage } from './LastRegisteredPersonsPage';
 import { CommunitiesPage } from './CommunitiesPage';
 import { CommunityPage } from './CommunityPage';
+import { EditPersonPage } from './EditPersonPage';
 
 const App = styled.div`
   min-height: 100vh;
@@ -23,8 +24,8 @@ const Content = styled(Container)`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  flex-grow: 1;
 `;
 
 const Footer = styled.footer`
@@ -69,6 +70,7 @@ export const HomePage: FC = () => {
         <Routes>
           <Route path="/" element={<LastRegisteredPersonsPage />} />
           <Route path="/person/:identifier" element={<PersonPage />} />
+          <Route path="/editperson" element={<EditPersonPage />} />
           <Route path="/communities" element={<CommunitiesPage />} />
           <Route path="/community/:identifier" element={<CommunityPage />} />
           {/* <Route path="/newperson" element={<NewUser />} />

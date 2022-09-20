@@ -1,28 +1,17 @@
 import React, { FC, useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  CircularProgress,
-  DialogTitle,
-  Divider,
-  TextField,
-  Alert,
-  AlertTitle,
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Button, CircularProgress, Divider, TextField, Alert, AlertTitle, Typography } from '@mui/material';
 
 import { emptyPerson, Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { addPerson, updatePerson } from './api';
 import axios from 'axios';
+import { addPerson, updatePerson, usePerson } from '../components/api';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-const StyledDialogContent = styled(DialogContent)`
-  display: flex;
-  flex-direction: column;
+const EditPage = styled.div`
   padding: 0 1rem;
+  max-width: 30rem;
+  margin-top: 2rem;
 `;
 
 const StyledTextField = styled(TextField)`
@@ -38,24 +27,21 @@ const StyledAlert = styled(Alert)`
   margin-top: 2rem;
 `;
 
-interface editDialogProps {
-  isEditDialogOpen: boolean;
-  handleToggleDialog: any;
-  person?: Person;
-  setPerson?: any;
-}
+export const EditPersonPage: FC = () => {
+  const navigate = useNavigate();
 
-const EditPersonDialog: FC<editDialogProps> = ({ isEditDialogOpen, handleToggleDialog, person, setPerson }) => {
+  const [searchParams] = useSearchParams();
+  const personId = searchParams.get('id');
   const [savingError, setSavingError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate();
+  const { person, isLoading, loadingError } = usePerson(personId);
 
   const handleSave = (values: Person) => {
     setIsSaving(true);
     setSavingError('');
     try {
-      person?.id ? updatePerson(person.id, values) : addPerson(values);
-      handleToggleDialog();
+      personId ? updatePerson(personId, values) : addPerson(values); //todo : return new id
+      personId ? navigate('/person/' + personId) : navigate('/');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setSavingError(error.message);
@@ -75,20 +61,24 @@ const EditPersonDialog: FC<editDialogProps> = ({ isEditDialogOpen, handleToggleD
     }
   };
 
+  console.log('PERSONID', personId);
+  console.log('PERSON', person);
+
   return (
-    <Dialog
-      open={isEditDialogOpen}
-      onClose={handleToggleDialog}
-      aria-labelledby="responsive-dialog-title"
-      fullWidth
-      maxWidth={'sm'}
-      id="edit_dialog"
-    >
-      <Formik onSubmit={handleSave} initialValues={person ?? emptyPerson}>
+    <EditPage>
+      {isLoading && <CircularProgress size={'1rem'} />}
+      {loadingError && (
+        <StyledAlert severity="error">
+          <AlertTitle>En feil har oppstått!</AlertTitle>
+          {loadingError}
+        </StyledAlert>
+      )}
+
+      <Formik onSubmit={handleSave} initialValues={personId ? person : emptyPerson}>
         {(props) => (
           <Form>
-            {!person?.id ? <DialogTitle>Ny person</DialogTitle> : <DialogTitle>Endre person</DialogTitle>}
-            <StyledDialogContent>
+            <Typography variant="h4">{!person?.id ? 'Ny person' : 'Endre person'}</Typography>
+            <div>
               {!person?.id && (
                 <>
                   <StyledTextField
@@ -132,18 +122,15 @@ const EditPersonDialog: FC<editDialogProps> = ({ isEditDialogOpen, handleToggleD
                   {savingError}
                 </StyledAlert>
               )}
-            </StyledDialogContent>
-            <DialogActions>
-              <Button onClick={handleToggleDialog}>Angre</Button>
+            </div>
+            <div>
               <Button type="submit" color="primary" variant="contained">
                 Lagre
               </Button>
-            </DialogActions>
+            </div>
           </Form>
         )}
       </Formik>
-    </Dialog>
+    </EditPage>
   );
 };
-
-export default EditPersonDialog;

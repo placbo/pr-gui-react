@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,14 +12,14 @@ import { FaCross } from 'react-icons/fa';
 import personPlaceholderImage from '../resources/images/person.png';
 // eslint-disable-next-line
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 import { PERSONS_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
 import PersonCard from '../components/PersonCard';
-import EditPersonDialog from '../components/EditPersonDialog';
 import { v4 } from 'uuid';
-import { deletePerson } from '../components/api';
+import { deletePerson, usePerson } from '../components/api';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -100,57 +100,42 @@ const StyledActions = styled.div`
 
 export const PersonPage: FC = () => {
   const { identifier } = useParams();
-  const [person, setPerson] = useState<Person | undefined>(undefined);
   const [parents, setParents] = useState<Person[]>([]);
   const [children, setChildren] = useState<Person[]>([]);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const getPerson = async () => {
-      const result = (
-        await axios.get(`${PERSONS_URL}/${identifier}`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setPerson(result);
-    };
-    const getParents = async () => {
-      const result = (
-        await axios.get(`${PERSONS_URL}/${identifier}/parents`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setParents(result);
-    };
-    const getChildren = async () => {
-      const result = (
-        await axios.get(`${PERSONS_URL}/${identifier}/children`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setChildren(result);
-    };
+  const { person } = usePerson(identifier);
 
-    getPerson();
-    getParents();
-    getChildren();
-  }, [identifier]);
-
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  // useEffect(() => {
+  //   const getParents = async () => {
+  //     const result = (
+  //       await axios.get(`${PERSONS_URL}/${identifier}/parents`, {
+  //         headers: {
+  //           'X-Auth-Token': localStorage.getItem('token') ?? '',
+  //         },
+  //       })
+  //     ).data;
+  //     setParents(result);
+  //   };
+  //   const getChildren = async () => {
+  //     const result = (
+  //       await axios.get(`${PERSONS_URL}/${identifier}/children`, {
+  //         headers: {
+  //           'X-Auth-Token': localStorage.getItem('token') ?? '',
+  //         },
+  //       })
+  //     ).data;
+  //     setChildren(result);
+  //   };
+  //   getParents();
+  //   getChildren();
+  // }, [identifier]);
 
   const handleDeleteClick = () => {
     if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
       deletePerson(identifier);
+      navigate('/');
     }
-  };
-
-  const handleToggleEditDialog = () => {
-    setIsEditDialogOpen(!isEditDialogOpen);
   };
 
   const [isUploading, setIsUploading] = useState(false);
@@ -213,7 +198,7 @@ export const PersonPage: FC = () => {
                 <IconButton aria-label="" onClick={handleDeleteClick}>
                   <DeleteIcon />
                 </IconButton>
-                <IconButton aria-label="" onClick={handleToggleEditDialog}>
+                <IconButton aria-label="" component={RouterLink} to={`/editperson?id=${identifier}`}>
                   <EditOutlinedIcon />
                 </IconButton>
               </StyledActions>
@@ -230,13 +215,6 @@ export const PersonPage: FC = () => {
           {children.map((children: Person) => (
             <PersonCard person={children}></PersonCard>
           ))}
-
-          <EditPersonDialog
-            isEditDialogOpen={isEditDialogOpen}
-            handleToggleDialog={handleToggleEditDialog}
-            person={person}
-            setPerson={setPerson}
-          />
         </>
       )}
     </StyledPersonPresentation>

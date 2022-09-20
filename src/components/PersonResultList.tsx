@@ -11,8 +11,8 @@ const PersonResultList: FC<{ persons: Person[] }> = ({ persons }) => {
     <List dense>
       {open &&
         persons.map((person: Person) => (
-          <ListItemButton component={Link} to={`/person/${person.id}`} onClick={() => setOpen(false)}>
-            <ListItem key={person.id}>
+          <ListItemButton key={person.id} component={Link} to={`/person/${person.id}`} onClick={() => setOpen(false)}>
+            <ListItem>
               <ListItemAvatar>
                 <Avatar alt={person.lastName} src={`${PERSON_THUMBNAIL_URL}${person.imageName}`} />
               </ListItemAvatar>

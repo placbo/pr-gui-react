@@ -10,7 +10,6 @@ import GroupIcon from '@mui/icons-material/Group';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import { PersonSearch } from './PersonSearch';
-import EditPersonDialog from './EditPersonDialog';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -68,9 +67,11 @@ export const Header: FC = () => {
             {/*<IconButton href="/person/1" color="inherit" size="large">*/}
             {/*  <AccessibilityNewIcon />*/}
             {/*</IconButton>*/}
-            <IconButton onClick={toggleAddPersonDialog} color="inherit" size="large">
-              <PersonAddIcon />
-            </IconButton>
+            <StyledLink to="/editperson">
+              <IconButton color="inherit" size="large">
+                <PersonAddIcon />
+              </IconButton>
+            </StyledLink>
             {/* <StyledLink to="/newperson">
               <IconButton color="inherit" size="large">
                 <PersonAddIcon />
@@ -95,8 +96,6 @@ export const Header: FC = () => {
           </Button>
         </StyledToolbar>
       </AppBar>
-      <EditPersonDialog isEditDialogOpen={isAddPersonDialogOpen} handleToggleDialog={toggleAddPersonDialog} />
-      {/*<EditCommunityDialog isEditDialogOpen={isAddCommunityDialogOpen} handleToggleDialog={toggleAddCommunityDialog} />*/}
     </header>
   );
 };
