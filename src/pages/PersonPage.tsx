@@ -19,6 +19,7 @@ import CommunityResultGrid from '../components/CommunityResultGrid';
 import PersonCard from '../components/PersonCard';
 import EditPersonDialog from '../components/EditPersonDialog';
 import { v4 } from 'uuid';
+import { deletePerson } from '../components/api';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -143,14 +144,8 @@ export const PersonPage: FC = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const handleDeleteClick = () => {
-    if (window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
-      console.log('DELETING', person?.firstName);
-
-      // deletePerson(identifier)
-      //   .then(() => {
-      //     history.push('/');
-      //   })
-      //   .catch((error: any) => console.error(error.message));
+    if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
+      deletePerson(identifier);
     }
   };
 

@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, CircularProgress, InputBase, Paper, Typography } from '@mui/material';
+import { CircularProgress, InputBase, Paper, Typography } from '@mui/material';
 
 import PersonResultList from './PersonResultList';
 import React, { FC, useState } from 'react';

@@ -2,6 +2,11 @@ import { COMMUNITIES_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
 import { QUERY_PARAM } from '../types/QueryParams';
+import { Person } from '../types/person';
+
+const axiosConfigWithToken = {
+  headers: { 'X-Auth-Token': localStorage.getItem('token') ?? '' },
+};
 
 export const fetcher = (url: string) =>
   axios
@@ -37,4 +42,16 @@ export const usePersonsQuery = (query: string | null) => {
     isLoading: !error && !data && query,
     loadingError: error,
   };
+};
+
+export const addPerson = async (person: Person) => {
+  await axios.post(`${PERSONS_URL}`, person, axiosConfigWithToken);
+};
+
+export const updatePerson = async (personId: string, person: Person) => {
+  await axios.put(`${PERSONS_URL}/${personId}`, person, axiosConfigWithToken);
+};
+
+export const deletePerson = async (personId: string) => {
+  await axios.delete(`${PERSONS_URL}/${personId}`, axiosConfigWithToken);
 };

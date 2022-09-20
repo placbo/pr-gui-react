@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  CircularProgress,
   DialogTitle,
   Divider,
   TextField,
@@ -15,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { emptyPerson, Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+import { addPerson, updatePerson } from './api';
+import axios from 'axios';
 
 const StyledDialogContent = styled(DialogContent)`
   display: flex;
@@ -43,28 +46,22 @@ interface editDialogProps {
 }
 
 const EditPersonDialog: FC<editDialogProps> = ({ isEditDialogOpen, handleToggleDialog, person, setPerson }) => {
-  const [updateError, setUpdateError] = useState<Error>();
+  const [savingError, setSavingError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
   const handleSave = (values: Person) => {
-    if (person?.id) {
-      console.log('TODO: UPDATE PERSON', values);
-      // updatePerson(values)
-      //   .then(() => {
-      //     setPerson(values);
-      //     handleToggleDialog();
-      //   })
-      //   .catch((error) => setUpdateError(error));
-    } else {
-      console.log('TODO: INSERT PERSON', values);
-
-      // insertPerson(values)
-      //   .then((person: Person) => {
-      //     handleToggleDialog();
-      //     navigate(`/person/${person.id}`);
-      //   })
-      //   .catch((error) => setUpdateError(error));
+    setIsSaving(true);
+    setSavingError('');
+    try {
+      person?.id ? updatePerson(person.id, values) : addPerson(values);
+      handleToggleDialog();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setSavingError(error.message);
+      }
     }
+    setIsSaving(false);
   };
 
   const onFullNameBlur = (event: any, props: FormikProps<Person>) => {
@@ -128,10 +125,11 @@ const EditPersonDialog: FC<editDialogProps> = ({ isEditDialogOpen, handleToggleD
                   <StyledTextField {...field} multiline rows="3" fullWidth label="Kommentar" variant="outlined" />
                 )}
               </Field>
-              {updateError && (
+              {isSaving && <CircularProgress size={'1rem'} />}
+              {savingError && (
                 <StyledAlert severity="error">
                   <AlertTitle>En feil har oppstått!</AlertTitle>
-                  {updateError.message}
+                  {savingError}
                 </StyledAlert>
               )}
             </StyledDialogContent>
