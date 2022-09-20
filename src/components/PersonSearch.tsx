@@ -5,10 +5,8 @@ import PersonResultList from './PersonResultList';
 import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
 import { Colors } from '../theme';
-import axios from 'axios';
-import { PERSONS_URL } from '../constants';
 import _ from 'lodash';
-import { QUERY_PARAM } from '../types/QueryParams';
+import { usePersonsQuery } from './api';
 
 const StyledSearchBox = styled.div`
   display: flex;
@@ -45,33 +43,14 @@ const FloatingResultListContainer = styled(Paper)`
 `;
 
 export const PersonSearch: FC = () => {
-  const [persons, setPersons] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchError, setSearchError] = useState<Error>();
+  const [searchTerm, setSearchTerm] = useState<null | string>(null);
+  const { persons, isLoading, loadingError } = usePersonsQuery(searchTerm);
 
   const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const getPersonsByQuery = async () => {
-      try {
-        setIsSearching(true);
-        const result = (
-          await axios.get(`${PERSONS_URL}?${QUERY_PARAM}=${event.target.value}`, {
-            headers: {
-              'X-Auth-Token': localStorage.getItem('token') ?? '',
-            },
-          })
-        ).data;
-        setPersons(result.persons);
-      } catch (error: any) {
-        setSearchError(error.message);
-      } finally {
-        setIsSearching(false);
-      }
-    };
-    const getPersonsByQueryDebounced = _.debounce(getPersonsByQuery, 500);
+    const setSearchTermDebounced = _.debounce(() => setSearchTerm(event.target.value), 500);
     if (event.target.value.length > 2) {
-      getPersonsByQueryDebounced();
+      setSearchTermDebounced();
     }
-    //TODO: set "query" as a usestate -  trigger a "usePersonsQuery" on that
   };
 
   return (
@@ -84,23 +63,16 @@ export const PersonSearch: FC = () => {
           onChange={handleSearchTermChange}
           autoComplete="off"
         />
-        <LoadingIconWrapper>{isSearching && <CircularProgress color="inherit" size={'1rem'} />}</LoadingIconWrapper>
+        <LoadingIconWrapper>{isLoading && <CircularProgress color="inherit" size={'1rem'} />}</LoadingIconWrapper>
       </StyledSearchBox>
-      {searchError && (
+      {loadingError && (
         <Typography color="red" variant="body1">
-          {searchError.message}
+          {loadingError.message}
         </Typography>
       )}
       {persons && persons.length > 0 && (
         <FloatingResultListContainer>
           <PersonResultList persons={persons} />
-          <Button
-            onClick={() => {
-              setPersons([]); //todo: autoclose (use Dialog)
-            }}
-          >
-            Close
-          </Button>
         </FloatingResultListContainer>
       )}
     </>

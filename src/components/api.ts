@@ -3,7 +3,7 @@ import axios from 'axios';
 import useSWR from 'swr';
 import { QUERY_PARAM } from '../types/QueryParams';
 
-const fetcher = (url: string) =>
+export const fetcher = (url: string) =>
   axios
     .get(url, {
       headers: {
@@ -30,11 +30,11 @@ export const useCommunitiesForPerson = (personId: string) => {
   };
 };
 
-export const usePersonsQuery = (query: string) => {
-  const { data, error } = useSWR(`${PERSONS_URL}?${QUERY_PARAM}=${query}`, fetcher);
+export const usePersonsQuery = (query: string | null) => {
+  const { data, error } = useSWR(query ? `${PERSONS_URL}?${QUERY_PARAM}=${query}` : null, fetcher);
   return {
-    persons: data.persons,
-    isLoading: !error && !data,
+    persons: data?.persons,
+    isLoading: !error && !data && query,
     loadingError: error,
   };
 };

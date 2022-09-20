@@ -18,7 +18,7 @@ import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
 import PersonCard from '../components/PersonCard';
 import EditPersonDialog from '../components/EditPersonDialog';
-//import { v4 } from 'uuid';
+import { v4 } from 'uuid';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -158,24 +158,17 @@ export const PersonPage: FC = () => {
     setIsEditDialogOpen(!isEditDialogOpen);
   };
 
-  // const [isUploading, setIsUploading] = useState(false);
-  // const handleFileUpload = async (file: File | null) => {
-  //   if (!file) return;
-  //   setIsUploading(true);
-  //   console.log('Laster opp bilde: ', file.name);
-  //   //todo: Scale image
-  //   //todo: Save thumbs as well
-  //   const storageRef = ref(storage, `images/${v4()}`);
-  //   await uploadBytes(storageRef, file);
-  //   const imageUrl = await getDownloadURL(storageRef);
-  //   const newPersonsArray = persons.map((_person: Person) =>
-  //     _person.id === person.id ? { ..._person, profileImageUrl: imageUrl } : _person
-  //   );
-  //   setPersons(newPersonsArray); //oppdaterer context)
-  //   setPerson(newPersonsArray.find((_person: Person) => _person.id === person.id)); //opppdaterer lokal view uten å være avhengig av context
-  //   await updatePerson({ ...person, profileImageUrl: imageUrl });
-  //   setIsUploading(false);
-  // };
+  const [isUploading, setIsUploading] = useState(false);
+  const handleFileUpload = async (file: File | null) => {
+    if (!file) return;
+    setIsUploading(true);
+    console.log('TODO: Laster opp bilde: ', file.name);
+    //todo: Scale image
+    //todo: Save thumbs as well
+    const newImageName = v4();
+    // MAKE IMAGE UPLOADER
+    setIsUploading(false);
+  };
 
   return (
     <StyledPersonPresentation>
@@ -189,7 +182,7 @@ export const PersonPage: FC = () => {
                   src={person.imageName ? `${PERSON_IMAGE_URL}${person.imageName}` : personPlaceholderImage}
                 />
               </Link>
-              {/* <div>
+              <div>
                 <StyledLabelButtonFileUpload htmlFor="file-upload">Velg nytt profilbilde</StyledLabelButtonFileUpload>
                 <input
                   id="file-upload"
@@ -200,7 +193,7 @@ export const PersonPage: FC = () => {
                   style={{ display: 'none' }}
                 />
                 {isUploading && <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />}
-              </div> */}
+              </div>
             </StyledImageWrapper>
             <StyledDetailsWrapper>
               <StyledNameTypography variant="h3">{`${person.firstName} ${person.lastName}`}</StyledNameTypography>
