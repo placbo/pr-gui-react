@@ -6,6 +6,7 @@ export const LOGIN_URL = BASE_URL + '/api/auth/login';
 export const PERSONS_URL = BASE_URL + '/api/persons';
 export const IMAGES_URL = BASE_URL + '/api/images';
 export const COMMUNITIES_URL = BASE_URL + '/api/communities';
+export const IMAGE_UPLOAD_URL = BASE_URL + '/api/imageupload';
 
 export const PERSON_THUMBNAIL_URL = IMAGES_URL + '/persons/thumbs/thumbnail.';
 export const PERSON_IMAGES_MEDIUM_URL = IMAGES_URL + '/persons/medium/';

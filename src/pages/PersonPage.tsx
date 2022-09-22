@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,11 +14,10 @@ import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
-import { PERSONS_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
+import { IMAGE_UPLOAD_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
 import PersonCard from '../components/PersonCard';
-import { v4 } from 'uuid';
 import { deletePerson, usePerson } from '../components/api';
 
 const StyledPersonPresentation = styled.div`
@@ -139,15 +138,22 @@ export const PersonPage: FC = () => {
   };
 
   const [isUploading, setIsUploading] = useState(false);
+
   const handleFileUpload = async (file: File | null) => {
-    if (!file) return;
-    setIsUploading(true);
-    console.log('TODO: Laster opp bilde: ', file.name);
-    //todo: Scale image
-    //todo: Save thumbs as well
-    const newImageName = v4();
-    // MAKE IMAGE UPLOADER
-    setIsUploading(false);
+    if (file) {
+      try {
+        setIsUploading(true);
+        //todo: Scale image client side ?
+        const formData = new FormData();
+        formData.append('image', file);
+        await axios.post(IMAGE_UPLOAD_URL, formData);
+        //TODO: fang resultat og lagre person med bildenavn
+      } catch (error) {
+        console.log('ERROR', error);
+        //TODO: error-handling
+      }
+      setIsUploading(false);
+    }
   };
 
   return (
