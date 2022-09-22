@@ -61,9 +61,6 @@ export const EditPersonPage: FC = () => {
     }
   };
 
-  console.log('PERSONID', personId);
-  console.log('PERSON', person);
-
   return (
     <EditPage>
       {isLoading && <CircularProgress size={'1rem'} />}

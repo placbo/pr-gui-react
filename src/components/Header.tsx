@@ -1,7 +1,8 @@
 import { AppBar, Button, IconButton, Toolbar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import SearchIcon from '@mui/icons-material/Search';
 
 // import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -9,7 +10,7 @@ import GroupIcon from '@mui/icons-material/Group';
 // import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
-import { PersonSearch } from './PersonSearch';
+import { PersonSearchDialog } from './PersonSearchDialog';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -38,16 +39,34 @@ const StyledLink = styled(Link)`
 `;
 
 export const Header: FC = () => {
-  const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
+  // const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
   // const [isAddCommunityDialogOpen, setIsAddCommunityDialogOpen] = useState(false);
+  const [isSearchResultDialogOpen, setIsSearchResultDialogOpen] = useState(false);
 
-  const toggleAddPersonDialog = () => {
-    setIsAddPersonDialogOpen(!isAddPersonDialogOpen);
-  };
+  // const toggleAddPersonDialog = () => {
+  //   setIsAddPersonDialogOpen(!isAddPersonDialogOpen);
+  // };
+
   // const toggleAddCommunityDialog = () => {
   //   setIsAddCommunityDialogOpen(!isAddCommunityDialogOpen);
   // };
+
   const navigate = useNavigate();
+
+  // handle shortcut keys
+  const handleKeyPress = useCallback((event: any) => {
+    if (event.key === 's') {
+      console.log(`Trigger Search`);
+      setIsSearchResultDialogOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
 
   return (
     <header>
@@ -81,9 +100,10 @@ export const Header: FC = () => {
             {/*  <GroupAddIcon />*/}
             {/*</IconButton>*/}
           </StyledExtraButtons>
-
           <StyledSeparator />
-          <PersonSearch />
+          <IconButton onClick={() => setIsSearchResultDialogOpen(true)} color="inherit" size="large">
+            <SearchIcon />
+          </IconButton>
           <Button
             style={{ color: 'black', backgroundColor: 'white' }}
             variant={'text'}
@@ -96,6 +116,7 @@ export const Header: FC = () => {
           </Button>
         </StyledToolbar>
       </AppBar>
+      <PersonSearchDialog isDialogOpen={isSearchResultDialogOpen} setIsDialogOpen={setIsSearchResultDialogOpen} />
     </header>
   );
 };
