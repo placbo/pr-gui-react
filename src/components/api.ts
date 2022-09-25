@@ -47,7 +47,16 @@ export const usePerson = (personId: string | null | undefined) => {
 export const usePersonParents = (personId: string | null | undefined) => {
   const { data, error } = useSWR(personId ? `${PERSONS_URL}/${personId}/parents` : null, SWRfetcher);
   return {
-    persons: data,
+    parents: data,
+    isLoading: !error && !data && personId,
+    loadingError: error,
+  };
+};
+
+export const usePersonChildren = (personId: string | null | undefined) => {
+  const { data, error } = useSWR(personId ? `${PERSONS_URL}/${personId}/children` : null, SWRfetcher);
+  return {
+    children: data,
     isLoading: !error && !data && personId,
     loadingError: error,
   };

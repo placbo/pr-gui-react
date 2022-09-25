@@ -1,5 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Person } from '../types/person';
+import React, { FC, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -10,14 +9,13 @@ import { Colors, DeviceWidths } from '../theme';
 import { FaCross } from 'react-icons/fa';
 
 import personPlaceholderImage from '../resources/images/person.png';
-// eslint-disable-next-line
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
-import { IMAGE_UPLOAD_URL, PERSONS_URL, PERSON_IMAGE_URL } from '../constants';
+import { IMAGE_UPLOAD_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
-import { deletePerson, usePerson } from '../components/api';
+import { deletePerson, usePerson, usePersonChildren, usePersonParents } from '../components/api';
 import PersonResultGrid from '../components/PersonResultGrid';
 
 const StyledPersonPresentation = styled.div`
@@ -99,36 +97,11 @@ const StyledActions = styled.div`
 
 export const PersonPage: FC = () => {
   const { identifier } = useParams();
-  const [parents, setParents] = useState<Person[]>([]);
-  const [children, setChildren] = useState<Person[]>([]);
   const navigate = useNavigate();
 
   const { person } = usePerson(identifier);
-
-  useEffect(() => {
-    const getParents = async () => {
-      const result = (
-        await axios.get(`${PERSONS_URL}/${identifier}/parents`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setParents(result);
-    };
-    const getChildren = async () => {
-      const result = (
-        await axios.get(`${PERSONS_URL}/${identifier}/children`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setChildren(result);
-    };
-    getParents();
-    getChildren();
-  }, [identifier]);
+  const { parents } = usePersonParents(identifier);
+  const { children } = usePersonChildren(identifier);
 
   const handleDeleteClick = () => {
     if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
@@ -215,7 +188,9 @@ export const PersonPage: FC = () => {
           <CommunityResultGrid personId={person.id} />
 
           <HeadingWithLine text="Foreldre og Barn" />
-          <PersonResultGrid persons={[...parents, ...children]}></PersonResultGrid>
+          {/* //TODO: lage egen komponent for denne */}
+          {parents && <PersonResultGrid persons={parents}></PersonResultGrid>}
+          {children && <PersonResultGrid persons={children}></PersonResultGrid>}
         </>
       )}
     </StyledPersonPresentation>
