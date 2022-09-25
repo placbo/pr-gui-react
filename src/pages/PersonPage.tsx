@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,11 +14,11 @@ import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
-import { IMAGE_UPLOAD_URL, PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL } from '../constants';
+import { IMAGE_UPLOAD_URL, PERSONS_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
-import PersonCard from '../components/PersonCard';
 import { deletePerson, usePerson } from '../components/api';
+import PersonResultGrid from '../components/PersonResultGrid';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -105,30 +105,30 @@ export const PersonPage: FC = () => {
 
   const { person } = usePerson(identifier);
 
-  // useEffect(() => {
-  //   const getParents = async () => {
-  //     const result = (
-  //       await axios.get(`${PERSONS_URL}/${identifier}/parents`, {
-  //         headers: {
-  //           'X-Auth-Token': localStorage.getItem('token') ?? '',
-  //         },
-  //       })
-  //     ).data;
-  //     setParents(result);
-  //   };
-  //   const getChildren = async () => {
-  //     const result = (
-  //       await axios.get(`${PERSONS_URL}/${identifier}/children`, {
-  //         headers: {
-  //           'X-Auth-Token': localStorage.getItem('token') ?? '',
-  //         },
-  //       })
-  //     ).data;
-  //     setChildren(result);
-  //   };
-  //   getParents();
-  //   getChildren();
-  // }, [identifier]);
+  useEffect(() => {
+    const getParents = async () => {
+      const result = (
+        await axios.get(`${PERSONS_URL}/${identifier}/parents`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setParents(result);
+    };
+    const getChildren = async () => {
+      const result = (
+        await axios.get(`${PERSONS_URL}/${identifier}/children`, {
+          headers: {
+            'X-Auth-Token': localStorage.getItem('token') ?? '',
+          },
+        })
+      ).data;
+      setChildren(result);
+    };
+    getParents();
+    getChildren();
+  }, [identifier]);
 
   const handleDeleteClick = () => {
     if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
@@ -162,7 +162,7 @@ export const PersonPage: FC = () => {
         <>
           <StyledHeader>
             <StyledImageWrapper>
-              <Link href={`${PERSON_IMAGES_MEDIUM_URL}${person.imageName}`} target="_blank" rel="noopener noreferrer">
+              <Link href={`${PERSON_IMAGE_URL}${person.imageName}`} target="_blank" rel="noopener noreferrer">
                 <StyledImage
                   alt="Person"
                   src={person.imageName ? `${PERSON_IMAGE_URL}${person.imageName}` : personPlaceholderImage}
@@ -214,13 +214,8 @@ export const PersonPage: FC = () => {
           <HeadingWithLine text="Grupper" />
           <CommunityResultGrid personId={person.id} />
 
-          <HeadingWithLine text="Familie" />
-          {parents.map((parent: Person) => (
-            <PersonCard person={parent}></PersonCard>
-          ))}
-          {children.map((children: Person) => (
-            <PersonCard person={children}></PersonCard>
-          ))}
+          <HeadingWithLine text="Foreldre og Barn" />
+          <PersonResultGrid persons={[...parents, ...children]}></PersonResultGrid>
         </>
       )}
     </StyledPersonPresentation>
