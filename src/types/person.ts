@@ -22,6 +22,14 @@ export const emptyPerson: Person = {
   imageName: '',
 };
 
+export enum RelationshipRole {
+  Parent,
+  Child,
+  Partner,
+  Sibling,
+  Collegue,
+}
+
 // "@faker-js/faker": "^7.3.0";|
 // const generateMockPerson = (): Person => {
 //   return {
