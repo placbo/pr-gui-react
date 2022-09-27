@@ -37,7 +37,7 @@ export enum RelationshipRole {
 //     firstName: faker.name.firstName(),
 //     note: faker.lorem.sentence(),
 //     born: '',
-//     deceased: '',
+//     dead: '',
 //     facebookLink: '' + faker.datatype.number(),
 //     id: faker.datatype.uuid(),
 //     //profileImageUrl: faker.image.people(100, 100, true),

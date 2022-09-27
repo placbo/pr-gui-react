@@ -116,11 +116,11 @@ export const PersonPage: FC = () => {
     if (file) {
       try {
         setIsUploading(true);
-        //todo: Scale image client side ?
+        //TODO: Scale image client side ?
         const formData = new FormData();
         formData.append('image', file);
-        await axios.post(IMAGE_UPLOAD_URL, formData);
-        //TODO: fang resultat og lagre person med bildenavn
+        formData.append('personid', person.id);
+        await axios.post(IMAGE_UPLOAD_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } catch (error) {
         console.log('ERROR', error);
         //TODO: error-handling
