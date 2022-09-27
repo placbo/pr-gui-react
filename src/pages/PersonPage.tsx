@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -15,8 +15,9 @@ import axios from 'axios';
 import { IMAGE_UPLOAD_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
-import { deletePerson, usePerson, usePersonChildren, usePersonParents } from '../components/api';
+import { deletePerson, getPerson, usePersonChildren, usePersonParents } from '../components/api';
 import PersonResultGrid from '../components/PersonResultGrid';
+import { Person } from '../types/person';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -99,7 +100,13 @@ export const PersonPage: FC = () => {
   const { identifier } = useParams();
   const navigate = useNavigate();
 
-  const { person } = usePerson(identifier);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingImageError, setIsUploadingImageError] = useState<Error | undefined>(undefined);
+
+  const [person, setPerson] = useState<Person | undefined>(undefined);
+  const [isLoadingPerson, setIsLoadingPerson] = useState(false);
+  const [loadingPersonError, setLoadingPersonError] = useState<Error | undefined>(undefined);
+
   const { parents } = usePersonParents(identifier);
   const { children } = usePersonChildren(identifier);
 
@@ -110,12 +117,19 @@ export const PersonPage: FC = () => {
     }
   };
 
-  const [isUploading, setIsUploading] = useState(false);
+  useEffect(() => {
+    const xxx = async () => {
+      identifier && setPerson(await getPerson(identifier, setIsLoadingPerson, setLoadingPersonError));
+    };
+    xxx();
+  }, [identifier]);
 
+  //TODO: move out
   const handleFileUpload = async (file: File | null) => {
-    if (file) {
+    if (file && person) {
       try {
-        setIsUploading(true);
+        setIsUploadingImageError(undefined);
+        setIsUploadingImage(true);
         //TODO: Scale image client side ?
         const formData = new FormData();
         formData.append('image', file);
@@ -123,17 +137,24 @@ export const PersonPage: FC = () => {
         await axios.post(IMAGE_UPLOAD_URL, formData, {
           headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
         });
+        identifier && setPerson(await getPerson(identifier, setIsLoadingPerson, setLoadingPersonError));
       } catch (error) {
-        console.log('ERROR', error);
-        //TODO: error-handling
+        if (axios.isAxiosError(error)) {
+          setIsUploadingImageError(error);
+        }
       }
-      setIsUploading(false);
-      window.location.reload();
+      setIsUploadingImage(false);
     }
   };
 
   return (
     <StyledPersonPresentation>
+      {isLoadingPerson && <CircularProgress color="inherit" size={'2rem'} />}
+      {loadingPersonError && (
+        <Typography color="red" variant="body1">
+          {loadingPersonError.message}
+        </Typography>
+      )}
       {person && (
         <>
           <StyledHeader>
@@ -154,7 +175,8 @@ export const PersonPage: FC = () => {
                   type="file"
                   style={{ display: 'none' }}
                 />
-                {isUploading && <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />}
+                {isUploadingImage && <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />}
+                {isUploadingImageError && <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />}
               </div>
             </StyledImageWrapper>
             <StyledDetailsWrapper>

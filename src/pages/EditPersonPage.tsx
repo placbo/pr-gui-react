@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, CircularProgress, Divider, TextField, Alert, AlertTitle, Typography } from '@mui/material';
 
-import { emptyPerson, Person } from '../types/person';
+import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import axios from 'axios';
-import { addPerson, updatePerson, usePerson } from '../components/api';
+import { addPerson, getPerson, updatePerson } from '../components/api';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const EditPage = styled.div`
@@ -34,7 +34,17 @@ export const EditPersonPage: FC = () => {
   const personId = searchParams.get('id');
   const [savingError, setSavingError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const { person, isLoading, loadingError } = usePerson(personId);
+
+  const [person, setPerson] = useState<Person | undefined>(undefined);
+  const [isLoadingPerson, setIsLoadingPerson] = useState(false);
+  const [loadingPersonError, setLoadingPersonError] = useState<Error | undefined>(undefined);
+
+  useEffect(() => {
+    const asyncFunc = async () => {
+      personId && setPerson(await getPerson(personId, setIsLoadingPerson, setLoadingPersonError));
+    };
+    asyncFunc();
+  }, [personId]);
 
   const handleSave = (values: Person) => {
     setIsSaving(true);
@@ -63,71 +73,73 @@ export const EditPersonPage: FC = () => {
 
   return (
     <EditPage>
-      {isLoading && <CircularProgress size={'1rem'} />}
-      {loadingError && (
-        <StyledAlert severity="error">
-          <AlertTitle>En feil har oppstått!</AlertTitle>
-          {loadingError}
-        </StyledAlert>
+      {isLoadingPerson && <CircularProgress color="inherit" size={'2rem'} />}
+      {loadingPersonError && (
+        <Typography color="red" variant="body1">
+          {loadingPersonError.message}
+        </Typography>
       )}
-
-      <Formik onSubmit={handleSave} initialValues={personId ? person : emptyPerson}>
-        {(props) => (
-          <Form>
-            <Typography variant="h4">{!person?.id ? 'Ny person' : 'Endre person'}</Typography>
-            <div>
-              {!person?.id && (
-                <>
-                  <StyledTextField
-                    fullWidth
-                    helperText="Feltet blir bare brukt for å generere for- og etternavn"
-                    label="Full Name"
-                    variant="outlined"
-                    onBlur={(event) => onFullNameBlur(event, props)}
-                  />
-                  <StyledDivider />
-                </>
-              )}
-              <Field name={'firstName'}>
-                {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Fornavn" variant="outlined" />}
-              </Field>
-              <Field name={'lastName'}>
-                {({ field }: FieldProps) => (
-                  <StyledTextField {...field} fullWidth label="Etternavn" variant="outlined" />
+      {personId && person && (
+        <Formik onSubmit={handleSave} initialValues={person}>
+          {(props) => (
+            <Form>
+              <Typography variant="h4">{!person?.id ? 'Ny person' : 'Endre person'}</Typography>
+              <div>
+                {!person?.id && (
+                  <>
+                    <StyledTextField
+                      fullWidth
+                      helperText="Feltet blir bare brukt for å generere for- og etternavn"
+                      label="Full Name"
+                      variant="outlined"
+                      onBlur={(event) => onFullNameBlur(event, props)}
+                    />
+                    <StyledDivider />
+                  </>
                 )}
-              </Field>
-              <Field name={'facebookLink'}>
-                {({ field }: FieldProps) => (
-                  <StyledTextField {...field} fullWidth label="Facebook-id" variant="outlined" />
+                <Field name={'firstName'}>
+                  {({ field }: FieldProps) => (
+                    <StyledTextField {...field} fullWidth label="Fornavn" variant="outlined" />
+                  )}
+                </Field>
+                <Field name={'lastName'}>
+                  {({ field }: FieldProps) => (
+                    <StyledTextField {...field} fullWidth label="Etternavn" variant="outlined" />
+                  )}
+                </Field>
+                <Field name={'facebookLink'}>
+                  {({ field }: FieldProps) => (
+                    <StyledTextField {...field} fullWidth label="Facebook-id" variant="outlined" />
+                  )}
+                </Field>
+                <Field name={'born'}>
+                  {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Født" variant="outlined" />}
+                </Field>{' '}
+                <Field name={'dead'}>
+                  {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Død" variant="outlined" />}
+                </Field>
+                <Field name={'note'}>
+                  {({ field }: FieldProps) => (
+                    <StyledTextField {...field} multiline rows="3" fullWidth label="Kommentar" variant="outlined" />
+                  )}
+                </Field>
+                {isSaving && <CircularProgress size={'1rem'} />}
+                {savingError && (
+                  <StyledAlert severity="error">
+                    <AlertTitle>En feil har oppstått!</AlertTitle>
+                    {savingError}
+                  </StyledAlert>
                 )}
-              </Field>
-              <Field name={'born'}>
-                {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Født" variant="outlined" />}
-              </Field>{' '}
-              <Field name={'dead'}>
-                {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Død" variant="outlined" />}
-              </Field>
-              <Field name={'note'}>
-                {({ field }: FieldProps) => (
-                  <StyledTextField {...field} multiline rows="3" fullWidth label="Kommentar" variant="outlined" />
-                )}
-              </Field>
-              {isSaving && <CircularProgress size={'1rem'} />}
-              {savingError && (
-                <StyledAlert severity="error">
-                  <AlertTitle>En feil har oppstått!</AlertTitle>
-                  {savingError}
-                </StyledAlert>
-              )}
-            </div>
-            <div>
-              <Button type="submit" color="primary" variant="contained">
-                Lagre
-              </Button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+              </div>
+              <div>
+                <Button type="submit" color="primary" variant="contained">
+                  Lagre
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      )}
     </EditPage>
   );
 };

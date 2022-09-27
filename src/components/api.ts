@@ -35,6 +35,24 @@ export const useCommunitiesForPerson = (personId: string) => {
   };
 };
 
+export const getPerson = async (personId: string, setError: any, setLoading: any) => {
+  setLoading(true);
+  try {
+    const result = (
+      await axios.get(`${PERSONS_URL}\\${personId}`, {
+        headers: {
+          'X-Auth-Token': localStorage.getItem('token') ?? '',
+        },
+      })
+    ).data;
+    return result;
+  } catch (error) {
+    setError(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 export const usePerson = (personId: string | null | undefined) => {
   const { data, error } = useSWR(personId ? `${PERSONS_URL}/${personId}` : null, SWRfetcher);
   return {
