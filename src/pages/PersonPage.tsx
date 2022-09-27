@@ -120,12 +120,15 @@ export const PersonPage: FC = () => {
         const formData = new FormData();
         formData.append('image', file);
         formData.append('personid', person.id);
-        await axios.post(IMAGE_UPLOAD_URL, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+        await axios.post(IMAGE_UPLOAD_URL, formData, {
+          headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
+        });
       } catch (error) {
         console.log('ERROR', error);
         //TODO: error-handling
       }
       setIsUploading(false);
+      window.location.reload();
     }
   };
 
