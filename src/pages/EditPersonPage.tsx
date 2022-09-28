@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, CircularProgress, Divider, TextField, Alert, AlertTitle, Typography } from '@mui/material';
 
-import { Person } from '../types/person';
+import { emptyPerson, Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import axios from 'axios';
@@ -41,7 +41,9 @@ export const EditPersonPage: FC = () => {
 
   useEffect(() => {
     const asyncFunc = async () => {
-      personId && setPerson(await getPerson(personId, setIsLoadingPerson, setLoadingPersonError));
+      personId
+        ? setPerson(await getPerson(personId, setIsLoadingPerson, setLoadingPersonError))
+        : setPerson(emptyPerson);
     };
     asyncFunc();
   }, [personId]);
@@ -79,7 +81,7 @@ export const EditPersonPage: FC = () => {
           {loadingPersonError.message}
         </Typography>
       )}
-      {personId && person && (
+      {person && (
         <Formik onSubmit={handleSave} initialValues={person}>
           {(props) => (
             <Form>
