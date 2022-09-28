@@ -6,7 +6,7 @@ import HeadingWithLine from '../components/HeadingWithLine';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
 import { Person } from '../types/person';
-import { PAGE_PARAM, SORT_ASCENDING, SORT_PARAM } from '../types/QueryParams';
+import { PAGE_PARAM, SORT_DESCENDING, SORT_PARAM } from '../types/QueryParams';
 
 const StyledLayout = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ export const LastRegisteredPersonsPage: FC = () => {
   useEffect(() => {
     const getPersons = async () => {
       const result = (
-        await axios.get(`${PERSONS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_ASCENDING}`, {
+        await axios.get(`${PERSONS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_DESCENDING}`, {
           headers: {
             'X-Auth-Token': localStorage.getItem('token') ?? '',
           },
