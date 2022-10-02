@@ -55,8 +55,7 @@ export const Header: FC = () => {
 
   // handle shortcut keys
   const handleKeyPress = useCallback((event: any) => {
-    if (event.key === 's') {
-      console.log(`Trigger Search`);
+    if (event.ctrlKey && event.key === 'q') {
       setIsSearchResultDialogOpen(true);
     }
   }, []);
