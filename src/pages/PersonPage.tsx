@@ -169,6 +169,7 @@ export const PersonPage: FC = () => {
                 <StyledLabelButtonFileUpload htmlFor="file-upload">Velg nytt profilbilde</StyledLabelButtonFileUpload>
                 <input
                   id="file-upload"
+                  accept="image/png, image/gif, image/jpeg"
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleFileUpload(event.target.files && event.target.files[0]);
                   }}
