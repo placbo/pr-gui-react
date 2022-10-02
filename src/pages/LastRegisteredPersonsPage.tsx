@@ -6,7 +6,14 @@ import HeadingWithLine from '../components/HeadingWithLine';
 import axios from 'axios';
 import { PERSONS_URL } from '../constants';
 import { Person } from '../types/person';
-import { PAGE_PARAM, SORT_DESCENDING, SORT_PARAM } from '../types/QueryParams';
+import {
+  DEFAULT_NUMBER_OF_RESULTS,
+  NUMBER_PR_PAGE_PARAM,
+  PAGE_PARAM,
+  SORT_DESCENDING,
+  SORT_PARAM,
+} from '../types/QueryParams';
+import { useSearchParams } from 'react-router-dom';
 
 const StyledLayout = styled.div`
   display: flex;
@@ -19,17 +26,23 @@ const StyledLayout = styled.div`
 `;
 
 export const LastRegisteredPersonsPage: FC = () => {
+  const [searchParams] = useSearchParams();
+  const numberPrPage = searchParams.get('max') || DEFAULT_NUMBER_OF_RESULTS;
+
   const [persons, setPersons] = useState<Person[]>([]);
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     const getPersons = async () => {
       const result = (
-        await axios.get(`${PERSONS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_DESCENDING}`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
+        await axios.get(
+          `${PERSONS_URL}?${PAGE_PARAM}=${page}&${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${numberPrPage}`,
+          {
+            headers: {
+              'X-Auth-Token': localStorage.getItem('token') ?? '',
+            },
+          }
+        )
       ).data;
       setPersons((prevState) => {
         return [...prevState, ...result.persons];
