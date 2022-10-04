@@ -1,7 +1,7 @@
 import { COMMUNITIES_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
-import { QUERY_PARAM } from '../types/QueryParams';
+import { NUMBER_PR_PAGE_PARAM, QUERY_PARAM, SORT_DESCENDING, SORT_PARAM } from '../types/QueryParams';
 import { Person } from '../types/person';
 
 const axiosConfigWithToken = {
@@ -40,6 +40,24 @@ export const getPerson = async (personId: string, setError: any, setLoading: any
   try {
     const result = (
       await axios.get(`${PERSONS_URL}\\${personId}`, {
+        headers: {
+          'X-Auth-Token': localStorage.getItem('token') ?? '',
+        },
+      })
+    ).data;
+    return result;
+  } catch (error) {
+    setError(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const getPersons = async (max: number, setError: any, setLoading: any) => {
+  setLoading(true);
+  try {
+    const result = (
+      await axios.get(`${PERSONS_URL}?${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${max}`, {
         headers: {
           'X-Auth-Token': localStorage.getItem('token') ?? '',
         },

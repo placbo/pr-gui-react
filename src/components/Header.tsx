@@ -11,6 +11,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import { PersonSearchDialog } from './PersonSearchDialog';
+import EditIcon from '@mui/icons-material/Edit';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -81,15 +82,21 @@ export const Header: FC = () => {
               <GroupIcon />
             </IconButton>
           </StyledLink>
+          <StyledLink to="/editperson">
+            <IconButton color="inherit" size="large">
+              <PersonAddIcon />
+            </IconButton>
+          </StyledLink>
+          <StyledLink to="/admin">
+            <IconButton color="inherit" size="large">
+              <EditIcon />
+            </IconButton>
+          </StyledLink>
           <StyledExtraButtons>
             {/*<IconButton href="/person/1" color="inherit" size="large">*/}
             {/*  <AccessibilityNewIcon />*/}
             {/*</IconButton>*/}
-            <StyledLink to="/editperson">
-              <IconButton color="inherit" size="large">
-                <PersonAddIcon />
-              </IconButton>
-            </StyledLink>
+
             {/* <StyledLink to="/newperson">
               <IconButton color="inherit" size="large">
                 <PersonAddIcon />

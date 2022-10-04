@@ -49,7 +49,7 @@ export const LastRegisteredPersonsPage: FC = () => {
       });
     };
     getPersons();
-  }, [page]);
+  }, [page, numberPrPage]);
 
   const triggerNextPageFetch = () => {
     setPage((prevState: number) => prevState + 1);

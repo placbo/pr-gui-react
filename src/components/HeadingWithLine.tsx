@@ -5,7 +5,6 @@ import { Colors } from '../theme';
 
 const StyledHeaderWithLine = styled.div`
   width: 100%;
-  padding: 1rem;
   display: flex;
   align-items: center;
   color: ${Colors.SecondaryText};
@@ -21,7 +20,9 @@ const StyledLine = styled.div`
 const HeadingWithLine: FC<{ text: string }> = ({ text }) => {
   return (
     <StyledHeaderWithLine>
-      <Typography variant="h5">{text}</Typography>
+      <Typography variant="h5" component="h1">
+        {text}
+      </Typography>
       <StyledLine />
     </StyledHeaderWithLine>
   );
