@@ -163,11 +163,7 @@ export const PersonPage: FC = () => {
   return (
     <StyledPersonPresentation>
       {isLoadingPerson && <CircularProgress color="inherit" size={'2rem'} />}
-      {loadingPersonError && (
-        <Typography color="red" variant="body1">
-          {loadingPersonError.message}
-        </Typography>
-      )}
+      {loadingPersonError && <ErrorAlert errorMessage={loadingPersonError.message}></ErrorAlert>}
       {person && (
         <>
           <StyledHeader>

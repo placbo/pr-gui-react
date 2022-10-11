@@ -1,15 +1,16 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Community } from '../types/community';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router-dom';
 import { Colors, DeviceWidths } from '../theme';
 import communityPlaceholderImage from '../resources/images/group.webp';
-import { Link, Typography } from '@mui/material';
-import axios from 'axios';
-import { COMMUNITIES_URL, COMMUNITY_IMAGES_MEDIUM_URL, COMMUNITY_IMAGE_URL } from '../constants';
+import { CircularProgress, Link, Typography } from '@mui/material';
+import { COMMUNITY_IMAGES_MEDIUM_URL, COMMUNITY_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import PersonResultGrid from '../components/PersonResultGrid';
 import { Person } from '../types/person';
+import { getCommunity, getPersonsInCommunity } from '../api/api';
+import { ErrorAlert } from '../components/ErrorAlert';
 
 const StyledCommunityPresentation = styled.div`
   display: flex;
@@ -64,38 +65,27 @@ const StyledNameTypography = styled(Typography)`
 
 export const CommunityPage: FC = () => {
   const { identifier } = useParams();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState<Error | undefined>(undefined);
+
   const [community, setCommunity] = useState<Community | undefined>(undefined);
   const [persons, setPersons] = useState<Person[]>([]);
 
   useEffect(() => {
-    const getCommunity = async () => {
-      const result = (
-        await axios.get(`${COMMUNITIES_URL}/${identifier}`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setCommunity(result);
+    const asyncFunc = async () => {
+      if (identifier) {
+        setCommunity(await getCommunity(identifier, setLoadingError, setIsLoading));
+        setPersons(await getPersonsInCommunity(identifier, setLoadingError, setIsLoading));
+      }
     };
-
-    const getPersonsInCommunity = async () => {
-      const result = (
-        await axios.get(`${COMMUNITIES_URL}/${identifier}/persons`, {
-          headers: {
-            'X-Auth-Token': localStorage.getItem('token') ?? '',
-          },
-        })
-      ).data;
-      setPersons(result.persons);
-    };
-
-    getCommunity();
-    getPersonsInCommunity();
+    asyncFunc();
   }, [identifier]);
 
   return (
     <StyledCommunityPresentation>
+      {isLoading && <CircularProgress color="inherit" size={'2rem'} />}
+      {loadingError && <ErrorAlert errorMessage={loadingError.message}></ErrorAlert>}
       {community && (
         <>
           <StyledHeader>

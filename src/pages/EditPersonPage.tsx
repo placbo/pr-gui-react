@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Button, CircularProgress, Divider, TextField, Typography } from '@mui/material';
 
 import { emptyPerson, Person } from '../types/person';
@@ -20,7 +20,6 @@ const StyledTextField = styled(TextField)`
 
 const StyledDivider = styled(Divider)`
   margin-bottom: 1rem;
-  color: red;
 `;
 
 export const EditPersonPage: FC = () => {
@@ -68,11 +67,7 @@ export const EditPersonPage: FC = () => {
   return (
     <EditPage>
       {isLoadingPerson && <CircularProgress color="inherit" size={'2rem'} />}
-      {loadingPersonError && (
-        <Typography color="red" variant="body1">
-          {loadingPersonError.message}
-        </Typography>
-      )}
+      {loadingPersonError && <ErrorAlert errorMessage={loadingPersonError.message}></ErrorAlert>}
       {person && (
         <Formik onSubmit={handleSave} initialValues={person}>
           {(props) => (

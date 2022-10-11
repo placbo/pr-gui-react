@@ -37,9 +37,18 @@ export const deletePerson = async (personId: string, setError: any, setDeleting:
   axiosDeleteHandler(`${PERSONS_URL}/${personId}`, setError, setDeleting);
 };
 
+export const getCommunity = async (communityId: string, setError: any, setLoading: any) => {
+  return axiosGetHandler(`${COMMUNITIES_URL}/${communityId}`, setError, setLoading);
+};
+
+export const getPersonsInCommunity = async (communityId: string, setError: any, setLoading: any) => {
+  return axiosGetHandler(`${COMMUNITIES_URL}/${communityId}/persons`, setError, setLoading);
+};
+
 export const getAllCommunities = async (setError: any, setLoading: any) => {
   return axiosGetHandler(`${COMMUNITIES_URL}`, setError, setLoading);
 };
+
 export const getCommunitiesForPerson = async (personId: string, setError: any, setLoading: any) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}/communities`, setError, setLoading);
 };

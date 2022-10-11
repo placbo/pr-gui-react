@@ -1,5 +1,5 @@
 import { COMMUNITIES_URL } from './../constants';
-import Axios, { AxiosRequestConfig } from 'axios';
+import Axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { PERSONS_URL } from '../constants';
 import { mockPersons, mockCommunities, mockCommunity, mockPerson, mockParents, mockChildren } from './mocks';
@@ -35,7 +35,7 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${PERSONS_URL}/.*/children`)).reply(200, mockChildren);
   mock.onGet(new RegExp(`${PERSONS_URL}/.*`)).reply(200, mockPerson);
   mock.onGet(new RegExp(`${PERSONS_URL}`)).reply(200, mockPersons);
-  mock.onGet(new RegExp(`${COMMUNITIES_URL}/.*/persons`)).reply(200, mockPersons);
+  mock.onGet(new RegExp(`${COMMUNITIES_URL}/.*/persons`)).reply(200, mockParents);
   mock.onGet(new RegExp(`${COMMUNITIES_URL}/.*`)).reply(200, mockCommunity);
   mock.onGet(new RegExp(`${COMMUNITIES_URL}`)).reply(200, mockCommunities);
   mock.onPost(new RegExp(`${PERSONS_URL}`)).reply(200, { id: 123 });

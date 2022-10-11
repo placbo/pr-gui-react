@@ -14,6 +14,7 @@ import {
 import { TableToolbar } from '../components/TableToolbar';
 import { getPersons } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
+import { ErrorAlert } from '../components/ErrorAlert';
 
 export const AdminPage: FC = () => {
   const [persons, setPersons] = useState<Person[]>([]);
@@ -66,11 +67,7 @@ export const AdminPage: FC = () => {
   return (
     <>
       {isLoadingPersons && <CircularProgress color="inherit" size={'2rem'} />}
-      {loadingPersonsError && (
-        <Typography color="red" variant="body1">
-          {loadingPersonsError.message}
-        </Typography>
-      )}
+      {loadingPersonsError && <ErrorAlert errorMessage={loadingPersonsError.message}></ErrorAlert>}
       <Box sx={{ width: '100%' }}>
         <TableToolbar
           numSelected={checked.length}

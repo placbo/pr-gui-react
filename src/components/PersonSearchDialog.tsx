@@ -1,17 +1,10 @@
-import { CircularProgress, Dialog, DialogContent, InputAdornment, List, TextField, Typography } from '@mui/material';
-
+import { CircularProgress, Dialog, DialogContent, InputAdornment, List, TextField } from '@mui/material';
 import PersonResultList from './PersonResultList';
 import React, { FC, useState } from 'react';
 import _ from 'lodash';
 import { usePersonsQuery } from '../api/api';
-import { Person } from '../types/person';
 import SearchIcon from '@mui/icons-material/Search';
-
-export interface SimpleDialogProps {
-  open: boolean;
-  persons: Person[];
-  setOpen: any;
-}
+import { ErrorAlert } from './ErrorAlert';
 
 export interface props {
   isDialogOpen: boolean;
@@ -54,11 +47,7 @@ export const PersonSearchDialog: FC<props> = ({ isDialogOpen, setIsDialogOpen })
           />
         </List>
         {isLoading && <CircularProgress color="inherit" size={'2rem'} />}
-        {loadingError && (
-          <Typography color="red" variant="body1">
-            {loadingError.message}
-          </Typography>
-        )}
+        {loadingError && <ErrorAlert errorMessage={loadingError.message}></ErrorAlert>}
         {persons && persons.length > 0 && <PersonResultList persons={persons} handleClose={handleClose} />}
       </DialogContent>
     </Dialog>
