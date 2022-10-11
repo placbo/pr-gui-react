@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, CircularProgress, Divider, TextField, Alert, AlertTitle, Typography } from '@mui/material';
+import { Button, CircularProgress, Divider, TextField, Typography } from '@mui/material';
 
 import { emptyPerson, Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import axios from 'axios';
-import { addPerson, getPerson, updatePerson } from '../components/api';
+import { addPerson, getPerson, updatePerson } from '../api/api';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ErrorAlert } from '../components/ErrorAlert';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -21,10 +21,6 @@ const StyledTextField = styled(TextField)`
 const StyledDivider = styled(Divider)`
   margin-bottom: 1rem;
   color: red;
-`;
-
-const StyledAlert = styled(Alert)`
-  margin-top: 2rem;
 `;
 
 export const EditPersonPage: FC = () => {
@@ -48,18 +44,14 @@ export const EditPersonPage: FC = () => {
     asyncFunc();
   }, [personId]);
 
-  const handleSave = (values: Person) => {
-    setIsSaving(true);
-    setSavingError('');
-    try {
-      personId ? updatePerson(personId, values) : addPerson(values); //todo : return new id
-      personId ? navigate('/person/' + personId) : navigate('/');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setSavingError(error.message);
-      }
+  const handleSave = async (values: Person) => {
+    if (personId) {
+      updatePerson(personId, values, setSavingError, setIsSaving);
+      navigate('/person/' + personId);
+    } else {
+      const result = await addPerson(values, setSavingError, setIsSaving);
+      navigate('/person/' + result.id);
     }
-    setIsSaving(false);
   };
 
   const onFullNameBlur = (event: any, props: FormikProps<Person>) => {
@@ -126,12 +118,7 @@ export const EditPersonPage: FC = () => {
                   )}
                 </Field>
                 {isSaving && <CircularProgress size={'1rem'} />}
-                {savingError && (
-                  <StyledAlert severity="error">
-                    <AlertTitle>En feil har oppstått!</AlertTitle>
-                    {savingError}
-                  </StyledAlert>
-                )}
+                {savingError && <ErrorAlert errorMessage={savingError}></ErrorAlert>}
               </div>
               <div>
                 <Button type="submit" color="primary" variant="contained">

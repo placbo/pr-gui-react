@@ -87,7 +87,7 @@ export const CommunityPage: FC = () => {
           },
         })
       ).data;
-      setPersons(result);
+      setPersons(result.persons);
     };
 
     getCommunity();

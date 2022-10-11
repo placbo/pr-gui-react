@@ -3,7 +3,7 @@ import { CircularProgress, Dialog, DialogContent, InputAdornment, List, TextFiel
 import PersonResultList from './PersonResultList';
 import React, { FC, useState } from 'react';
 import _ from 'lodash';
-import { usePersonsQuery } from './api';
+import { usePersonsQuery } from '../api/api';
 import { Person } from '../types/person';
 import SearchIcon from '@mui/icons-material/Search';
 

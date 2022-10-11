@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { TableToolbar } from '../components/TableToolbar';
-import { getPersons } from '../components/api';
+import { getPersons } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
 
 export const AdminPage: FC = () => {

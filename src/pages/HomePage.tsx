@@ -10,7 +10,9 @@ import { LastRegisteredPersonsPage } from './LastRegisteredPersonsPage';
 import { CommunitiesPage } from './CommunitiesPage';
 import { CommunityPage } from './CommunityPage';
 import { EditPersonPage } from './EditPersonPage';
-import { AdminPage } from './adminPage';
+import { AdminPage } from './AdminPage';
+import { NewNewPersonsPage } from './NewNewPersonsPage';
+import { USE_MOCK_DATA } from '../constants';
 
 const App = styled.div`
   min-height: 100vh;
@@ -57,7 +59,7 @@ export const HomePage: FC = () => {
     const token = localStorage.getItem('token');
     const tokenExpiry = getTokenExpiry(token);
     setTokenExpiresString(new Date(tokenExpiry * 1000).toLocaleTimeString());
-    if (!token || isTokenExpired(tokenExpiry)) {
+    if ((!token || isTokenExpired(tokenExpiry)) && !USE_MOCK_DATA) {
       return navigate('/login');
     } else {
       setIsLoggedIn(true);
@@ -72,11 +74,10 @@ export const HomePage: FC = () => {
           <Route path="/" element={<LastRegisteredPersonsPage />} />
           <Route path="/person/:identifier" element={<PersonPage />} />
           <Route path="/editperson" element={<EditPersonPage />} />
+          <Route path="/newpersons" element={<NewNewPersonsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/communities" element={<CommunitiesPage />} />
           <Route path="/community/:identifier" element={<CommunityPage />} />
-          {/* <Route path="/newperson" element={<NewUser />} />
-          <Route path="/addimage" element={<AddImage />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Content>

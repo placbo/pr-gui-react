@@ -15,9 +15,10 @@ import axios from 'axios';
 import { IMAGE_UPLOAD_URL, PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
-import { deletePerson, getPerson, usePersonChildren, usePersonParents } from '../components/api';
-import PersonResultGrid from '../components/PersonResultGrid';
+import { deletePerson, getPerson, getPersonsChildren, getPersonsParents } from '../api/api';
 import { Person } from '../types/person';
+import { ErrorAlert } from '../components/ErrorAlert';
+import PersonResultGrid from '../components/PersonResultGrid';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -107,21 +108,33 @@ export const PersonPage: FC = () => {
   const [isLoadingPerson, setIsLoadingPerson] = useState(false);
   const [loadingPersonError, setLoadingPersonError] = useState<Error | undefined>(undefined);
 
-  const { parents } = usePersonParents(identifier);
-  const { children } = usePersonChildren(identifier);
+  const [parents, setParents] = useState<Person[]>([]);
+  const [isLoadingParents, setIsLoadingParents] = useState(false);
+  const [loadingParentsError, setLoadingParentsError] = useState<Error | undefined>(undefined);
+
+  const [children, setChildren] = useState<Person[]>([]);
+  const [isLoadingChildren, setIsLoadingChildren] = useState(false);
+  const [loadingChildrenError, setLoadingChildrenError] = useState<Error | undefined>(undefined);
+
+  const [deletingError, setDeletingError] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteClick = () => {
     if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
-      deletePerson(identifier);
+      deletePerson(identifier, setDeletingError, setIsDeleting);
       navigate('/');
     }
   };
 
   useEffect(() => {
-    const xxx = async () => {
-      identifier && setPerson(await getPerson(identifier, setIsLoadingPerson, setLoadingPersonError));
+    const fetchPerson = async () => {
+      if (identifier) {
+        setPerson(await getPerson(identifier, setIsLoadingPerson, setLoadingPersonError));
+        setParents(await getPersonsParents(identifier, setLoadingParentsError, setIsLoadingParents));
+        setChildren(await getPersonsChildren(identifier, setLoadingChildrenError, setIsLoadingChildren));
+      }
     };
-    xxx();
+    fetchPerson();
   }, [identifier]);
 
   //TODO: move out
@@ -163,6 +176,7 @@ export const PersonPage: FC = () => {
                 <StyledImage
                   alt="Person"
                   src={person.imageName ? `${PERSON_IMAGE_URL}${person.imageName}` : personPlaceholderImage}
+                  onError={(event: any) => (event.target.src = personPlaceholderImage)}
                 />
               </Link>
               <div>
@@ -210,13 +224,28 @@ export const PersonPage: FC = () => {
             </StyledDetailsWrapper>
           </StyledHeader>
 
+          {isDeleting && <CircularProgress size={'2rem'} />}
+          {deletingError && <ErrorAlert errorMessage={deletingError}></ErrorAlert>}
+
           <HeadingWithLine text="Grupper" />
           <CommunityResultGrid personId={person.id} />
 
-          <HeadingWithLine text="Foreldre og Barn" />
-          {/* //TODO: lage egen komponent for denne */}
-          {parents && <PersonResultGrid persons={parents}></PersonResultGrid>}
-          {children && <PersonResultGrid persons={children}></PersonResultGrid>}
+          {parents && parents.length > 0 && (
+            <>
+              <HeadingWithLine text="Foreldre" />
+              {isLoadingParents && <CircularProgress color="inherit" size={'2rem'} />}
+              {loadingParentsError && <ErrorAlert errorMessage={loadingParentsError.message}></ErrorAlert>}
+              <PersonResultGrid persons={parents}></PersonResultGrid>
+            </>
+          )}
+          {children && children.length > 0 && (
+            <>
+              <HeadingWithLine text="Barn" />
+              {isLoadingChildren && <CircularProgress color="inherit" size={'2rem'} />}
+              {loadingChildrenError && <ErrorAlert errorMessage={loadingChildrenError.message}></ErrorAlert>}
+              <PersonResultGrid persons={children}></PersonResultGrid>
+            </>
+          )}
         </>
       )}
     </StyledPersonPresentation>

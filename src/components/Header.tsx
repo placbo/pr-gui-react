@@ -87,6 +87,11 @@ export const Header: FC = () => {
               <PersonAddIcon />
             </IconButton>
           </StyledLink>
+          <StyledLink to="/newpersons">
+            <IconButton color="inherit" size="large">
+              <PersonAddIcon />
+            </IconButton>
+          </StyledLink>
           <StyledLink to="/admin">
             <IconButton color="inherit" size="large">
               <EditIcon />

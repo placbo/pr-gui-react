@@ -17,7 +17,7 @@ export enum StyleWidths {
 
 export enum DeviceWidths {
   xs = '0px',
-  sm = '600px',
+  sm = '500px',
   md = '960px',
   lg = '1280px',
   xl = '1920px',
