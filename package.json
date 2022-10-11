@@ -8,7 +8,7 @@
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
-    "axios": "^0.27.2",
+    "axios": "^1.1.2",
     "axios-mock-adapter": "^1.21.2",
     "bcryptjs": "^2.4.3",
     "formik": "^2.2.9",
