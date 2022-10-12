@@ -67,7 +67,7 @@ export const AdminPage: FC = () => {
           await deletePerson(personId);
         })
       );
-      //todo: result kalles for fort - timeout blir for dumt, da
+      //todo: result kalles for fort - timeout blir for dumt, da. prøv med for .. in
       setTimeout(async () => {
         setChecked([]);
         const result = await getPersons(100, setLoadingPersonsError, setIsWaiting);
