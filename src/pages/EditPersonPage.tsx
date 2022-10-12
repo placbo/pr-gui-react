@@ -5,7 +5,7 @@ import { emptyPerson, Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { addPerson, getPerson, updatePerson } from '../api/api';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
 
 const EditPage = styled.div`
@@ -24,9 +24,7 @@ const StyledDivider = styled(Divider)`
 
 export const EditPersonPage: FC = () => {
   const navigate = useNavigate();
-
-  const [searchParams] = useSearchParams();
-  const personId = searchParams.get('id');
+  const { personId } = useParams();
   const [savingError, setSavingError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 

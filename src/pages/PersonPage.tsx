@@ -119,9 +119,9 @@ export const PersonPage: FC = () => {
   const [deletingError, setDeletingError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = async () => {
     if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
-      deletePerson(identifier, setDeletingError, setIsDeleting);
+      await deletePerson(identifier, setDeletingError, setIsDeleting);
       navigate('/');
     }
   };
@@ -143,7 +143,7 @@ export const PersonPage: FC = () => {
       try {
         setIsUploadingImageError(undefined);
         setIsUploadingImage(true);
-        //TODO: Scale image client side ?
+
         const formData = new FormData();
         formData.append('image', file);
         formData.append('personid', person.id);
@@ -213,7 +213,8 @@ export const PersonPage: FC = () => {
                 <IconButton aria-label="" onClick={handleDeleteClick}>
                   <DeleteIcon />
                 </IconButton>
-                <IconButton aria-label="" component={RouterLink} to={`/editperson?id=${identifier}`}>
+                <IconButton aria-label="" component={RouterLink} to={`/editperson/${identifier}`}>
+                  {' '}
                   <EditOutlinedIcon />
                 </IconButton>
               </StyledActions>

@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
 import { Button, CircularProgress, TextField, Card, Alert, AlertTitle } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import AddAPhoto from '@mui/icons-material/AddAPhoto';
 import { emptyPerson, Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { addPerson } from '../api/api';
 import { ErrorAlert } from './ErrorAlert';
 import { DeviceWidths } from '../theme';
+import { Link } from 'react-router-dom';
+import { AddImageComponent } from './AddImageComponent';
 
 const StyledCard = styled(Card)`
   padding: 1rem;
@@ -53,12 +53,12 @@ interface Props {
   addNewPersonFormToPage: () => void;
 }
 export const AddNewPersonComponent: FC<Props> = ({ addNewPersonFormToPage }) => {
-  const [savingError, setSavingError] = useState('');
+  const [error, setError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [personId, setPersonId] = useState<string>('');
 
   const handleSave = async (values: Person) => {
-    const result = await addPerson(values, setSavingError, setIsSaving);
+    const result = await addPerson(values, setError, setIsSaving);
     setPersonId(result.id);
     addNewPersonFormToPage();
   };
@@ -86,50 +86,63 @@ export const AddNewPersonComponent: FC<Props> = ({ addNewPersonFormToPage }) => 
                 label="Full Name"
                 variant="outlined"
                 onBlur={(event) => onFullNameBlur(event, props)}
+                disabled={isSaving || !!personId}
               />
               <StyledDoubleFieldWrapper>
                 <Field name={'firstName'}>
-                  {({ field }: FieldProps) => <StyledTextField {...field} label="Fornavn" variant="outlined" />}
+                  {({ field }: FieldProps) => (
+                    <StyledTextField {...field} label="Fornavn" variant="outlined" disabled={isSaving || !!personId} />
+                  )}
                 </Field>
                 <Field name={'lastName'}>
-                  {({ field }: FieldProps) => <StyledTextField {...field} label="Etternavn" variant="outlined" />}
+                  {({ field }: FieldProps) => (
+                    <StyledTextField
+                      {...field}
+                      label="Etternavn"
+                      variant="outlined"
+                      disabled={isSaving || !!personId}
+                    />
+                  )}
                 </Field>
               </StyledDoubleFieldWrapper>
               <StyledDoubleFieldWrapper>
                 <Field name={'facebookLink'}>
-                  {({ field }: FieldProps) => <StyledTextField {...field} label="Facebook-id" variant="outlined" />}
+                  {({ field }: FieldProps) => (
+                    <StyledTextField
+                      {...field}
+                      label="Facebook-id"
+                      variant="outlined"
+                      disabled={isSaving || !!personId}
+                    />
+                  )}
                 </Field>
                 <Field name={'note'}>
-                  {({ field }: FieldProps) => <StyledTextField {...field} label="Kommentar" variant="outlined" />}
+                  {({ field }: FieldProps) => (
+                    <StyledTextField
+                      {...field}
+                      label="Kommentar"
+                      variant="outlined"
+                      disabled={isSaving || !!personId}
+                    />
+                  )}
                 </Field>
               </StyledDoubleFieldWrapper>
             </div>
-
             <StyledActionAreaWrapper>
-              <StyledAddImageWrapper>
-                <IconButton
-                  disabled={!personId}
-                  size="large"
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input hidden accept="image/*" type="file" />
-                  <AddAPhoto fontSize="large" />
-                </IconButton>
-              </StyledAddImageWrapper>
-
+              <AddImageComponent personId={personId} setError={setError}></AddImageComponent>
               <Button disabled={isSaving || !!personId} type="submit" color="primary" variant="contained">
                 Lagre {isSaving && <CircularProgress color="inherit" size={'1rem'} sx={{ ml: 2 }} />}
               </Button>
-              {savingError && <ErrorAlert errorMessage={savingError}></ErrorAlert>}
+              {error && <ErrorAlert errorMessage={error}></ErrorAlert>}
             </StyledActionAreaWrapper>
           </StyledForm>
         )}
       </Formik>
       {personId && (
         <Alert severity="success">
-          <AlertTitle>Personen er lagret</AlertTitle>
+          <AlertTitle>
+            Personen er lagret! <Link to={`/editperson/${personId}`}>Rediger person</Link>
+          </AlertTitle>
         </Alert>
       )}
     </StyledCard>
