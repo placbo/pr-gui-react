@@ -1,8 +1,9 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { StyleWidths } from '../theme';
 import styled from '@emotion/styled';
 import HeadingWithLine from '../components/HeadingWithLine';
 import { AddNewPersonComponent } from '../components/AddNewPersonComponent';
+import { emptyPerson, Person } from '../types/person';
 
 const StyledLayout = styled.div`
   display: flex;
@@ -15,10 +16,18 @@ const StyledLayout = styled.div`
 `;
 
 export const NewNewPersonsPage: FC = () => {
+  const [persons, setPersons] = useState<Person[]>([emptyPerson]); //todo: use this for editing as well
+
+  const addNewPersonFormToPage = () => {
+    setPersons((prevState) => [...prevState, emptyPerson]);
+  };
+
   return (
     <StyledLayout>
       <HeadingWithLine text="Legg til personer"></HeadingWithLine>
-      <AddNewPersonComponent />
+      {persons.map((_person, index) => (
+        <AddNewPersonComponent key={index} addNewPersonFormToPage={addNewPersonFormToPage} />
+      ))}
     </StyledLayout>
   );
 };

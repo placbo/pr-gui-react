@@ -1,16 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
-import {
-  Alert,
-  Box,
-  Checkbox,
-  CircularProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { Alert, Box, Checkbox, CircularProgress, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { TableToolbar } from '../components/TableToolbar';
 import { getPersons } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
@@ -26,7 +16,7 @@ export const AdminPage: FC = () => {
 
   useEffect(() => {
     const asyncFunc = async () => {
-      const result = await getPersons(100, setIsLoadingPersons, setLoadingPersonsError);
+      const result = await getPersons(100, setLoadingPersonsError, setIsLoadingPersons);
       setPersons(result.persons);
     };
     asyncFunc();

@@ -129,7 +129,7 @@ export const PersonPage: FC = () => {
   useEffect(() => {
     const fetchPerson = async () => {
       if (identifier) {
-        setPerson(await getPerson(identifier, setIsLoadingPerson, setLoadingPersonError));
+        setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
         setParents(await getPersonsParents(identifier, setLoadingParentsError, setIsLoadingParents));
         setChildren(await getPersonsChildren(identifier, setLoadingChildrenError, setIsLoadingChildren));
       }
@@ -150,7 +150,7 @@ export const PersonPage: FC = () => {
         await axios.post(IMAGE_UPLOAD_URL, formData, {
           headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
         });
-        identifier && setPerson(await getPerson(identifier, setIsLoadingPerson, setLoadingPersonError));
+        identifier && setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
       } catch (error) {
         if (axios.isAxiosError(error)) {
           setIsUploadingImageError(error);

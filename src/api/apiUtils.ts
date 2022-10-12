@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Dispatch, SetStateAction } from 'react';
 
 export const generateHeaderWithToken = () => {
   return {
@@ -8,7 +9,7 @@ export const generateHeaderWithToken = () => {
   };
 };
 
-export const axiosGetHandler = async (url: string, setError: any, setLoading: any) => {
+export const axiosGetHandler = async (url: string, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   setLoading(true);
   try {
     return (await axios.get(url, generateHeaderWithToken())).data;
@@ -19,7 +20,12 @@ export const axiosGetHandler = async (url: string, setError: any, setLoading: an
   }
 };
 
-export const axiosPostHandler = async (url: string, data: any, setError: any, setSaving: any) => {
+export const axiosPostHandler = async (
+  url: string,
+  data: any,
+  setError: any,
+  setSaving: Dispatch<SetStateAction<boolean>>
+) => {
   setSaving(true);
   try {
     return (await axios.post(url, data, generateHeaderWithToken())).data;
@@ -30,7 +36,12 @@ export const axiosPostHandler = async (url: string, data: any, setError: any, se
   }
 };
 
-export const axiosPutHandler = async (url: string, data: any, setError: any, setUpdating: any) => {
+export const axiosPutHandler = async (
+  url: string,
+  data: any,
+  setError: any,
+  setUpdating: Dispatch<SetStateAction<boolean>>
+) => {
   setUpdating(true);
   try {
     return (await axios.put(url, data, generateHeaderWithToken())).data;
@@ -41,7 +52,11 @@ export const axiosPutHandler = async (url: string, data: any, setError: any, set
   }
 };
 
-export const axiosDeleteHandler = async (url: string, setError: any, setDeleting: any) => {
+export const axiosDeleteHandler = async (
+  url: string,
+  setError: any,
+  setDeleting: Dispatch<SetStateAction<boolean>>
+) => {
   setDeleting(true);
   try {
     return (await axios.delete(url, generateHeaderWithToken())).data;

@@ -4,12 +4,13 @@ import useSWR from 'swr';
 import { NUMBER_PR_PAGE_PARAM, QUERY_PARAM, SORT_DESCENDING, SORT_PARAM } from '../types/QueryParams';
 import { Person } from '../types/person';
 import { axiosDeleteHandler, axiosGetHandler, axiosPostHandler, axiosPutHandler } from './apiUtils';
+import { Dispatch, SetStateAction } from 'react';
 
-export const getPerson = async (personId: string, setError: any, setLoading: any) => {
+export const getPerson = async (personId: string, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}`, setError, setLoading);
 };
 
-export const getPersons = async (max: number, setError: any, setLoading: any) => {
+export const getPersons = async (max: number, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   return axiosGetHandler(
     `${PERSONS_URL}?${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${max}`,
     setError,
@@ -17,11 +18,20 @@ export const getPersons = async (max: number, setError: any, setLoading: any) =>
   );
 };
 
-export const getPersonsParents = async (personId: string, setError: any, setLoading: any) => {
+//TODO: endre any til riktige type (mrk flere forskjellige error-objekter)
+export const getPersonsParents = async (
+  personId: string,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}/parents`, setError, setLoading);
 };
 
-export const getPersonsChildren = async (personId: string, setError: any, setLoading: any) => {
+export const getPersonsChildren = async (
+  personId: string,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}/children`, setError, setLoading);
 };
 
@@ -37,19 +47,31 @@ export const deletePerson = async (personId: string, setError: any, setDeleting:
   axiosDeleteHandler(`${PERSONS_URL}/${personId}`, setError, setDeleting);
 };
 
-export const getCommunity = async (communityId: string, setError: any, setLoading: any) => {
+export const getCommunity = async (
+  communityId: string,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
   return axiosGetHandler(`${COMMUNITIES_URL}/${communityId}`, setError, setLoading);
 };
 
-export const getPersonsInCommunity = async (communityId: string, setError: any, setLoading: any) => {
+export const getPersonsInCommunity = async (
+  communityId: string,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
   return axiosGetHandler(`${COMMUNITIES_URL}/${communityId}/persons`, setError, setLoading);
 };
 
-export const getAllCommunities = async (setError: any, setLoading: any) => {
+export const getAllCommunities = async (setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   return axiosGetHandler(`${COMMUNITIES_URL}`, setError, setLoading);
 };
 
-export const getCommunitiesForPerson = async (personId: string, setError: any, setLoading: any) => {
+export const getCommunitiesForPerson = async (
+  personId: string,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}/communities`, setError, setLoading);
 };
 

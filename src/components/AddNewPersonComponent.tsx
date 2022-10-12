@@ -49,8 +49,10 @@ const StyledAddImageWrapper = styled.div`
   align-items: center;
   border: 1px dashed lightgray;
 `;
-
-export const AddNewPersonComponent: FC = () => {
+interface Props {
+  addNewPersonFormToPage: () => void;
+}
+export const AddNewPersonComponent: FC<Props> = ({ addNewPersonFormToPage }) => {
   const [savingError, setSavingError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [personId, setPersonId] = useState<string>('');
@@ -58,9 +60,10 @@ export const AddNewPersonComponent: FC = () => {
   const handleSave = async (values: Person) => {
     const result = await addPerson(values, setSavingError, setIsSaving);
     setPersonId(result.id);
+    addNewPersonFormToPage();
   };
 
-  const onFullNameBlur = (event: any, props: FormikProps<Person>) => {
+  const onFullNameBlur = (event: any, props: FormikProps<Person>): void => {
     const name = event.target.value;
     if (name.length > 0) {
       const upperCasedWords = name

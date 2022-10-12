@@ -37,7 +37,7 @@ export const EditPersonPage: FC = () => {
   useEffect(() => {
     const asyncFunc = async () => {
       personId
-        ? setPerson(await getPerson(personId, setIsLoadingPerson, setLoadingPersonError))
+        ? setPerson(await getPerson(personId, setLoadingPersonError, setIsLoadingPerson))
         : setPerson(emptyPerson);
     };
     asyncFunc();
