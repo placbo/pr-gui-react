@@ -13,6 +13,7 @@ const StyledCard = styled(Card)`
   padding: 1rem;
   margin-top: 2rem;
 `;
+
 const StyledForm = styled(Form)`
   display: flex;
   flex-direction: row;
@@ -41,14 +42,6 @@ const StyledActionAreaWrapper = styled.div`
   gap: 1rem;
 `;
 
-const StyledAddImageWrapper = styled.div`
-  height: 6rem;
-  width: 6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px dashed lightgray;
-`;
 interface Props {
   addNewPersonFormToPage: () => void;
 }

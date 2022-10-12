@@ -2,21 +2,22 @@ import { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
 import { Alert, Box, Checkbox, CircularProgress, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { TableToolbar } from '../components/TableToolbar';
-import { getPersons } from '../api/api';
+import { deletePerson, getPersons } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
 import { ErrorAlert } from '../components/ErrorAlert';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 
 export const AdminPage: FC = () => {
   const [persons, setPersons] = useState<Person[]>([]);
   const [error, setError] = useState<string>('');
   const [checked, setChecked] = useState<string[]>([]);
 
-  const [isLoadingPersons, setIsLoadingPersons] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
   const [loadingPersonsError, setLoadingPersonsError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
     const asyncFunc = async () => {
-      const result = await getPersons(100, setLoadingPersonsError, setIsLoadingPersons);
+      const result = await getPersons(100, setLoadingPersonsError, setIsWaiting);
       setPersons(result.persons);
     };
     asyncFunc();
@@ -36,6 +37,7 @@ export const AdminPage: FC = () => {
   };
 
   const [isCommunityDialogOpen, setIsCommunityDialogOpen] = useState(false);
+  const [confirmationText, setConfirmationText] = useState<string>('');
 
   const handleAddCheckedToCommunity = (communityId: string | undefined) => {
     setIsCommunityDialogOpen(false);
@@ -50,13 +52,33 @@ export const AdminPage: FC = () => {
     setError('handleDeleteCheckedfromCommunity is not implemented yet');
   };
 
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
+
   const handleDeletePersons = () => {
-    setError('handleDeletePersons is not implemented yet');
+    setIsConfirmDialogOpen(true);
+    setConfirmationText(`Sikker på at du vil slette ${checked.length} person(er)`);
+  };
+
+  const handleConfirmDeleted = async (shouldDelete: boolean) => {
+    setIsConfirmDialogOpen(false);
+    if (shouldDelete) {
+      await Promise.all(
+        checked.map(async (personId) => {
+          await deletePerson(personId);
+        })
+      );
+      //todo: result kalles for fort - timeout blir for dumt, da
+      setTimeout(async () => {
+        setChecked([]);
+        const result = await getPersons(100, setLoadingPersonsError, setIsWaiting);
+        setPersons(result.persons);
+      }, 500);
+    }
   };
 
   return (
     <>
-      {isLoadingPersons && <CircularProgress color="inherit" size={'2rem'} />}
+      {isWaiting && <CircularProgress color="inherit" size={'2rem'} />}
       {loadingPersonsError && <ErrorAlert errorMessage={loadingPersonsError.message}></ErrorAlert>}
       <Box sx={{ width: '100%' }}>
         <TableToolbar
@@ -94,6 +116,7 @@ export const AdminPage: FC = () => {
         </List>
       </Box>
       <SelectCommunityDialog open={isCommunityDialogOpen} onClose={handleAddCheckedToCommunity} />
+      <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmDeleted} />
     </>
   );
 };

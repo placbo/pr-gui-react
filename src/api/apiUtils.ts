@@ -31,6 +31,7 @@ export const axiosPostHandler = async (
     return (await axios.post(url, data, generateHeaderWithToken())).data;
   } catch (error) {
     setError(error);
+    console.error(error);
   } finally {
     setSaving(false);
   }
@@ -47,6 +48,7 @@ export const axiosPutHandler = async (
     return (await axios.put(url, data, generateHeaderWithToken())).data;
   } catch (error) {
     setError(error);
+    console.error(error);
   } finally {
     setUpdating(false);
   }
@@ -54,15 +56,16 @@ export const axiosPutHandler = async (
 
 export const axiosDeleteHandler = async (
   url: string,
-  setError: any,
-  setDeleting: Dispatch<SetStateAction<boolean>>
+  setError?: any,
+  setDeleting?: Dispatch<SetStateAction<boolean>>
 ) => {
-  setDeleting(true);
+  setDeleting && setDeleting(true);
   try {
     return (await axios.delete(url, generateHeaderWithToken())).data;
   } catch (error) {
-    setError(error);
+    setError && setError(error);
+    console.error(error);
   } finally {
-    setDeleting(false);
+    setDeleting && setDeleting(false);
   }
 };

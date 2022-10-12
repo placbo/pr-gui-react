@@ -43,7 +43,7 @@ export const updatePerson = async (personId: string, person: Person, setError: a
   axiosPutHandler(`${PERSONS_URL}/${personId}`, person, setError, setSaving);
 };
 
-export const deletePerson = async (personId: string, setError: any, setDeleting: any) => {
+export const deletePerson = async (personId: string, setError?: any, setDeleting?: any) => {
   axiosDeleteHandler(`${PERSONS_URL}/${personId}`, setError, setDeleting);
 };
 

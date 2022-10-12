@@ -61,7 +61,7 @@ export const AddImageComponent: FC<Props> = ({ personId, setError }) => {
   return (
     <StyledAddImageWrapper>
       {isUploadingImage ? (
-        <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />
+        <CircularProgress size={'1rem'} />
       ) : imageFileName ? (
         <StyledImage
           alt="Person"
