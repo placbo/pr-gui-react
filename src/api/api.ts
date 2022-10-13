@@ -10,6 +10,10 @@ export const getPerson = async (personId: string, setError: any, setLoading: Dis
   return axiosGetHandler(`${PERSONS_URL}/${personId}`, setError, setLoading);
 };
 
+export const getRandomPerson = async (setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>) => {
+  return axiosGetHandler(`${PERSONS_URL}/random`, setError, setLoading);
+};
+
 export const getPersons = async (max: number, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   return axiosGetHandler(
     `${PERSONS_URL}?${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${max}`,

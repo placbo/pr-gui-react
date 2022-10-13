@@ -9,14 +9,14 @@ export const generateHeaderWithToken = () => {
   };
 };
 
-export const axiosGetHandler = async (url: string, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
-  setLoading(true);
+export const axiosGetHandler = async (url: string, setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>) => {
+  setLoading && setLoading(true);
   try {
     return (await axios.get(url, generateHeaderWithToken())).data;
   } catch (error) {
-    setError(error);
+    setError && setError(error);
   } finally {
-    setLoading(false);
+    setLoading && setLoading(false);
   }
 };
 

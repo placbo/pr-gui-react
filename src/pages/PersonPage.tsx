@@ -122,7 +122,10 @@ export const PersonPage: FC = () => {
   const handleDeleteClick = async () => {
     if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
       await deletePerson(identifier, setDeletingError, setIsDeleting);
-      navigate('/');
+      //todo: hvorfor vil ikke navigate vente ?
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     }
   };
 

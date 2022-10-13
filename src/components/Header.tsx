@@ -11,7 +11,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import { PersonSearchDialog } from './PersonSearchDialog';
-import EditIcon from '@mui/icons-material/Edit';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -82,14 +83,19 @@ export const Header: FC = () => {
               <GroupIcon />
             </IconButton>
           </StyledLink>
+          <StyledLink to="/admin">
+            <IconButton color="inherit" size="large">
+              <FormatListBulletedIcon />
+            </IconButton>
+          </StyledLink>
           <StyledLink to="/newpersons">
             <IconButton color="inherit" size="large">
               <PersonAddIcon />
             </IconButton>
           </StyledLink>
-          <StyledLink to="/admin">
+          <StyledLink to="/game">
             <IconButton color="inherit" size="large">
-              <EditIcon />
+              <HelpCenterIcon />
             </IconButton>
           </StyledLink>
           <StyledExtraButtons>

@@ -13,6 +13,7 @@ import { EditPersonPage } from './EditPersonPage';
 import { NewNewPersonsPage } from './NewNewPersonsPage';
 import { USE_MOCK_DATA } from '../constants';
 import { AdminPage } from './AdminPage';
+import { PersonGamePage } from './PersonGamePage';
 
 const App = styled.div`
   min-height: 100vh;
@@ -76,6 +77,7 @@ export const HomePage: FC = () => {
           <Route path="/editperson/:personId" element={<EditPersonPage />} />
           <Route path="/newpersons" element={<NewNewPersonsPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/game" element={<PersonGamePage />} />
           <Route path="/communities" element={<CommunitiesPage />} />
           <Route path="/community/:identifier" element={<CommunityPage />} />
           <Route path="*" element={<NotFoundPage />} />
