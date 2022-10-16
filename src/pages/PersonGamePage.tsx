@@ -20,8 +20,8 @@ const StyledCard = styled(Card)`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 25rem;
-  height: 35rem;
+  max-width: 25rem;
+  height: 28rem;
   padding: 1rem 1rem 1rem 1rem;
 `;
 

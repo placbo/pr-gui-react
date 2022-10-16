@@ -69,7 +69,8 @@ const PersonCard: FC<Props> = ({ person }) => {
           />
           <StyledCardContent>
             <StyledTypography gutterBottom variant={'body2'}>
-              {[person.lastName, person.firstName].filter(Boolean).join(', ')}
+              {person.firstName} {person.lastName}
+              {/* {[person.lastName, person.firstName].filter(Boolean).join(', ')} */}
             </StyledTypography>
           </StyledCardContent>
         </StyledCardActionArea>

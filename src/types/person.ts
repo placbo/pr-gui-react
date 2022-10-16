@@ -23,11 +23,11 @@ export const emptyPerson: Person = {
 };
 
 export enum RelationshipRole {
-  Parent,
-  Child,
-  Partner,
-  Sibling,
-  Collegue,
+  Parent = 1,
+  Child = 2,
+  Partner = 3,
+  Sibling = 4,
+  Collegue = 5,
 }
 
 // "@faker-js/faker": "^7.3.0";|

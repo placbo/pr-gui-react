@@ -3,7 +3,7 @@ import { FC } from 'react';
 import styled from '@emotion/styled';
 
 const StyledAlert = styled(Alert)`
-  margin-top: 2rem;
+  width: 100%;
 `;
 
 interface Props {

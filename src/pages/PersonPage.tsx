@@ -130,14 +130,14 @@ export const PersonPage: FC = () => {
   };
 
   useEffect(() => {
-    const fetchPerson = async () => {
+    const asyncApiCalls = async () => {
       if (identifier) {
         setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
         setParents(await getPersonsParents(identifier, setLoadingParentsError, setIsLoadingParents));
         setChildren(await getPersonsChildren(identifier, setLoadingChildrenError, setIsLoadingChildren));
       }
     };
-    fetchPerson();
+    asyncApiCalls();
   }, [identifier]);
 
   //TODO: move out

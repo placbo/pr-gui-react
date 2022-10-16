@@ -22,6 +22,10 @@ export const getPersons = async (max: number, setError: any, setLoading: Dispatc
   );
 };
 
+export const queryPersons = async (query: string, setError?: any, setLoading?: Dispatch<SetStateAction<boolean>>) => {
+  return axiosGetHandler(`${PERSONS_URL}?${QUERY_PARAM}=${query}`, setError, setLoading);
+};
+
 //TODO: endre any til riktige type (mrk flere forskjellige error-objekter)
 export const getPersonsParents = async (
   personId: string,
