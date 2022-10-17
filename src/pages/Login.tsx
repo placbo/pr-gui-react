@@ -62,7 +62,9 @@ export const Login: FC = () => {
       <StyleLoginContentWrapper>
         <StyledFormWrapper>
           <TextField
-            id="passord"
+            id="password"
+            name="password"
+            type="password"
             label="Passord"
             variant="standard"
             disabled={isLoading}
