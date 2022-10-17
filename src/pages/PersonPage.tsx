@@ -11,8 +11,7 @@ import { FaCross } from 'react-icons/fa';
 import personPlaceholderImage from '../resources/images/person.png';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
-import { IMAGE_UPLOAD_URL, PERSON_IMAGE_URL } from '../constants';
+import { PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import CommunityResultGrid from '../components/CommunityResultGrid';
 import { deletePerson, getPerson, getPersonsChildren, getPersonsParents } from '../api/api';
@@ -101,9 +100,6 @@ export const PersonPage: FC = () => {
   const { identifier } = useParams();
   const navigate = useNavigate();
 
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const [isUploadingImageError, setIsUploadingImageError] = useState<Error | undefined>(undefined);
-
   const [person, setPerson] = useState<Person | undefined>(undefined);
   const [isLoadingPerson, setIsLoadingPerson] = useState(false);
   const [loadingPersonError, setLoadingPersonError] = useState<Error | undefined>(undefined);
@@ -140,29 +136,6 @@ export const PersonPage: FC = () => {
     asyncApiCalls();
   }, [identifier]);
 
-  //TODO: move out
-  const handleFileUpload = async (file: File | null) => {
-    if (file && person) {
-      try {
-        setIsUploadingImageError(undefined);
-        setIsUploadingImage(true);
-
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('personid', person.id);
-        await axios.post(IMAGE_UPLOAD_URL, formData, {
-          headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
-        });
-        identifier && setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setIsUploadingImageError(error);
-        }
-      }
-      setIsUploadingImage(false);
-    }
-  };
-
   return (
     <StyledPersonPresentation>
       {isLoadingPerson && <CircularProgress color="inherit" size={'2rem'} />}
@@ -178,20 +151,6 @@ export const PersonPage: FC = () => {
                   onError={(event: any) => (event.target.src = personPlaceholderImage)}
                 />
               </Link>
-              <div>
-                <StyledLabelButtonFileUpload htmlFor="file-upload">Velg nytt profilbilde</StyledLabelButtonFileUpload>
-                <input
-                  id="file-upload"
-                  accept="image/png, image/gif, image/jpeg"
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    handleFileUpload(event.target.files && event.target.files[0]);
-                  }}
-                  type="file"
-                  style={{ display: 'none' }}
-                />
-                {isUploadingImage && <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />}
-                {isUploadingImageError && <CircularProgress size={'1rem'} style={{ marginLeft: '1rem' }} />}
-              </div>
             </StyledImageWrapper>
             <StyledDetailsWrapper>
               <StyledNameTypography variant="h3">{`${person.firstName} ${person.lastName}`}</StyledNameTypography>
@@ -217,7 +176,6 @@ export const PersonPage: FC = () => {
                   <DeleteIcon />
                 </IconButton>
                 <IconButton aria-label="" component={RouterLink} to={`/editperson/${identifier}`}>
-                  {' '}
                   <EditOutlinedIcon />
                 </IconButton>
               </StyledActions>

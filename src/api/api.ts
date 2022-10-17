@@ -1,4 +1,4 @@
-import { COMMUNITIES_URL, PERSONS_URL } from '../constants';
+import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
 import { NUMBER_PR_PAGE_PARAM, QUERY_PARAM, SORT_DESCENDING, SORT_PARAM } from '../types/QueryParams';
@@ -81,6 +81,28 @@ export const getCommunitiesForPerson = async (
   setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}/communities`, setError, setLoading);
+};
+
+export const uploadImage = async (
+  file: File,
+  personId: string,
+  setError?: any,
+  setUploading?: Dispatch<SetStateAction<boolean>>
+): Promise<string | undefined> => {
+  setUploading && setUploading(true);
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('personid', personId);
+    const result = await axios.post(IMAGE_UPLOAD_URL, formData, {
+      headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
+    });
+    return result.data.filename;
+  } catch (error) {
+    setError && setError(error);
+  } finally {
+    setUploading && setUploading(false);
+  }
 };
 
 //-------------- SWR --

@@ -9,6 +9,7 @@ export enum Colors {
   PrimaryText = 'rgba(0,0,0,0.87)',
   SecondaryText = '#bfbfbf',
   Disabled = '#cccccc',
+  FaintBlue = '#e4edfe',
 }
 
 export enum StyleWidths {

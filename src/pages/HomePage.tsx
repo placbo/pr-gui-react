@@ -14,6 +14,7 @@ import { NewNewPersonsPage } from './NewNewPersonsPage';
 import { USE_MOCK_DATA } from '../constants';
 import { AdminPage } from './AdminPage';
 import { PersonGamePage } from './PersonGamePage';
+import { Colors } from '../theme';
 
 const App = styled.div`
   min-height: 100vh;
@@ -39,7 +40,7 @@ const Footer = styled.footer`
   justify-content: center;
   align-items: center;
   height: 4rem;
-  background-color: aliceblue;
+  background-color: ${Colors.FaintBlue};
 `;
 
 const getTokenExpiry = (token: string | null): number => {

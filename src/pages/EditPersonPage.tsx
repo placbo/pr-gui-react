@@ -1,14 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { Button, CircularProgress, Divider, TextField, Typography } from '@mui/material';
 
-import { emptyPerson, Person } from '../types/person';
+import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { addPerson, getPerson, updatePerson } from '../api/api';
+import { getPerson, updatePerson } from '../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
-import { AddRelation } from '../components/AddRelation';
 import { RelationsComponent } from '../components/RelationsComponent';
+import { ChangeProfileImageComponent } from '../components/ChangeProfileImageComponent';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -65,6 +65,7 @@ export const EditPersonPage: FC = () => {
       {loadingPersonError && <ErrorAlert errorMessage={loadingPersonError.message}></ErrorAlert>}
       {person && (
         <>
+          <ChangeProfileImageComponent person={person}></ChangeProfileImageComponent>
           <Formik onSubmit={handleSave} initialValues={person}>
             {(props) => (
               <Form>

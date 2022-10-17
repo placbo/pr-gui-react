@@ -3,10 +3,10 @@ import IconButton from '@mui/material/IconButton';
 import AddAPhoto from '@mui/icons-material/AddAPhoto';
 import styled from '@emotion/styled';
 import { CircularProgress } from '@mui/material';
-import axios from 'axios';
-import { IMAGE_UPLOAD_URL, PERSON_IMAGE_URL } from '../constants';
+import { PERSON_IMAGE_URL } from '../constants';
 import { Colors } from '../theme';
 import personPlaceholderImage from '../resources/images/person.png';
+import { uploadImage } from '../api/api';
 
 const StyledAddImageWrapper = styled.div`
   height: 6rem;
@@ -37,22 +37,8 @@ export const AddImageComponent: FC<Props> = ({ personId, setError }) => {
 
   const handleFileUpload = async (file: File | null) => {
     if (file && file?.size < maxFileSizeMb) {
-      try {
-        setError('');
-        setIsUploadingImage(true);
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('personid', personId);
-        const result = await axios.post(IMAGE_UPLOAD_URL, formData, {
-          headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
-        });
-        setImageFileName(result.data.filename);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          setError(error.message);
-        }
-      }
-      setIsUploadingImage(false);
+      const generatedFileName = await uploadImage(file, personId, setError, setIsUploadingImage);
+      generatedFileName && setImageFileName(generatedFileName);
     } else {
       setError('For stor fil');
     }

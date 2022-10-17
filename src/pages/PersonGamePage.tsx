@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Button, Card, CardContent, Paper, Typography } from '@mui/material';
+import { Button, Card, CardContent, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
 import { getRandomPerson } from '../api/api';
 import { PERSON_IMAGE_URL } from '../constants';
