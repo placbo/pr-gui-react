@@ -55,6 +55,21 @@ export const deletePerson = async (personId: string, setError?: any, setDeleting
   axiosDeleteHandler(`${PERSONS_URL}/${personId}`, setError, setDeleting);
 };
 
+export const addRelation = async (
+  fromPersonId: string,
+  toPersonId: string,
+  roleId: string,
+  setError: any,
+  setSaving: any
+) => {
+  const data = {
+    fromPersonId,
+    toPersonId,
+    roleId,
+  };
+  return axiosPostHandler(`${PERSONS_URL}/connect`, data, setError, setSaving);
+};
+
 export const getCommunity = async (
   communityId: string,
   setError: any,

@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { queryPersons } from '../api/api';
+import { addRelation, queryPersons } from '../api/api';
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import { Person, RelationshipRole } from '../types/person';
 import { ErrorAlert } from './ErrorAlert';
@@ -49,6 +49,8 @@ export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
   const [queryValue, setQueryValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<string>('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [savingError, setSavingError] = useState<string>('');
 
   useEffect(() => {
     (async () => {
@@ -64,19 +66,12 @@ export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
     setSelectedRole(event.target.value as string);
   };
 
-  function handleClick() {
+  const handleClick = async () => {
     if (selectedPerson) {
-      console.log(
-        'Legger til relasjon for person :  ' +
-          personId +
-          ' mot person:  ' +
-          selectedPerson.id +
-          '  rolle: ' +
-          selectedRole
-      );
-      //TODO: addRelation(personId, selectedPerson.id, selectedRole);
+      await addRelation(personId, selectedPerson.id, selectedRole, setSavingError, setIsSaving);
+      setSelectedPerson(null);
     }
-  }
+  };
 
   return (
     <ComponentWrapper>
@@ -131,12 +126,13 @@ export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
             ))}
           </Select>
         </FormControl>
-        <Button disabled onClick={handleClick} variant="contained" color="primary">
-          {/* disabled={!selectedPerson} */}
+        <Button disabled={!selectedPerson || isSaving} onClick={handleClick} variant="contained" color="primary">
           Go!
         </Button>
+        {isSaving && <CircularProgress color="inherit" size={'1rem'} />}
       </FormWrapper>
       {loadingError && <ErrorAlert errorMessage={loadingError}></ErrorAlert>}
+      {savingError && <ErrorAlert errorMessage={savingError}></ErrorAlert>}
     </ComponentWrapper>
   );
 };
