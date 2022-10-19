@@ -45,7 +45,7 @@ const RelationRolesOptions = [
 export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [options, setOptions] = useState<Person[]>([]);
-  const [selectedRole, setSelectedRole] = useState('2');
+  const [selectedRole, setSelectedRole] = useState(2);
   const [queryValue, setQueryValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<string>('');
@@ -63,13 +63,14 @@ export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
 
   const handleRelationValueChange = (event: any) => {
     console.log('selected role', event.target.value);
-    setSelectedRole(event.target.value as string);
+    setSelectedRole(event.target.value as number);
   };
 
   const handleClick = async () => {
     if (selectedPerson) {
       await addRelation(personId, selectedPerson.id, selectedRole, setSavingError, setIsSaving);
       setSelectedPerson(null);
+      //TODO: refresh list on relationsComponent
     }
   };
 

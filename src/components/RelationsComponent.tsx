@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { getPersonsParents, getPersonsChildren } from '../api/api';
+import { getPersonsParents, getPersonsChildren, removeRelation } from '../api/api';
 import { Person, RelationshipRole } from '../types/person';
 import { AddRelation } from './AddRelation';
 import { ErrorAlert } from './ErrorAlert';
@@ -14,22 +14,21 @@ export const RelationsComponent: FC<Props> = ({ person }) => {
   const [parents, setParents] = useState<Person[]>([]);
   const [children, setChildren] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState<Error | undefined>(undefined);
-
+  const [apiError, setApiError] = useState<Error | undefined>(undefined);
+  const [isDeleting, setIsDeleting] = useState(false);
   useEffect(() => {
     const asyncApiCalls = async () => {
       if (person?.id) {
-        setParents(await getPersonsParents(person.id, setLoadingError, setIsLoading));
-        setChildren(await getPersonsChildren(person.id, setLoadingError, setIsLoading));
+        setParents(await getPersonsParents(person.id, setApiError, setIsLoading));
+        setChildren(await getPersonsChildren(person.id, setApiError, setIsLoading));
       }
     };
     asyncApiCalls();
   }, [person]);
 
-  const deleteRole = (relationPersonId: string, roleId: number) => {
-    console.log('deleting role' + relationPersonId + ' : ' + roleId + ' : ' + person.id);
-
-    //delete(person.id, relationPersonId, roleId);
+  const deleteRole = async (relationPersonId: string, roleId: number) => {
+    await removeRelation(person.id, relationPersonId, roleId, setApiError, setIsDeleting);
+    //TODO: remove from list
   };
 
   return (
@@ -38,12 +37,13 @@ export const RelationsComponent: FC<Props> = ({ person }) => {
         Relasjoner
       </Typography>
       {isLoading && <CircularProgress color="inherit" size={'2rem'} />}
-      {loadingError && <ErrorAlert errorMessage={loadingError.message}></ErrorAlert>}
+      {isDeleting && <CircularProgress color="inherit" size={'2rem'} />}
+      {apiError && <ErrorAlert errorMessage={apiError.message}></ErrorAlert>}
       {parents.length > 0 && (
         <RelationPersonListComponent
           headerText={'Foreldre'}
           persons={parents}
-          handleDeleteClick={(relationPersonId: string) => deleteRole(relationPersonId, RelationshipRole.Parent)}
+          handleDeleteClick={(relationPersonId: string) => deleteRole(relationPersonId, RelationshipRole.Child)}
         />
       )}
       {children.length > 0 && (

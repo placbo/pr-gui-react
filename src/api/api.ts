@@ -58,16 +58,21 @@ export const deletePerson = async (personId: string, setError?: any, setDeleting
 export const addRelation = async (
   fromPersonId: string,
   toPersonId: string,
-  roleId: string,
+  roleId: number,
   setError: any,
   setSaving: any
 ) => {
-  const data = {
-    fromPersonId,
-    toPersonId,
-    roleId,
-  };
-  return axiosPostHandler(`${PERSONS_URL}/connect`, data, setError, setSaving);
+  return axiosPostHandler(`${PERSONS_URL}/connect/${fromPersonId}/${toPersonId}/${roleId}`, null, setError, setSaving);
+};
+
+export const removeRelation = async (
+  fromPersonId: string,
+  toPersonId: string,
+  roleId: number,
+  setError: any,
+  setDeleting: any
+) => {
+  return axiosDeleteHandler(`${PERSONS_URL}/connect/${fromPersonId}/${toPersonId}/${roleId}`, setError, setDeleting);
 };
 
 export const getCommunity = async (

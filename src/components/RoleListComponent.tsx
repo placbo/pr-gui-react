@@ -18,7 +18,7 @@ export const RelationPersonListComponent: FC<Props> = ({ persons, handleDeleteCl
           <ListItem
             key={person.id}
             secondaryAction={
-              <IconButton disabled edge="end" aria-label="delete" onClick={() => handleDeleteClick(person.id)}>
+              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteClick(person.id)}>
                 <DeleteIcon />
               </IconButton>
             }
