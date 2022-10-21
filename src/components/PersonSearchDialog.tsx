@@ -23,7 +23,6 @@ export const PersonSearchDialog: FC<props> = ({ isDialogOpen, setIsDialogOpen })
   };
 
   const handleClose = () => {
-    setSearchTerm('');
     setIsDialogOpen(false);
   };
 

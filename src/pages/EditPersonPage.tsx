@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { RelationsComponent } from '../components/RelationsComponent';
 import { ChangeProfileImageComponent } from '../components/ChangeProfileImageComponent';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 
 const EditPage = styled.div`
   padding: 0 1rem;

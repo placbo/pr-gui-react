@@ -42,7 +42,12 @@ const RelationRolesOptions = [
   { label: 'Kollega', value: RelationshipRole.Collegue },
 ];
 
-export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
+interface Props {
+  personId: string;
+  retrievAllRelations: any;
+}
+
+export const AddRelation: FC<Props> = ({ personId, retrievAllRelations }) => {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [options, setOptions] = useState<Person[]>([]);
   const [selectedRole, setSelectedRole] = useState(2);
@@ -68,9 +73,9 @@ export const AddRelation: FC<{ personId: string }> = ({ personId }) => {
 
   const handleClick = async () => {
     if (selectedPerson) {
-      await addRelation(personId, selectedPerson.id, selectedRole, setSavingError, setIsSaving);
+      await addRelation(selectedPerson.id, personId, selectedRole, setSavingError, setIsSaving);
       setSelectedPerson(null);
-      //TODO: refresh list on relationsComponent
+      retrievAllRelations();
     }
   };
 

@@ -15,6 +15,11 @@ export const AdminPage: FC = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [loadingPersonsError, setLoadingPersonsError] = useState<Error | undefined>(undefined);
 
+  const [isCommunityDialogOpen, setIsCommunityDialogOpen] = useState(false);
+
+  const [confirmationText, setConfirmationText] = useState<string>('');
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
+
   useEffect(() => {
     const asyncFunc = async () => {
       const result = await getPersons(100, setLoadingPersonsError, setIsWaiting);
@@ -36,9 +41,6 @@ export const AdminPage: FC = () => {
     setChecked(newChecked);
   };
 
-  const [isCommunityDialogOpen, setIsCommunityDialogOpen] = useState(false);
-  const [confirmationText, setConfirmationText] = useState<string>('');
-
   const handleAddCheckedToCommunity = (communityId: string | undefined) => {
     setIsCommunityDialogOpen(false);
     if (communityId) {
@@ -52,14 +54,12 @@ export const AdminPage: FC = () => {
     setError('handleDeleteCheckedfromCommunity is not implemented yet');
   };
 
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
-
   const handleDeletePersons = () => {
     setIsConfirmDialogOpen(true);
     setConfirmationText(`Sikker på at du vil slette ${checked.length} person(er)`);
   };
 
-  const handleConfirmDeleted = async (shouldDelete: boolean) => {
+  const handleConfirmDelete = async (shouldDelete: boolean) => {
     setIsConfirmDialogOpen(false);
     if (shouldDelete) {
       await Promise.all(
@@ -116,7 +116,7 @@ export const AdminPage: FC = () => {
         </List>
       </Box>
       <SelectCommunityDialog open={isCommunityDialogOpen} onClose={handleAddCheckedToCommunity} />
-      <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmDeleted} />
+      <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmDelete} />
     </>
   );
 };

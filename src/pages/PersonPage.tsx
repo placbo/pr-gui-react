@@ -18,6 +18,7 @@ import { deletePerson, getPerson, getPersonsChildren, getPersonsParents } from '
 import { Person } from '../types/person';
 import { ErrorAlert } from '../components/ErrorAlert';
 import PersonResultGrid from '../components/PersonResultGrid';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 
 const StyledPersonPresentation = styled.div`
   display: flex;
@@ -114,11 +115,19 @@ export const PersonPage: FC = () => {
 
   const [deletingError, setDeletingError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
+  const [confirmationText, setConfirmationText] = useState<string>('');
 
-  const handleDeleteClick = async () => {
-    if (identifier && window.confirm(`Really delete ${person?.firstName} ${person?.lastName} ?`)) {
-      await deletePerson(identifier, setDeletingError, setIsDeleting);
-      //todo: hvorfor vil ikke navigate vente ?
+  const handleDeleteClick = () => {
+    setIsConfirmDialogOpen(true);
+    setConfirmationText(`Sikker på at du vil slette ${person?.firstName} ${person?.lastName}`);
+  };
+
+  const handleConfirmDelete = async (shouldDelete: boolean) => {
+    setIsConfirmDialogOpen(false);
+    if (shouldDelete && person) {
+      await deletePerson(person?.id, setDeletingError, setIsDeleting);
+      //todo: få fikset denne
       setTimeout(() => {
         navigate('/');
       }, 500);
@@ -206,6 +215,7 @@ export const PersonPage: FC = () => {
           )}
         </>
       )}
+      <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmDelete} />
     </StyledPersonPresentation>
   );
 };
