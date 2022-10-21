@@ -9,8 +9,8 @@ import personPlaceholderImage from '../resources/images/person.png';
 import { uploadImage } from '../api/api';
 
 const StyledAddImageWrapper = styled.div`
-  height: 6rem;
-  width: 6rem;
+  height: 10rem;
+  width: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
