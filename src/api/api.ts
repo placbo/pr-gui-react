@@ -1,3 +1,4 @@
+import { Community } from './../types/community';
 import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
@@ -81,6 +82,14 @@ export const getCommunity = async (
   setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   return axiosGetHandler(`${COMMUNITIES_URL}/${communityId}`, setError, setLoading);
+};
+
+export const addCommunity = async (community: Community, setError: any, setSaving: any) => {
+  return axiosPostHandler(`${COMMUNITIES_URL}`, community, setError, setSaving);
+};
+
+export const updateCommunity = async (communityId: string, community: Community, setError: any, setSaving: any) => {
+  return axiosPutHandler(`${COMMUNITIES_URL}/${communityId}}`, community, setError, setSaving);
 };
 
 export const getPersonsInCommunity = async (

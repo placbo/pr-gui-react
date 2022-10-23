@@ -55,6 +55,7 @@ export const RelationsComponent: FC<Props> = ({ person }) => {
           retrievAllRelations={retrievAllRelations}
         />
       )}
+
       <AddRelation personId={person?.id} retrievAllRelations={retrievAllRelations}></AddRelation>
     </>
   );

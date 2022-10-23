@@ -15,6 +15,7 @@ import { USE_MOCK_DATA } from '../constants';
 import { AdminPage } from './AdminPage';
 import { PersonGamePage } from './PersonGamePage';
 import { Colors } from '../theme';
+import { EditCommunityPage } from './EditCommunityPage';
 
 const App = styled.div`
   min-height: 100vh;
@@ -76,6 +77,8 @@ export const HomePage: FC = () => {
           <Route path="/" element={<LastRegisteredPersonsPage />} />
           <Route path="/person/:identifier" element={<PersonPage />} />
           <Route path="/editperson/:personId" element={<EditPersonPage />} />
+          <Route path="/editcommunity/:communityId" element={<EditCommunityPage />} />
+          <Route path="/editcommunity" element={<EditCommunityPage />} />
           <Route path="/newpersons" element={<NewNewPersonsPage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/game" element={<PersonGamePage />} />

@@ -18,16 +18,17 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import SearchIcon from '@mui/icons-material/Search';
 
-// import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import GroupIcon from '@mui/icons-material/Group';
-// import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Colors, DeviceWidths } from '../theme';
 import { Link, useNavigate } from 'react-router-dom';
 import { PersonSearchDialog } from './PersonSearchDialog';
+// import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import MenuIcon from '@mui/icons-material/Menu';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import GroupIcon from '@mui/icons-material/Group';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const StyledToolbar = styled(Toolbar)`
   display: flex;
@@ -35,12 +36,6 @@ const StyledToolbar = styled(Toolbar)`
   gap: 1rem;
   @media (max-width: ${DeviceWidths.sm}) {
     justify-content: flex-start;
-  } ;
-`;
-
-const Promp: any = styled.div`
-  @media (min-width: ${DeviceWidths.sm}) {
-    display: none;
   } ;
 `;
 
@@ -62,17 +57,7 @@ const HiddenContentOnSmallScreen: any = styled.div`
 `;
 
 export const Header: FC = () => {
-  // const [isAddPersonDialogOpen, setIsAddPersonDialogOpen] = useState(false);
-  // const [isAddCommunityDialogOpen, setIsAddCommunityDialogOpen] = useState(false);
   const [isSearchResultDialogOpen, setIsSearchResultDialogOpen] = useState(false);
-
-  // const toggleAddPersonDialog = () => {
-  //   setIsAddPersonDialogOpen(!isAddPersonDialogOpen);
-  // };
-
-  // const toggleAddCommunityDialog = () => {
-  //   setIsAddCommunityDialogOpen(!isAddCommunityDialogOpen);
-  // };
 
   const navigate = useNavigate();
 
@@ -105,29 +90,21 @@ export const Header: FC = () => {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/">
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="Hjem" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
           <ListItemButton component={Link} to="/communities">
             <ListItemIcon>
               <GroupIcon />
             </ListItemIcon>
             <ListItemText primary="Grupper" />
           </ListItemButton>
-        </ListItem>{' '}
+        </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/admin">
+          <ListItemButton component={Link} to="/editcommunity">
             <ListItemIcon>
-              <FormatListBulletedIcon />
+              <GroupAddIcon />
             </ListItemIcon>
-            <ListItemText primary="Admin" />
+            <ListItemText primary="Ny gruppe" />
           </ListItemButton>
-        </ListItem>{' '}
+        </ListItem>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/newpersons">
             <ListItemIcon>
@@ -135,13 +112,34 @@ export const Header: FC = () => {
             </ListItemIcon>
             <ListItemText primary="Ny person" />
           </ListItemButton>
-        </ListItem>{' '}
+        </ListItem>
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/game">
             <ListItemIcon>
               <HelpCenterIcon />
             </ListItemIcon>
             <ListItemText primary="Memory" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/admin">
+            <ListItemIcon>
+              <FormatListBulletedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Admin" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              localStorage.removeItem('token');
+              navigate('/login');
+            }}
+          >
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Logg ut" />
           </ListItemButton>
         </ListItem>
       </List>
@@ -154,34 +152,16 @@ export const Header: FC = () => {
     <header>
       <AppBar position="static">
         <StyledToolbar>
-          <Promp>
-            <IconButton
-              onClick={handleDrawerToggle}
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
+          <StyledLink to="/">
+            <IconButton color="inherit" size="large">
+              <HomeIcon />
             </IconButton>
-          </Promp>
-          <HiddenContentOnSmallScreen>
-            <StyledLink to="/">
-              <IconButton color="inherit" size="large">
-                <HomeIcon />
-              </IconButton>
-            </StyledLink>
+          </StyledLink>
 
+          <HiddenContentOnSmallScreen>
             <StyledLink to="/communities">
               <IconButton color="inherit" size="large">
                 <GroupIcon />
-              </IconButton>
-            </StyledLink>
-
-            <StyledLink to="/admin">
-              <IconButton color="inherit" size="large">
-                <FormatListBulletedIcon />
               </IconButton>
             </StyledLink>
 
@@ -190,32 +170,15 @@ export const Header: FC = () => {
                 <PersonAddIcon />
               </IconButton>
             </StyledLink>
-
-            <StyledLink to="/game">
-              <IconButton color="inherit" size="large">
-                <HelpCenterIcon />
-              </IconButton>
-            </StyledLink>
           </HiddenContentOnSmallScreen>
-          <>
-            {/*<IconButton onClick={toggleAddCommunityDialog} color="inherit" size="large">*/}
-            {/*  <GroupAddIcon />*/}
-            {/*</IconButton>*/}
-          </>
+
           <StyledSeparator />
           <IconButton onClick={() => setIsSearchResultDialogOpen(true)} color="inherit" size="large">
             <SearchIcon />
           </IconButton>
-          <Button
-            style={{ color: 'black', backgroundColor: 'white' }}
-            variant={'text'}
-            onClick={() => {
-              localStorage.removeItem('token');
-              navigate('/login');
-            }}
-          >
-            Logg ut
-          </Button>
+          <IconButton onClick={handleDrawerToggle} size="large" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
         </StyledToolbar>
       </AppBar>
       <Box component="nav">
@@ -223,6 +186,7 @@ export const Header: FC = () => {
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
+          anchor="right"
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
