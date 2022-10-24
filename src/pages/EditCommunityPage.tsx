@@ -59,7 +59,7 @@ export const EditCommunityPage: FC = () => {
                 <div>
                   <Field name={'name'}>
                     {({ field }: FieldProps) => (
-                      <StyledTextField {...field} fullWidth label="Fornavn" variant="outlined" />
+                      <StyledTextField {...field} fullWidth label="Navn på gruppe" variant="outlined" />
                     )}
                   </Field>
                   <Field name={'note'}>

@@ -105,7 +105,6 @@ export const EditPersonPage: FC = () => {
                   </Field>{' '}
                   <Field name={'dead'}>
                     {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Død" variant="outlined" />}
-                    {({ field }: FieldProps) => <StyledTextField {...field} fullWidth label="Død" variant="outlined" />}
                   </Field>
                   <Field name={'note'}>
                     {({ field }: FieldProps) => (
