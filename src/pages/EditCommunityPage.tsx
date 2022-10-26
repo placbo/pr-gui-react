@@ -24,15 +24,17 @@ export const EditCommunityPage: FC = () => {
   const [savingError, setSavingError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
-  const [community, setCommunity] = useState<Community>(emptyCommunity);
+  const [community, setCommunity] = useState<Community | undefined>(undefined);
   const [isLoadingCommunity, setIsLoadingCommunity] = useState(false);
   const [loadingCommunityError, setLoadingCommunityError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
     const asyncFunc = async () => {
-      communityId && setCommunity(await getCommunity(communityId, setLoadingCommunityError, setIsLoadingCommunity));
+      communityId
+        ? setCommunity(await getCommunity(communityId, setLoadingCommunityError, setIsLoadingCommunity))
+        : setCommunity(emptyCommunity);
     };
-    communityId && asyncFunc();
+    asyncFunc();
   }, [communityId]);
 
   const handleSave = async (values: Community) => {

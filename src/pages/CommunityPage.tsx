@@ -1,16 +1,20 @@
 import { FC, useEffect, useState } from 'react';
 import { Community } from '../types/community';
 import styled from '@emotion/styled';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Colors, DeviceWidths } from '../theme';
 import communityPlaceholderImage from '../resources/images/group.webp';
-import { CircularProgress, Link, Typography } from '@mui/material';
+import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { COMMUNITY_IMAGES_MEDIUM_URL, COMMUNITY_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import PersonResultGrid from '../components/PersonResultGrid';
 import { Person } from '../types/person';
-import { getCommunity, getPersonsInCommunity } from '../api/api';
+import { deleteCommunity, getCommunity, getPersonsInCommunity } from '../api/api';
 import { ErrorAlert } from '../components/ErrorAlert';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { ConfirmDialog } from '../components/ConfirmDialog';
+import { Link as RouterLink } from 'react-router-dom';
 
 const StyledCommunityPresentation = styled.div`
   display: flex;
@@ -47,6 +51,11 @@ const StyledImageWrapper = styled.div`
   }
 `;
 
+const StyledNoteTypography = styled(Typography)`
+  margin-top: 2rem;
+  font-family: inherit;
+`;
+
 const StyledImage = styled.img`
   width: 300px;
   height: 300px;
@@ -63,7 +72,21 @@ const StyledNameTypography = styled(Typography)`
   font-family: inherit;
 `;
 
+const StyledSeparator = styled.div`
+  flex-grow: 1;
+`;
+
+const StyledActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  @media (max-width: ${DeviceWidths.sm}) {
+    padding-top: 1rem;
+    justify-content: center;
+  }
+`;
+
 export const CommunityPage: FC = () => {
+  const navigate = useNavigate();
   const { identifier } = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -71,6 +94,11 @@ export const CommunityPage: FC = () => {
 
   const [community, setCommunity] = useState<Community | undefined>(undefined);
   const [persons, setPersons] = useState<Person[]>([]);
+
+  const [deletingError, setDeletingError] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
+  const [confirmationText, setConfirmationText] = useState<string>('');
 
   useEffect(() => {
     const asyncFunc = async () => {
@@ -81,6 +109,22 @@ export const CommunityPage: FC = () => {
     };
     asyncFunc();
   }, [identifier]);
+
+  const handleDeleteClick = () => {
+    setIsConfirmDialogOpen(true);
+    setConfirmationText(`Sikker på at du vil slette ${community?.name}`);
+  };
+
+  const handleConfirmDelete = async (shouldDelete: boolean) => {
+    setIsConfirmDialogOpen(false);
+    if (shouldDelete && community) {
+      await deleteCommunity(community?.id, setDeletingError, setIsDeleting);
+      //todo: få fikset denne
+      setTimeout(() => {
+        navigate('/communities');
+      }, 500);
+    }
+  };
 
   return (
     <StyledCommunityPresentation>
@@ -103,8 +147,22 @@ export const CommunityPage: FC = () => {
             </StyledImageWrapper>
             <StyledDetailsWrapper>
               <StyledNameTypography variant="h3">{`${community.name}`}</StyledNameTypography>
+              {community.note && <StyledNoteTypography variant="body1">{community.note}</StyledNoteTypography>}
+
+              <StyledSeparator />
+              <StyledActions>
+                <IconButton aria-label="" onClick={handleDeleteClick}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton aria-label="" component={RouterLink} to={`/editcommunity/${identifier}`}>
+                  <EditOutlinedIcon />
+                </IconButton>
+              </StyledActions>
             </StyledDetailsWrapper>
           </StyledHeader>
+
+          {isDeleting && <CircularProgress size={'2rem'} />}
+          {deletingError && <ErrorAlert errorMessage={deletingError}></ErrorAlert>}
           {persons && (
             <>
               <HeadingWithLine text="Personer" />
@@ -113,6 +171,7 @@ export const CommunityPage: FC = () => {
           )}
         </>
       )}
+      <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmDelete} />
     </StyledCommunityPresentation>
   );
 };

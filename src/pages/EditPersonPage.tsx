@@ -5,10 +5,11 @@ import { Person } from '../types/person';
 import styled from '@emotion/styled';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { getPerson, updatePerson } from '../api/api';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { RelationsComponent } from '../components/RelationsComponent';
 import { ChangeProfileImageComponent } from '../components/ChangeProfileImageComponent';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -61,6 +62,11 @@ export const EditPersonPage: FC = () => {
 
   return (
     <EditPage>
+      {person && (
+        <Button component={Link} to={`/person/${person.id}`} startIcon={<ArrowBackIcon />} sx={{ mb: '0.5rem' }}>
+          Tilbake til personvisning
+        </Button>
+      )}
       {isLoadingPerson && <CircularProgress color="inherit" size={'2rem'} />}
       {loadingPersonError && <ErrorAlert errorMessage={loadingPersonError.message}></ErrorAlert>}
       {person && (
@@ -116,7 +122,7 @@ export const EditPersonPage: FC = () => {
                 </div>
                 <div>
                   <Button type="submit" color="primary" variant="contained">
-                    Lagre
+                    Lagre feltendringer
                   </Button>
                 </div>
               </Form>

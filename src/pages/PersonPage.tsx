@@ -80,14 +80,6 @@ const StyledNoteTypography = styled(Typography)`
   font-family: inherit;
 `;
 
-// eslint-disable-next-line
-const StyledLabelButtonFileUpload = styled.label`
-  border: 1px solid #ccc;
-  display: inline-block;
-  padding: 6px 12px;
-  cursor: pointer;
-`;
-
 const StyledActions = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -118,6 +110,17 @@ export const PersonPage: FC = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
   const [confirmationText, setConfirmationText] = useState<string>('');
 
+  useEffect(() => {
+    const asyncApiCalls = async () => {
+      if (identifier) {
+        setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
+        setParents(await getPersonsParents(identifier, setLoadingParentsError, setIsLoadingParents));
+        setChildren(await getPersonsChildren(identifier, setLoadingChildrenError, setIsLoadingChildren));
+      }
+    };
+    asyncApiCalls();
+  }, [identifier]);
+
   const handleDeleteClick = () => {
     setIsConfirmDialogOpen(true);
     setConfirmationText(`Sikker på at du vil slette ${person?.firstName} ${person?.lastName}`);
@@ -133,17 +136,6 @@ export const PersonPage: FC = () => {
       }, 500);
     }
   };
-
-  useEffect(() => {
-    const asyncApiCalls = async () => {
-      if (identifier) {
-        setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
-        setParents(await getPersonsParents(identifier, setLoadingParentsError, setIsLoadingParents));
-        setChildren(await getPersonsChildren(identifier, setLoadingChildrenError, setIsLoadingChildren));
-      }
-    };
-    asyncApiCalls();
-  }, [identifier]);
 
   return (
     <StyledPersonPresentation>
