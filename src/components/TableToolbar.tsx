@@ -8,14 +8,14 @@ import HeadingWithLine from './HeadingWithLine';
 interface EnhancedTableToolbarProps {
   numSelected: number;
   handleDeletePersons: any;
-  setIsCommunityDialogOpen: any;
+  setIsAddToCommunityDialogOpen: any;
   handleDeleteCheckedfromCommunity: any;
 }
 
 export const TableToolbar: FC<EnhancedTableToolbarProps> = ({
   numSelected,
   handleDeletePersons,
-  setIsCommunityDialogOpen,
+  setIsAddToCommunityDialogOpen,
   handleDeleteCheckedfromCommunity,
 }) => {
   return (
@@ -44,7 +44,7 @@ export const TableToolbar: FC<EnhancedTableToolbarProps> = ({
             </IconButton>
           </Tooltip>
           <Tooltip title="Add selected to group">
-            <IconButton onClick={() => setIsCommunityDialogOpen(true)}>
+            <IconButton onClick={() => setIsAddToCommunityDialogOpen(true)}>
               <GroupAddIcon />
             </IconButton>
           </Tooltip>{' '}

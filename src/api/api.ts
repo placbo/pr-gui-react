@@ -116,7 +116,11 @@ export const getCommunitiesForPerson = async (
   return axiosGetHandler(`${PERSONS_URL}/${personId}/communities`, setError, setLoading);
 };
 
-export const uploadImage = async (
+export const addPersonToCommunity = async (personId: string, communityId: string, setError: any, setSaving: any) => {
+  return axiosPostHandler(`${COMMUNITIES_URL}/${communityId}/person/${personId}`, {}, setError, setSaving);
+};
+
+export const uploadImageForPerson = async (
   file: File,
   personId: string,
   setError?: any,
@@ -126,7 +130,8 @@ export const uploadImage = async (
   try {
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('personid', personId);
+    formData.append('id', personId);
+    formData.append('category', 'person');
     const result = await axios.post(IMAGE_UPLOAD_URL, formData, {
       headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
     });

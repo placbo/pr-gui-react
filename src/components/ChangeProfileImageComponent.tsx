@@ -6,8 +6,9 @@ import { PERSON_IMAGE_URL } from '../constants';
 import styled from '@emotion/styled';
 import { Colors, DeviceWidths } from '../theme';
 import personPlaceholderImage from '../resources/images/person.png';
-import { uploadImage } from '../api/api';
+import { uploadImageForPerson } from '../api/api';
 import { ErrorAlert } from './ErrorAlert';
+import { width } from '@mui/system';
 
 const StyledImageWrapper = styled.div`
   display: flex;
@@ -44,7 +45,7 @@ export const ChangeProfileImageComponent: FC<Props> = ({ person }) => {
 
   const handleFileUpload = async (file: File | null) => {
     if (file && file?.size < maxFileSizeMb) {
-      const generatedFileName = await uploadImage(file, person.id, setError, setIsUploadingImage);
+      const generatedFileName = await uploadImageForPerson(file, person.id, setError, setIsUploadingImage);
       generatedFileName && setImageName(generatedFileName);
     } else {
       setError('For stor fil');

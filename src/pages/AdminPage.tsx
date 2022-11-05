@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
 import { Alert, Box, Checkbox, CircularProgress, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { TableToolbar } from '../components/TableToolbar';
-import { deletePerson, getPersons } from '../api/api';
+import { deletePerson, getPersons, addPersonToCommunity } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { ConfirmDialog } from '../components/ConfirmDialog';
@@ -15,7 +15,7 @@ export const AdminPage: FC = () => {
   const [isWaiting, setIsWaiting] = useState(false);
   const [loadingPersonsError, setLoadingPersonsError] = useState<Error | undefined>(undefined);
 
-  const [isCommunityDialogOpen, setIsCommunityDialogOpen] = useState(false);
+  const [isAddToCommunityDialogOpen, setIsAddToCommunityDialogOpen] = useState(false);
 
   const [confirmationText, setConfirmationText] = useState<string>('');
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
@@ -42,10 +42,13 @@ export const AdminPage: FC = () => {
   };
 
   const handleAddCheckedToCommunity = (communityId: string | undefined) => {
-    setIsCommunityDialogOpen(false);
+    setIsAddToCommunityDialogOpen(false);
+    setError('');
     if (communityId) {
       checked.forEach((personId) => {
         console.log(`adding person: ${personId} to community:  ${communityId} `);
+        addPersonToCommunity(personId, communityId, error, setIsWaiting);
+        //TODO: vis aggregerte resultater (2 positive og en negativ f.ex ?)
       });
     }
   };
@@ -83,7 +86,7 @@ export const AdminPage: FC = () => {
       <Box sx={{ width: '100%' }}>
         <TableToolbar
           numSelected={checked.length}
-          setIsCommunityDialogOpen={setIsCommunityDialogOpen}
+          setIsAddToCommunityDialogOpen={setIsAddToCommunityDialogOpen}
           handleDeletePersons={handleDeletePersons}
           handleDeleteCheckedfromCommunity={handleDeleteCheckedfromCommunity}
         />
@@ -115,7 +118,7 @@ export const AdminPage: FC = () => {
           })}
         </List>
       </Box>
-      <SelectCommunityDialog open={isCommunityDialogOpen} onClose={handleAddCheckedToCommunity} />
+      <SelectCommunityDialog open={isAddToCommunityDialogOpen} onClose={handleAddCheckedToCommunity} />
       <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmDelete} />
     </>
   );
