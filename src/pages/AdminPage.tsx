@@ -1,6 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
-import { Alert, Box, Checkbox, CircularProgress, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Checkbox,
+  Chip,
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { TableToolbar } from '../components/TableToolbar';
 import { deletePerson, getPersons, addPersonToCommunity } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
@@ -22,7 +32,7 @@ export const AdminPage: FC = () => {
 
   useEffect(() => {
     const asyncFunc = async () => {
-      const result = await getPersons(100, setLoadingPersonsError, setIsWaiting);
+      const result = await getPersons(100, true, setLoadingPersonsError, setIsWaiting);
       setPersons(result.persons);
     };
     asyncFunc();
@@ -45,11 +55,13 @@ export const AdminPage: FC = () => {
     setIsAddToCommunityDialogOpen(false);
     setError('');
     if (communityId) {
-      checked.forEach((personId) => {
-        console.log(`adding person: ${personId} to community:  ${communityId} `);
-        addPersonToCommunity(personId, communityId, error, setIsWaiting);
+      checked.forEach(async (personId) => {
+        await addPersonToCommunity(personId, communityId, error, setIsWaiting);
         //TODO: vis aggregerte resultater (2 positive og en negativ f.ex ?)
       });
+      setTimeout(async () => {
+        reloadResults();
+      }, 500);
     }
   };
 
@@ -62,6 +74,12 @@ export const AdminPage: FC = () => {
     setConfirmationText(`Sikker på at du vil slette ${checked.length} person(er)`);
   };
 
+  const reloadResults = async () => {
+    setChecked([]);
+    const result = await getPersons(100, true, setLoadingPersonsError, setIsWaiting);
+    setPersons(result.persons);
+  };
+
   const handleConfirmDelete = async (shouldDelete: boolean) => {
     setIsConfirmDialogOpen(false);
     if (shouldDelete) {
@@ -72,9 +90,7 @@ export const AdminPage: FC = () => {
       );
       //todo: result kalles for fort - timeout blir for dumt, da. prøv med for .. in
       setTimeout(async () => {
-        setChecked([]);
-        const result = await getPersons(100, setLoadingPersonsError, setIsWaiting);
-        setPersons(result.persons);
+        reloadResults();
       }, 500);
     }
   };
@@ -112,7 +128,17 @@ export const AdminPage: FC = () => {
                     inputProps={{ 'aria-labelledby': labelId }}
                   />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={[person.lastName, person.firstName].filter(Boolean).join(', ')} />
+                <ListItemText
+                  id={labelId}
+                  primary={
+                    <>
+                      {[person.lastName, person.firstName].filter(Boolean).join(', ')}
+                      {person.communities?.map((community) => (
+                        <Chip size="small" variant="outlined" label={community.name} sx={{ ml: 1 }} />
+                      ))}
+                    </>
+                  }
+                />
               </ListItem>
             );
           })}

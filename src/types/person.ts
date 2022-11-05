@@ -1,3 +1,5 @@
+import { Community } from './community';
+
 export interface Person {
   id: string;
   firstName: string;
@@ -8,6 +10,7 @@ export interface Person {
   dead: string;
   mainImageId: string;
   imageName: string;
+  communities?: Community[];
 }
 
 export const emptyPerson: Person = {

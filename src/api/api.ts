@@ -2,7 +2,13 @@ import { Community } from './../types/community';
 import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
-import { NUMBER_PR_PAGE_PARAM, QUERY_PARAM, SORT_DESCENDING, SORT_PARAM } from '../types/QueryParams';
+import {
+  NUMBER_PR_PAGE_PARAM,
+  QUERY_PARAM,
+  SHOW_COMMUNITIES_PARAM,
+  SORT_DESCENDING,
+  SORT_PARAM,
+} from '../types/QueryParams';
 import { Person } from '../types/person';
 import { axiosDeleteHandler, axiosGetHandler, axiosPostHandler, axiosPutHandler } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
@@ -15,9 +21,14 @@ export const getRandomPerson = async (setError?: any, setLoading?: Dispatch<SetS
   return axiosGetHandler(`${PERSONS_URL}/random`, setError, setLoading);
 };
 
-export const getPersons = async (max: number, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
+export const getPersons = async (
+  max: number,
+  showcommunities: boolean,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
   return axiosGetHandler(
-    `${PERSONS_URL}?${SORT_PARAM}=${SORT_DESCENDING}&${NUMBER_PR_PAGE_PARAM}=${max}`,
+    `${PERSONS_URL}?${SORT_PARAM}=${SORT_DESCENDING}&${SHOW_COMMUNITIES_PARAM}=${showcommunities}&${NUMBER_PR_PAGE_PARAM}=${max}`,
     setError,
     setLoading
   );
