@@ -2,13 +2,15 @@ import { FC, useEffect, useState } from 'react';
 import { Person } from '../types/person';
 import {
   Alert,
+  Avatar,
   Box,
   Checkbox,
   Chip,
   CircularProgress,
   List,
   ListItem,
-  ListItemIcon,
+  ListItemAvatar,
+  ListItemButton,
   ListItemText,
 } from '@mui/material';
 import { TableToolbar } from '../components/TableToolbar';
@@ -16,6 +18,14 @@ import { deletePerson, getPersons, addPersonToCommunity } from '../api/api';
 import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { PERSON_THUMBNAIL_URL } from '../constants';
+import styled from '@emotion/styled';
+
+const HideOnMobile = styled.span`
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
 
 export const AdminPage: FC = () => {
   const [persons, setPersons] = useState<Person[]>([]);
@@ -99,7 +109,7 @@ export const AdminPage: FC = () => {
     <>
       {isWaiting && <CircularProgress color="inherit" size={'2rem'} />}
       {loadingPersonsError && <ErrorAlert errorMessage={loadingPersonsError.message}></ErrorAlert>}
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', maxWidth: '40rem' }}>
         <TableToolbar
           numSelected={checked.length}
           setIsAddToCommunityDialogOpen={setIsAddToCommunityDialogOpen}
@@ -117,8 +127,10 @@ export const AdminPage: FC = () => {
           {persons.map((person: Person) => {
             const labelId = `checkbox-person-${person.id}`;
             return (
-              <ListItem key={person.id} disablePadding>
-                <ListItemIcon>
+              <ListItem
+                key={person.id}
+                disablePadding
+                secondaryAction={
                   <Checkbox
                     onChange={handleToggle(person.id)}
                     edge="start"
@@ -127,18 +139,26 @@ export const AdminPage: FC = () => {
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
                   />
-                </ListItemIcon>
-                <ListItemText
-                  id={labelId}
-                  primary={
-                    <>
-                      {[person.lastName, person.firstName].filter(Boolean).join(', ')}
-                      {person.communities?.map((community) => (
-                        <Chip size="small" variant="outlined" label={community.name} sx={{ ml: 1 }} />
-                      ))}
-                    </>
-                  }
-                />
+                }
+              >
+                <ListItemButton>
+                  <ListItemAvatar>
+                    <Avatar alt={person.lastName} src={`${PERSON_THUMBNAIL_URL}${person.imageName}`} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    id={labelId}
+                    primary={
+                      <>
+                        {[person.lastName, person.firstName].filter(Boolean).join(', ')}
+                        <HideOnMobile>
+                          {person.communities?.map((community) => (
+                            <Chip size="small" variant="outlined" label={community.name} sx={{ ml: 1 }} />
+                          ))}
+                        </HideOnMobile>
+                      </>
+                    }
+                  />
+                </ListItemButton>
               </ListItem>
             );
           })}
