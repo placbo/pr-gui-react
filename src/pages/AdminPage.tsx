@@ -20,6 +20,7 @@ import { ErrorAlert } from '../components/ErrorAlert';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 const HideOnMobile = styled.span`
   @media (max-width: 640px) {
@@ -141,7 +142,7 @@ export const AdminPage: FC = () => {
                   />
                 }
               >
-                <ListItemButton>
+                <ListItemButton component={Link} to={`/person/${person.id}`} target="_blank" rel="noopener noreferrer">
                   <ListItemAvatar>
                     <Avatar alt={person.lastName} src={`${PERSON_THUMBNAIL_URL}${person.imageName}`} />
                   </ListItemAvatar>
