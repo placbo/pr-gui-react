@@ -86,7 +86,7 @@ export const AddRelation: FC<Props> = ({ personId, retrievAllRelations }) => {
         <FormControl>
           <div>
             <Autocomplete
-              style={{ minWidth: '13rem' }}
+              style={{ minWidth: '16rem' }}
               options={options}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               filterSelectedOptions
@@ -108,6 +108,7 @@ export const AddRelation: FC<Props> = ({ personId, retrievAllRelations }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  placeholder="søk"
                   InputProps={{
                     ...params.InputProps,
                     endAdornment: (

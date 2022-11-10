@@ -16,7 +16,7 @@ export const ManageRelationsComponent: FC<Props> = ({ person }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
 
-  const retrievAllRelations = useCallback(() => {
+  const retrieveAllRelations = useCallback(() => {
     const asyncApiCalls = async () => {
       if (person?.id) {
         setParents(await getPersonsParents(person.id, setApiError, setIsLoading));
@@ -27,8 +27,8 @@ export const ManageRelationsComponent: FC<Props> = ({ person }) => {
   }, [person.id]);
 
   useEffect(() => {
-    retrievAllRelations();
-  }, [retrievAllRelations]);
+    retrieveAllRelations();
+  }, [retrieveAllRelations]);
 
   return (
     <>
@@ -43,7 +43,7 @@ export const ManageRelationsComponent: FC<Props> = ({ person }) => {
           persons={parents}
           mainPerson={person}
           roleId={RelationshipRole.Parent}
-          retrievAllRelations={retrievAllRelations}
+          retrievAllRelations={retrieveAllRelations}
         />
       )}
       {children.length > 0 && (
@@ -52,11 +52,11 @@ export const ManageRelationsComponent: FC<Props> = ({ person }) => {
           persons={children}
           mainPerson={person}
           roleId={RelationshipRole.Child}
-          retrievAllRelations={retrievAllRelations}
+          retrievAllRelations={retrieveAllRelations}
         />
       )}
 
-      <AddRelation personId={person?.id} retrievAllRelations={retrievAllRelations}></AddRelation>
+      <AddRelation personId={person?.id} retrievAllRelations={retrieveAllRelations}></AddRelation>
     </>
   );
 };
