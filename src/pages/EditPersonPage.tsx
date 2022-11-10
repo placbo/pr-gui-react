@@ -7,9 +7,10 @@ import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { getPerson, updatePerson } from '../api/api';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
-import { RelationsComponent } from '../components/RelationsComponent';
+import { ManageRelationsComponent } from '../components/ManageRelationsComponent';
 import { ChangeProfileImageComponent } from '../components/ChangeProfileImageComponent';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { ManageCommunitiesComponent } from '../components/ManageCommunityComponent';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -23,6 +24,10 @@ const StyledTextField = styled(TextField)`
 
 const StyledDivider = styled(Divider)`
   margin-bottom: 1rem;
+`;
+
+const Spacer = styled.div`
+  height: 2rem;
 `;
 
 export const EditPersonPage: FC = () => {
@@ -129,7 +134,9 @@ export const EditPersonPage: FC = () => {
             )}
           </Formik>
           <Divider sx={{ m: '2rem' }} />
-          <RelationsComponent person={person}></RelationsComponent>
+          <ManageRelationsComponent person={person}></ManageRelationsComponent>
+          <ManageCommunitiesComponent person={person}></ManageCommunitiesComponent>
+          <Spacer></Spacer>
         </>
       )}
     </EditPage>

@@ -14,7 +14,10 @@ const StyledResultList = styled.div`
   }
 `;
 
-const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons?: () => void }> = ({ persons, fetchMorePersons }) => {
+export const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons?: () => void }> = ({
+  persons,
+  fetchMorePersons,
+}) => {
   /*
   const sortedPersons = persons.sort((a, b) =>
     (a.lastName?.toUpperCase() ?? '') > (b.lastName?.toUpperCase() ?? '')
@@ -34,5 +37,3 @@ const PersonResultGrid: FC<{ persons: Person[]; fetchMorePersons?: () => void }>
     </StyledResultList>
   );
 };
-
-export default PersonResultGrid;

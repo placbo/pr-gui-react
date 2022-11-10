@@ -131,6 +131,15 @@ export const addPersonToCommunity = async (personId: string, communityId: string
   return axiosPostHandler(`${COMMUNITIES_URL}/${communityId}/person/${personId}`, {}, setError, setSaving);
 };
 
+export const removePersonFromCommunity = async (
+  personId: string,
+  communityId: string,
+  setError: any,
+  setSaving: any
+) => {
+  return axiosDeleteHandler(`${COMMUNITIES_URL}/${communityId}/person/${personId}`, setError, setSaving);
+};
+
 export const uploadImageForPerson = async (
   file: File,
   personId: string,

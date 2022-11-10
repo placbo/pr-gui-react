@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import CommunityResultGrid from '../components/CommunityResultGrid';
+import { FC } from 'react';
+import { CommunityResultGrid } from '../components/CommunityResultGrid';
 import HeadingWithLine from '../components/HeadingWithLine';
 import styled from '@emotion/styled';
 

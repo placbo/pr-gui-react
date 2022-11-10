@@ -7,7 +7,7 @@ import communityPlaceholderImage from '../resources/images/group.webp';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { COMMUNITY_IMAGES_MEDIUM_URL, COMMUNITY_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
-import PersonResultGrid from '../components/PersonResultGrid';
+import { PersonResultGrid } from '../components/PersonResultGrid';
 import { Person } from '../types/person';
 import { deleteCommunity, getCommunity, getPersonsInCommunity } from '../api/api';
 import { ErrorAlert } from '../components/ErrorAlert';

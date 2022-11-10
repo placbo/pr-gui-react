@@ -10,7 +10,7 @@ interface Props {
   person: Person;
 }
 
-export const RelationsComponent: FC<Props> = ({ person }) => {
+export const ManageRelationsComponent: FC<Props> = ({ person }) => {
   const [parents, setParents] = useState<Person[]>([]);
   const [children, setChildren] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState(false);

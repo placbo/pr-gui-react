@@ -5,7 +5,7 @@ import { createContext, useState } from 'react';
 
 export const AuthContext = createContext<any>({} as any); //jukser (https://stackoverflow.com/questions/61333188/react-typescript-avoid-context-default-value)
 
-function App() {
+export const App = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const authContextValue = { isUserLoggedIn, setIsUserLoggedIn };
 
@@ -19,6 +19,4 @@ function App() {
       </Router>
     </AuthContext.Provider>
   );
-}
-
-export default App;
+};

@@ -100,7 +100,7 @@ interface CommunityResultGridProps {
   personId?: string;
 }
 
-const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
+export const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
   // const [isAddCommunityDialogOpen, setIsAddCommunityDialogOpen] = useState(false);
   // const [isAddCommunityToPersonDialogOpen, setIsAddCommunityToPersonDialogOpen] = useState(false);
   // const [allCommunities, setAllCommunities] = useState<Community[]>([]);
@@ -110,8 +110,8 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
   const [loadingCommunitiesError, setLoadingCommunitiesError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
-    const asyncCallGetCommunitiesForPerson = async (_personsId: string) => {
-      setCommunities(await getCommunitiesForPerson(_personsId, setLoadingCommunitiesError, setIsLoadingCommunities));
+    const asyncCallGetCommunitiesForPerson = async (_personId: string) => {
+      setCommunities(await getCommunitiesForPerson(_personId, setLoadingCommunitiesError, setIsLoadingCommunities));
     };
     const asyncCallGetAllCommunities = async () => {
       setCommunities(await getAllCommunities(setLoadingCommunitiesError, setIsLoadingCommunities));
@@ -251,5 +251,3 @@ const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) => {
     </StyledResultList>
   );
 };
-
-export default CommunityResultGrid;

@@ -1,6 +1,6 @@
 import { CircularProgress, Dialog, DialogContent, InputAdornment, List, TextField } from '@mui/material';
-import PersonResultList from './PersonResultList';
-import React, { FC, useState } from 'react';
+import { PersonResultList } from './PersonResultList';
+import { FC, useState } from 'react';
 import _ from 'lodash';
 import { usePersonsQuery } from '../api/api';
 import SearchIcon from '@mui/icons-material/Search';

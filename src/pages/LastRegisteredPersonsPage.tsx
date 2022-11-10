@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { StyleWidths } from '../theme';
-import PersonResultGrid from '../components/PersonResultGrid';
+import { PersonResultGrid } from '../components/PersonResultGrid';
 import styled from '@emotion/styled';
 import HeadingWithLine from '../components/HeadingWithLine';
 import axios from 'axios';

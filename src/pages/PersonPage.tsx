@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate, useParams } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -13,11 +13,11 @@ import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
-import CommunityResultGrid from '../components/CommunityResultGrid';
+import { CommunityResultGrid } from '../components/CommunityResultGrid';
 import { deletePerson, getPerson, getPersonsChildren, getPersonsParents } from '../api/api';
 import { Person } from '../types/person';
 import { ErrorAlert } from '../components/ErrorAlert';
-import PersonResultGrid from '../components/PersonResultGrid';
+import { PersonResultGrid } from '../components/PersonResultGrid';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 
 const StyledPersonPresentation = styled.div`

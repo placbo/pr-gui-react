@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import { Person } from '../types/person';
 
-const PersonResultList: FC<{ persons: Person[]; handleClose: any }> = ({ persons, handleClose }) => {
+export const PersonResultList: FC<{ persons: Person[]; handleClose: any }> = ({ persons, handleClose }) => {
   return (
     <List dense>
       {persons.map((person: Person) => (
@@ -20,5 +20,3 @@ const PersonResultList: FC<{ persons: Person[]; handleClose: any }> = ({ persons
     </List>
   );
 };
-
-export default PersonResultList;

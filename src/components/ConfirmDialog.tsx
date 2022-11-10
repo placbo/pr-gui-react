@@ -6,7 +6,7 @@ interface Props {
   handleConfirm: (value: boolean) => void;
 }
 
-export function ConfirmDialog(props: Props) {
+export const ConfirmDialog = (props: Props) => {
   const { open, text, handleConfirm } = props;
 
   return (
@@ -22,4 +22,4 @@ export function ConfirmDialog(props: Props) {
       </DialogActions>
     </Dialog>
   );
-}
+};
