@@ -1,13 +1,13 @@
 import { Button, CircularProgress, Link } from '@mui/material';
 import { FC, useState } from 'react';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { COMMUNITY_IMAGE_URL, PERSON_IMAGE_URL } from '../constants';
 import styled from '@emotion/styled';
 import { Colors, DeviceWidths } from '../theme';
 import personPlaceholderImage from '../resources/images/person.png';
 import communityPlaceholderImage from '../resources/images/group.webp';
 import { uploadImage } from '../api/api';
 import { ErrorAlert } from './ErrorAlert';
+import { COMMUNITY_IMAGES_MEDIUM_URL, PERSON_IMAGES_MEDIUM_URL } from '../constants';
 
 const StyledImageWrapper = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ export const ChangeMainImageComponent: FC<Props> = ({ id, imageName, category })
   const [imageFileName, setImageFileName] = useState(imageName);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
-  const imageBaseURL = category === Category.PERSON ? PERSON_IMAGE_URL : COMMUNITY_IMAGE_URL;
+  const imageBaseURL = category === Category.PERSON ? PERSON_IMAGES_MEDIUM_URL : COMMUNITY_IMAGES_MEDIUM_URL;
   const imagePlaceHolder = category === Category.PERSON ? personPlaceholderImage : communityPlaceholderImage;
 
   const handleFileUpload = async (file: File | null) => {
