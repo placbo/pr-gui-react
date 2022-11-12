@@ -8,9 +8,9 @@ import { getPerson, updatePerson } from '../api/api';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { ManageRelationsComponent } from '../components/ManageRelationsComponent';
-import { ChangeProfileImageComponent } from '../components/ChangeProfileImageComponent';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ManageCommunitiesComponent } from '../components/ManageCommunityComponent';
+import { Category, ChangeMainImageComponent } from '../components/ChangeMainImageComponent';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -76,7 +76,8 @@ export const EditPersonPage: FC = () => {
       {loadingPersonError && <ErrorAlert errorMessage={loadingPersonError.message}></ErrorAlert>}
       {person && (
         <>
-          <ChangeProfileImageComponent person={person}></ChangeProfileImageComponent>
+          <ChangeMainImageComponent id={person.id} imageName={person.imageName} category={Category.PERSON} />
+
           <Formik onSubmit={handleSave} initialValues={person}>
             {(props) => (
               <Form>
@@ -133,6 +134,7 @@ export const EditPersonPage: FC = () => {
               </Form>
             )}
           </Formik>
+
           <Divider sx={{ m: '2rem' }} />
           <ManageRelationsComponent person={person}></ManageRelationsComponent>
           <ManageCommunitiesComponent person={person}></ManageCommunitiesComponent>

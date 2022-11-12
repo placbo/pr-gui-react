@@ -1,14 +1,13 @@
 import { Button, CircularProgress, Link } from '@mui/material';
 import { FC, useState } from 'react';
-import { Person } from '../types/person';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { PERSON_IMAGE_URL } from '../constants';
+import { COMMUNITY_IMAGE_URL, PERSON_IMAGE_URL } from '../constants';
 import styled from '@emotion/styled';
 import { Colors, DeviceWidths } from '../theme';
 import personPlaceholderImage from '../resources/images/person.png';
-import { uploadImageForPerson } from '../api/api';
+import communityPlaceholderImage from '../resources/images/group.webp';
+import { uploadImage } from '../api/api';
 import { ErrorAlert } from './ErrorAlert';
-import { width } from '@mui/system';
 
 const StyledImageWrapper = styled.div`
   display: flex;
@@ -34,19 +33,29 @@ const StyledImage = styled.img`
 
 const maxFileSizeMb = 4 * 1024 * 1024;
 
-interface Props {
-  person: Person;
+export enum Category {
+  PERSON = 'person',
+  COMMUNITY = 'community',
 }
 
-export const ChangeProfileImageComponent: FC<Props> = ({ person }) => {
+interface Props {
+  id: string;
+  imageName: string;
+  category: Category;
+}
+
+export const ChangeMainImageComponent: FC<Props> = ({ id, imageName, category }) => {
   const [error, setError] = useState('');
-  const [imageName, setImageName] = useState(person.imageName);
+  const [imageFileName, setImageFileName] = useState(imageName);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  const imageBaseURL = category === Category.PERSON ? PERSON_IMAGE_URL : COMMUNITY_IMAGE_URL;
+  const imagePlaceHolder = category === Category.PERSON ? personPlaceholderImage : communityPlaceholderImage;
 
   const handleFileUpload = async (file: File | null) => {
     if (file && file?.size < maxFileSizeMb) {
-      const generatedFileName = await uploadImageForPerson(file, person.id, setError, setIsUploadingImage);
-      generatedFileName && setImageName(generatedFileName);
+      const generatedFileName = await uploadImage(file, id, category, setError, setIsUploadingImage);
+      generatedFileName && setImageFileName(generatedFileName);
     } else {
       setError('For stor fil');
     }
@@ -55,11 +64,11 @@ export const ChangeProfileImageComponent: FC<Props> = ({ person }) => {
   return (
     <>
       <StyledImageWrapper>
-        <Link href={`${PERSON_IMAGE_URL}${imageName}`} target="_blank" rel="noopener noreferrer">
+        <Link href={`${imageBaseURL}${imageFileName}`} target="_blank" rel="noopener noreferrer">
           <StyledImage
             alt="Person"
-            src={imageName ? `${PERSON_IMAGE_URL}${imageName}` : personPlaceholderImage}
-            onError={(event: any) => (event.target.src = personPlaceholderImage)}
+            src={imageFileName ? `${imageBaseURL}${imageFileName}` : imagePlaceHolder}
+            onError={(event: any) => (event.target.src = imagePlaceHolder)}
           />
         </Link>
 

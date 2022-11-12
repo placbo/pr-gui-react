@@ -149,7 +149,6 @@ export const mockPerson = {
 export const mockCommunity = {
   id: 40,
   name: 'Allanengen Skole (1.klasse)',
-  imageURL: '1484267324443klassebilde 1-klasse 1981.jpg',
   note: '',
   mainImageId: 1246,
   imageName: '0645209a-5ff1-4239-ab79-c61fb0ce2c92.jpg',
@@ -159,7 +158,6 @@ export const mockCommunities = [
   {
     id: 40,
     name: 'Allanengen Skole (1.klasse)',
-    imageURL: '1484267324443klassebilde 1-klasse 1981.jpg',
     note: '',
     mainImageId: 1246,
     imageName: '0645209a-5ff1-4239-ab79-c61fb0ce2c92.jpg',
@@ -167,7 +165,6 @@ export const mockCommunities = [
   {
     id: 35,
     name: 'Atlanten VGS',
-    imageURL: '1484147442870Atlanten-VGS.jpg',
     note: '',
     mainImageId: 1202,
     imageName: '036446c1-7a9f-4dd3-a67e-28344445d97e.jpg',
@@ -175,7 +172,6 @@ export const mockCommunities = [
   {
     id: 27,
     name: 'Bamsemums',
-    imageURL: '1479683216816398079d247.jpg',
     note: '',
     mainImageId: 1203,
     imageName: 'e4d2f7a4-bfff-4bb2-95c1-c16d31088ecf.jpg',

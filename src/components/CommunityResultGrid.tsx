@@ -180,7 +180,7 @@ export const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) 
               <StyledCardActionArea>
                 <StyledCardMedia
                   image={
-                    community.imageURL ? `${COMMUNITY_THUMBNAIL_URL}${community.imageURL}` : communityPlaceholderImage
+                    community.imageName ? `${COMMUNITY_THUMBNAIL_URL}${community.imageName}` : communityPlaceholderImage
                   }
                   title="community photo"
                 />

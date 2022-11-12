@@ -12,6 +12,7 @@ import {
 import { Person } from '../types/person';
 import { axiosDeleteHandler, axiosGetHandler, axiosPostHandler, axiosPutHandler } from './apiUtils';
 import { Dispatch, SetStateAction } from 'react';
+import { Category } from '../components/ChangeMainImageComponent';
 
 export const getPerson = async (personId: string, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}`, setError, setLoading);
@@ -140,9 +141,10 @@ export const removePersonFromCommunity = async (
   return axiosDeleteHandler(`${COMMUNITIES_URL}/${communityId}/person/${personId}`, setError, setSaving);
 };
 
-export const uploadImageForPerson = async (
+export const uploadImage = async (
   file: File,
-  personId: string,
+  id: string,
+  category: Category,
   setError?: any,
   setUploading?: Dispatch<SetStateAction<boolean>>
 ): Promise<string | undefined> => {
@@ -150,8 +152,8 @@ export const uploadImageForPerson = async (
   try {
     const formData = new FormData();
     formData.append('image', file);
-    formData.append('id', personId);
-    formData.append('category', 'person');
+    formData.append('id', id);
+    formData.append('category', category);
     const result = await axios.post(IMAGE_UPLOAD_URL, formData, {
       headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
     });

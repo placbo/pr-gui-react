@@ -7,6 +7,7 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import { addCommunity, getCommunity, updateCommunity } from '../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ErrorAlert } from '../components/ErrorAlert';
+import { Category, ChangeMainImageComponent } from '../components/ChangeMainImageComponent';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -54,6 +55,8 @@ export const EditCommunityPage: FC = () => {
       {loadingCommunityError && <ErrorAlert errorMessage={loadingCommunityError.message}></ErrorAlert>}
       {community && (
         <>
+          <ChangeMainImageComponent id={community.id} imageName={community.imageName} category={Category.COMMUNITY} />
+
           <Formik onSubmit={handleSave} initialValues={community}>
             {() => (
               <Form>

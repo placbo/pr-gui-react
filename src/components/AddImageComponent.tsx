@@ -6,7 +6,8 @@ import { CircularProgress } from '@mui/material';
 import { PERSON_IMAGE_URL } from '../constants';
 import { Colors } from '../theme';
 import personPlaceholderImage from '../resources/images/person.png';
-import { uploadImageForPerson } from '../api/api';
+import { uploadImage } from '../api/api';
+import { Category } from './ChangeMainImageComponent';
 
 const StyledAddImageWrapper = styled.div`
   height: 10rem;
@@ -37,7 +38,7 @@ export const AddImageComponent: FC<Props> = ({ personId, setError }) => {
 
   const handleFileUpload = async (file: File | null) => {
     if (file && file?.size < maxFileSizeMb) {
-      const generatedFileName = await uploadImageForPerson(file, personId, setError, setIsUploadingImage);
+      const generatedFileName = await uploadImage(file, personId, Category.PERSON, setError, setIsUploadingImage);
       generatedFileName && setImageFileName(generatedFileName);
     } else {
       setError('For stor fil');

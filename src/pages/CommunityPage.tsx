@@ -135,13 +135,14 @@ export const CommunityPage: FC = () => {
           <StyledHeader>
             <StyledImageWrapper>
               <Link
-                href={`${COMMUNITY_IMAGES_MEDIUM_URL}${community.imageURL}`}
+                href={`${COMMUNITY_IMAGES_MEDIUM_URL}${community.imageName}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <StyledImage
                   alt="Community"
-                  src={community.imageURL ? `${COMMUNITY_IMAGE_URL}${community.imageURL}` : communityPlaceholderImage}
+                  src={community.imageName ? `${COMMUNITY_IMAGE_URL}${community.imageName}` : communityPlaceholderImage}
+                  onError={(event: any) => (event.target.src = communityPlaceholderImage)}
                 />
               </Link>
             </StyledImageWrapper>
