@@ -53,7 +53,7 @@ export const AddImageComponent: FC<Props> = ({ personId, setError }) => {
         <StyledImage
           alt="Person"
           src={`${PERSON_IMAGE_URL}${imageFileName}`}
-          onError={(event: any) => (event.target.src = personPlaceholderImage)}
+          //onError={(event: any) => (event.target.src = personPlaceholderImage)}
         />
       ) : (
         <IconButton disabled={!personId} size="large" color="primary" aria-label="upload picture" component="label">

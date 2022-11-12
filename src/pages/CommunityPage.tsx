@@ -142,7 +142,7 @@ export const CommunityPage: FC = () => {
                 <StyledImage
                   alt="Community"
                   src={community.imageName ? `${COMMUNITY_IMAGE_URL}${community.imageName}` : communityPlaceholderImage}
-                  onError={(event: any) => (event.target.src = communityPlaceholderImage)}
+                  //onError={(event: any) => (event.target.src = communityPlaceholderImage)}
                 />
               </Link>
             </StyledImageWrapper>

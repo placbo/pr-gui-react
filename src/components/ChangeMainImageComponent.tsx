@@ -68,7 +68,7 @@ export const ChangeMainImageComponent: FC<Props> = ({ id, imageName, category })
           <StyledImage
             alt="Person"
             src={imageFileName ? `${imageBaseURL}${imageFileName}` : imagePlaceHolder}
-            onError={(event: any) => (event.target.src = imagePlaceHolder)}
+            //onError={(event: any) => (event.target.src = imagePlaceHolder)}
           />
         </Link>
 

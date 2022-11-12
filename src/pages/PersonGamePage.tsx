@@ -78,7 +78,7 @@ export const PersonGamePage: FC = () => {
             <StyledImage
               alt="Person"
               src={person.imageName ? `${PERSON_IMAGE_URL}${person.imageName}` : personPlaceholderImage}
-              onError={(event: any) => (event.target.src = personPlaceholderImage)}
+              //onError={(event: any) => (event.target.src = personPlaceholderImage)}
             />
             {showName ? (
               <Typography fontSize={'2rem'}>
