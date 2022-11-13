@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { Dialog, DialogTitle, Button, DialogContent, Autocomplete, CircularProgress, TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { getAllCommunities } from '../api/api';
 import { Community } from '../types/community';
 import { ErrorAlert } from './ErrorAlert';
 
-interface Props {
+interface ISelectCommunityDialogProps {
   open: boolean;
-  onClose: (value: string | undefined) => void;
+  onClose: (value?: string, name?: string) => void;
 }
 
 const StyledContentWrapper = styled.div`
@@ -16,21 +16,21 @@ const StyledContentWrapper = styled.div`
   gap: 1rem;
 `;
 
-export const SelectCommunityDialog = (props: Props) => {
+export const SelectCommunityDialog: FC<ISelectCommunityDialogProps> = ({ onClose, open }) => {
   const [allCommunities, setAllCommunities] = useState<Community[]>([]);
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null);
-
   const [isLoadingCommunities, setIsLoadingCommunities] = useState(false);
   const [loadingCommunitiesError, setLoadingCommunitiesError] = useState<Error | undefined>(undefined);
-  const { onClose, open } = props;
 
   const handleClose = () => {
-    onClose(undefined);
+    onClose();
   };
 
   const handleListItemClick = () => {
-    if (selectedCommunity) {
-      onClose(selectedCommunity.id);
+    if (selectedCommunity?.id && selectedCommunity?.name) {
+      onClose(selectedCommunity.id, selectedCommunity.name);
+    } else {
+      onClose();
     }
   };
 

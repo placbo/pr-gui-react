@@ -110,10 +110,15 @@ export const updateCommunity = async (communityId: string, community: Community,
 
 export const getPersonsInCommunity = async (
   communityId: string,
+  showcommunities: boolean,
   setError: any,
   setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
-  return axiosGetHandler(`${COMMUNITIES_URL}/${communityId}/persons`, setError, setLoading);
+  return axiosGetHandler(
+    `${COMMUNITIES_URL}/${communityId}/persons?${SHOW_COMMUNITIES_PARAM}=${showcommunities}`,
+    setError,
+    setLoading
+  );
 };
 
 export const getAllCommunities = async (setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {

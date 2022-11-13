@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { CommunityResultGrid } from '../components/CommunityResultGrid';
-import HeadingWithLine from '../components/HeadingWithLine';
 import styled from '@emotion/styled';
 
 const StyledPage = styled.div`
@@ -12,7 +11,6 @@ const StyledPage = styled.div`
 export const CommunitiesPage: FC = () => {
   return (
     <StyledPage>
-      <HeadingWithLine text="Alle grupper"></HeadingWithLine>
       <CommunityResultGrid />
     </StyledPage>
   );

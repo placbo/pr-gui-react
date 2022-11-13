@@ -9,6 +9,7 @@ import { COMMUNITY_THUMBNAIL_URL } from '../constants';
 import { Link } from 'react-router-dom';
 import { getAllCommunities, getCommunitiesForPerson } from '../api/api';
 import { ErrorAlert } from './ErrorAlert';
+import HeadingWithLine from './HeadingWithLine';
 
 const StyledResultList = styled.div`
   display: flex;
@@ -169,31 +170,35 @@ export const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) 
   // };
 
   return (
-    <StyledResultList>
-      {isLoadingCommunities && <CircularProgress color="inherit" size={'2rem'} />}
-      {loadingCommunitiesError && <ErrorAlert errorMessage={loadingCommunitiesError.message}></ErrorAlert>}{' '}
-      {communities &&
-        communities.length > 0 &&
-        communities.map((community: Community) => (
-          <StyledCard variant="outlined" key={community.id}>
-            <StyledLink to={`/community/${community.id}`}>
-              <StyledCardActionArea>
-                <StyledCardMedia
-                  image={
-                    community.imageName ? `${COMMUNITY_THUMBNAIL_URL}${community.imageName}` : communityPlaceholderImage
-                  }
-                  title="community photo"
-                />
-                <StyledCardContent>
-                  <StyledTypography gutterBottom variant="body2">
-                    {community.name}
-                  </StyledTypography>
-                </StyledCardContent>
-              </StyledCardActionArea>
-            </StyledLink>
-          </StyledCard>
-        ))}
-      {/*
+    <>
+      {communities && communities.length > 0 && <HeadingWithLine text="Grupper" />}
+      <StyledResultList>
+        {isLoadingCommunities && <CircularProgress color="inherit" size={'2rem'} />}
+        {loadingCommunitiesError && <ErrorAlert errorMessage={loadingCommunitiesError.message}></ErrorAlert>}{' '}
+        {communities &&
+          communities.length > 0 &&
+          communities.map((community: Community) => (
+            <StyledCard variant="outlined" key={community.id}>
+              <StyledLink to={`/community/${community.id}`}>
+                <StyledCardActionArea>
+                  <StyledCardMedia
+                    image={
+                      community.imageName
+                        ? `${COMMUNITY_THUMBNAIL_URL}${community.imageName}`
+                        : communityPlaceholderImage
+                    }
+                    title="community photo"
+                  />
+                  <StyledCardContent>
+                    <StyledTypography gutterBottom variant="body2">
+                      {community.name}
+                    </StyledTypography>
+                  </StyledCardContent>
+                </StyledCardActionArea>
+              </StyledLink>
+            </StyledCard>
+          ))}
+        {/*
       <StyledAddButtonWrapper>
         {personId ? (
           <IconButton component="label" onClick={toggleAddCommunityToPersonDialog}>
@@ -206,7 +211,7 @@ export const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) 
         )}
       </StyledAddButtonWrapper>
 */}
-      {/*    {isAddCommunityToPersonDialogOpen && (
+        {/*    {isAddCommunityToPersonDialogOpen && (
         <Dialog
           open={isAddCommunityToPersonDialogOpen}
           onClose={handleAddCommunityToPerson}
@@ -242,12 +247,13 @@ export const CommunityResultGrid: FC<CommunityResultGridProps> = ({ personId }) 
         </Dialog>
       )}
 */}
-      {/*      {isAddCommunityDialogOpen && (
+        {/*      {isAddCommunityDialogOpen && (
         <EditCommunityDialog
           isEditDialogOpen={isAddCommunityDialogOpen}
           handleToggleDialog={toggleAddCommunityDialog}
         />
       )}*/}
-    </StyledResultList>
+      </StyledResultList>
+    </>
   );
 };

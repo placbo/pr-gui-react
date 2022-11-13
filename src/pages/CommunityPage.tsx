@@ -104,7 +104,7 @@ export const CommunityPage: FC = () => {
     const asyncFunc = async () => {
       if (identifier) {
         setCommunity(await getCommunity(identifier, setLoadingError, setIsLoading));
-        setPersons(await getPersonsInCommunity(identifier, setLoadingError, setIsLoading));
+        setPersons(await getPersonsInCommunity(identifier, false, setLoadingError, setIsLoading));
       }
     };
     asyncFunc();

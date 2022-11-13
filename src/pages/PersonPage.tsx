@@ -186,7 +186,7 @@ export const PersonPage: FC = () => {
           {isDeleting && <CircularProgress size={'2rem'} />}
           {deletingError && <ErrorAlert errorMessage={deletingError}></ErrorAlert>}
 
-          <HeadingWithLine text="Grupper" />
+          {/* //TODO: hent communities fra person isteden og bare rendre selv */}
           <CommunityResultGrid personId={person.id} />
 
           {parents && parents.length > 0 && (

@@ -9,14 +9,14 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
   handleDeletePersons: any;
   setIsAddToCommunityDialogOpen: any;
-  handleDeleteCheckedfromCommunity: any;
+  setIsRemoveCommunityDialogOpen: any;
 }
 
 export const TableToolbar: FC<EnhancedTableToolbarProps> = ({
   numSelected,
   handleDeletePersons,
   setIsAddToCommunityDialogOpen,
-  handleDeleteCheckedfromCommunity,
+  setIsRemoveCommunityDialogOpen,
 }) => {
   return (
     <Toolbar
@@ -49,7 +49,7 @@ export const TableToolbar: FC<EnhancedTableToolbarProps> = ({
             </IconButton>
           </Tooltip>{' '}
           <Tooltip title="Delete selected from group">
-            <IconButton onClick={handleDeleteCheckedfromCommunity}>
+            <IconButton onClick={() => setIsRemoveCommunityDialogOpen(true)}>
               <GroupRemoveIcon />
             </IconButton>
           </Tooltip>

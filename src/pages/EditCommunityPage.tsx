@@ -55,7 +55,11 @@ export const EditCommunityPage: FC = () => {
       {loadingCommunityError && <ErrorAlert errorMessage={loadingCommunityError.message}></ErrorAlert>}
       {community && (
         <>
-          <ChangeMainImageComponent id={community.id} imageName={community.imageName} category={Category.COMMUNITY} />
+          <ChangeMainImageComponent
+            id={community.id}
+            imageName={community.imageName ?? ''}
+            category={Category.COMMUNITY}
+          />
 
           <Formik onSubmit={handleSave} initialValues={community}>
             {() => (
