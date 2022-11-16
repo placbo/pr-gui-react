@@ -6,3 +6,5 @@ export const NUMBER_PR_PAGE_PARAM = 'max';
 export const SORT_DESCENDING = 'desc';
 export const SORT_ASCENDING = 'asc';
 export const DEFAULT_NUMBER_OF_RESULTS = 50;
+
+export const IS_MAIN_IMAGE = 'is_main_image';

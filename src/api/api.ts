@@ -3,6 +3,7 @@ import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
 import {
+  IS_MAIN_IMAGE,
   NUMBER_PR_PAGE_PARAM,
   QUERY_PARAM,
   SHOW_COMMUNITIES_PARAM,
@@ -159,7 +160,7 @@ export const uploadImage = async (
     formData.append('image', file);
     formData.append('id', id);
     formData.append('category', category);
-    const result = await axios.post(IMAGE_UPLOAD_URL, formData, {
+    const result = await axios.post(`${IMAGE_UPLOAD_URL}?${IS_MAIN_IMAGE}=true`, formData, {
       headers: { 'Content-Type': 'multipart/form-data', 'X-Auth-Token': localStorage.getItem('token') ?? '' },
     });
     return result.data.filename;
