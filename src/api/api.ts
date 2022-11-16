@@ -57,6 +57,14 @@ export const getPersonsChildren = async (
   return axiosGetHandler(`${PERSONS_URL}/${personId}/children`, setError, setLoading);
 };
 
+export const getPersonsImages = async (
+  personId: string,
+  setError: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  return axiosGetHandler(`${PERSONS_URL}/${personId}/images`, setError, setLoading);
+};
+
 export const addPerson = async (person: Person, setError: any, setSaving: any) => {
   return axiosPostHandler(`${PERSONS_URL}`, person, setError, setSaving);
 };

@@ -14,8 +14,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { PERSON_IMAGE_URL } from '../constants';
 import HeadingWithLine from '../components/HeadingWithLine';
 import { CommunityResultGrid } from '../components/CommunityResultGrid';
-import { deletePerson, getPerson, getPersonsChildren, getPersonsParents } from '../api/api';
+import { deletePerson, getPerson, getPersonsChildren, getPersonsParents, getPersonsImages } from '../api/api';
 import { Person } from '../types/person';
+import { Image } from '../types/image';
 import { ErrorAlert } from '../components/ErrorAlert';
 import { PersonResultGrid } from '../components/PersonResultGrid';
 import { ConfirmDialog } from '../components/ConfirmDialog';
@@ -70,6 +71,17 @@ const StyledImage = styled.img`
   }
 `;
 
+const StyledImageSmall = styled.img`
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border: 1px solid ${Colors.PrimaryText};
+  @media (max-width: ${DeviceWidths.sm}) {
+    width: 15rem;
+    height: 15rem;
+  }
+`;
+
 const StyledNameTypography = styled(Typography)`
   margin-top: 1rem;
   font-family: inherit;
@@ -105,6 +117,8 @@ export const PersonPage: FC = () => {
   const [isLoadingChildren, setIsLoadingChildren] = useState(false);
   const [loadingChildrenError, setLoadingChildrenError] = useState<Error | undefined>(undefined);
 
+  const [images, setImages] = useState<Image[]>([]);
+
   const [deletingError, setDeletingError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
@@ -116,6 +130,7 @@ export const PersonPage: FC = () => {
         setPerson(await getPerson(identifier, setLoadingPersonError, setIsLoadingPerson));
         setParents(await getPersonsParents(identifier, setLoadingParentsError, setIsLoadingParents));
         setChildren(await getPersonsChildren(identifier, setLoadingChildrenError, setIsLoadingChildren));
+        setImages(await getPersonsImages(identifier, setLoadingPersonError, setIsLoadingPerson));
       }
     };
     asyncApiCalls();
@@ -185,6 +200,22 @@ export const PersonPage: FC = () => {
 
           {isDeleting && <CircularProgress size={'2rem'} />}
           {deletingError && <ErrorAlert errorMessage={deletingError}></ErrorAlert>}
+
+          <HeadingWithLine text="Alle bilder" />
+          <div style={{ display: 'flex' }}>
+            {images &&
+              images.map((image) => (
+                <StyledImageWrapper>
+                  <Link href={`${PERSON_IMAGE_URL}${image.filename}`} target="_blank" rel="noopener noreferrer">
+                    <StyledImageSmall
+                      alt="Person"
+                      src={image.filename ? `${PERSON_IMAGE_URL}${image.filename}` : personPlaceholderImage}
+                      // onError={(event: any) => (event.target.src = personPlaceholderImage)}
+                    />
+                  </Link>
+                </StyledImageWrapper>
+              ))}
+          </div>
 
           {/* //TODO: hent communities fra person isteden og bare rendre selv */}
           <CommunityResultGrid personId={person.id} />
