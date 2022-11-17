@@ -10,6 +10,7 @@ import { ErrorAlert } from '../components/ErrorAlert';
 import { ManageRelationsComponent } from '../components/ManageRelationsComponent';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { ManageCommunitiesComponent } from '../components/ManageCommunityComponent';
+import { ManageImagesComponent } from '../components/ManageImagesComponent';
 import { Category, ChangeMainImageComponent } from '../components/ChangeMainImageComponent';
 
 const EditPage = styled.div`
@@ -138,6 +139,7 @@ export const EditPersonPage: FC = () => {
           <Divider sx={{ m: '2rem' }} />
           <ManageRelationsComponent person={person}></ManageRelationsComponent>
           <ManageCommunitiesComponent person={person}></ManageCommunitiesComponent>
+          <ManageImagesComponent person={person}></ManageImagesComponent>
           <Spacer></Spacer>
         </>
       )}

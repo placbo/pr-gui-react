@@ -201,22 +201,24 @@ export const PersonPage: FC = () => {
           {isDeleting && <CircularProgress size={'2rem'} />}
           {deletingError && <ErrorAlert errorMessage={deletingError}></ErrorAlert>}
 
-          <HeadingWithLine text="Alle bilder" />
-          <div style={{ display: 'flex' }}>
-            {images &&
-              images.map((image) => (
-                <StyledImageWrapper>
-                  <Link href={`${PERSON_IMAGE_URL}${image.filename}`} target="_blank" rel="noopener noreferrer">
-                    <StyledImageSmall
-                      alt="Person"
-                      src={image.filename ? `${PERSON_IMAGE_URL}${image.filename}` : personPlaceholderImage}
-                      // onError={(event: any) => (event.target.src = personPlaceholderImage)}
-                    />
-                  </Link>
-                </StyledImageWrapper>
-              ))}
-          </div>
-
+          {images && images.length > 0 && (
+            <>
+              <HeadingWithLine text="Alle bilder" />
+              <div style={{ display: 'flex' }}>
+                {images.map((image) => (
+                  <StyledImageWrapper>
+                    <Link href={`${PERSON_IMAGE_URL}${image.filename}`} target="_blank" rel="noopener noreferrer">
+                      <StyledImageSmall
+                        alt="Person"
+                        src={image.filename ? `${PERSON_IMAGE_URL}${image.filename}` : personPlaceholderImage}
+                        // onError={(event: any) => (event.target.src = personPlaceholderImage)}
+                      />
+                    </Link>
+                  </StyledImageWrapper>
+                ))}
+              </div>
+            </>
+          )}
           {/* //TODO: hent communities fra person isteden og bare rendre selv */}
           <CommunityResultGrid personId={person.id} />
 

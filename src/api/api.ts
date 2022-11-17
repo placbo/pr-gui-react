@@ -1,5 +1,5 @@
 import { Community } from './../types/community';
-import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, PERSONS_URL } from '../constants';
+import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, IMAGE_URL, PERSONS_URL } from '../constants';
 import axios from 'axios';
 import useSWR from 'swr';
 import {
@@ -95,6 +95,10 @@ export const removeRelation = async (
   setDeleting: any
 ) => {
   return axiosDeleteHandler(`${PERSONS_URL}/connect/${fromPersonId}/${toPersonId}/${roleId}`, setError, setDeleting);
+};
+
+export const removeImage = async (imageId: string, setError: any, setDeleting: any) => {
+  return axiosDeleteHandler(`${IMAGE_URL}/${imageId}`, setError, setDeleting);
 };
 
 export const getCommunity = async (

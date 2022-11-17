@@ -5,6 +5,7 @@ export const BASE_URL = process.env.REACT_APP_PR_API_HOST;
 export const LOGIN_URL = BASE_URL + '/api/auth/login';
 export const PERSONS_URL = BASE_URL + '/api/persons';
 export const IMAGES_URL = BASE_URL + '/api/images';
+export const IMAGE_URL = BASE_URL + '/api/image';
 export const COMMUNITIES_URL = BASE_URL + '/api/communities';
 export const IMAGE_UPLOAD_URL = BASE_URL + '/api/imageupload';
 
