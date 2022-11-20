@@ -1,13 +1,15 @@
-import { Button, CircularProgress, Link } from '@mui/material';
-import { FC, useState } from 'react';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { FC, useState, ChangeEvent } from 'react';
+
 import styled from '@emotion/styled';
-import { Colors, DeviceWidths } from '../theme';
-import personPlaceholderImage from '../resources/images/person.png';
-import communityPlaceholderImage from '../resources/images/group.webp';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { Button, CircularProgress, Link } from '@mui/material';
+
 import { uploadImage } from '../api/api';
-import { ErrorAlert } from './ErrorAlert';
 import { COMMUNITY_IMAGES_MEDIUM_URL, PERSON_IMAGES_MEDIUM_URL } from '../constants';
+import communityPlaceholderImage from '../resources/images/group.webp';
+import personPlaceholderImage from '../resources/images/person.png';
+import { Colors, DeviceWidths } from '../theme';
+import { ErrorAlert } from './ErrorAlert';
 
 const StyledImageWrapper = styled.div`
   display: flex;
@@ -76,7 +78,7 @@ export const ChangeMainImageComponent: FC<Props> = ({ id, imageName, category })
           <input
             id="file-upload"
             accept="image/png, image/gif, image/jpeg"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               handleFileUpload(event.target.files && event.target.files[0]);
             }}
             type="file"

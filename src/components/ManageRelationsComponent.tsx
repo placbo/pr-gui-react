@@ -1,5 +1,7 @@
-import { CircularProgress, Typography } from '@mui/material';
 import { FC, useCallback, useEffect, useState } from 'react';
+
+import { CircularProgress, Typography } from '@mui/material';
+
 import { getPersonsParents, getPersonsChildren } from '../api/api';
 import { Person, RelationshipRole } from '../types/person';
 import { AddRelation } from './AddRelation';

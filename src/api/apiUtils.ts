@@ -1,5 +1,6 @@
-import axios from 'axios';
 import { Dispatch, SetStateAction } from 'react';
+
+import axios from 'axios';
 
 export const generateHeaderWithToken = () => {
   return {
@@ -31,7 +32,6 @@ export const axiosPostHandler = async (
     return (await axios.post(url, data, generateHeaderWithToken())).data;
   } catch (error) {
     setError(error);
-    console.error(error);
   } finally {
     setSaving(false);
   }
@@ -48,7 +48,6 @@ export const axiosPutHandler = async (
     return (await axios.put(url, data, generateHeaderWithToken())).data;
   } catch (error) {
     setError(error);
-    console.error(error);
   } finally {
     setUpdating(false);
   }
@@ -64,7 +63,6 @@ export const axiosDeleteHandler = async (
     return (await axios.delete(url, generateHeaderWithToken())).data;
   } catch (error) {
     setError && setError(error);
-    console.error(error);
   } finally {
     setDeleting && setDeleting(false);
   }

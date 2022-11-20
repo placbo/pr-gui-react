@@ -1,7 +1,7 @@
-import { COMMUNITIES_URL } from './../constants';
 import Axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { PERSONS_URL } from '../constants';
+
+import { PERSONS_URL , COMMUNITIES_URL } from '../constants';
 import { mockPersons, mockCommunities, mockCommunity, mockPerson, mockParents, mockChildren } from './mocks';
 
 // AXIOS INTERCEPTOR

@@ -1,13 +1,15 @@
 import { FC, useEffect, useState } from 'react';
-import { Community } from '../types/community';
-import { Colors, DeviceWidths } from '../theme';
-import communityPlaceholderImage from '../resources/images/group.webp';
+import { Link } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { Card, CardActionArea, CardContent, CardMedia, CircularProgress, Typography } from '@mui/material';
+
+import { getAllCommunities, getCommunitiesForPerson } from '../api/api';
 import { COMMUNITY_THUMBNAIL_URL } from '../constants';
 // import { Add } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import { getAllCommunities, getCommunitiesForPerson } from '../api/api';
+import communityPlaceholderImage from '../resources/images/group.webp';
+import { Colors, DeviceWidths } from '../theme';
+import { Community } from '../types/community';
 import { ErrorAlert } from './ErrorAlert';
 import HeadingWithLine from './HeadingWithLine';
 

@@ -1,13 +1,14 @@
 import { FC, useEffect, useState } from 'react';
-import { Button, CircularProgress, TextField, Typography } from '@mui/material';
-
-import { Community, emptyCommunity } from '../types/community';
-import styled from '@emotion/styled';
-import { Field, FieldProps, Form, Formik } from 'formik';
-import { addCommunity, getCommunity, updateCommunity } from '../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ErrorAlert } from '../components/ErrorAlert';
+
+import styled from '@emotion/styled';
+import { Button, CircularProgress, TextField, Typography } from '@mui/material';
+import { Field, FieldProps, Form, Formik } from 'formik';
+
+import { addCommunity, getCommunity, updateCommunity } from '../api/api';
 import { Category, ChangeMainImageComponent } from '../components/ChangeMainImageComponent';
+import { ErrorAlert } from '../components/ErrorAlert';
+import { Community, emptyCommunity } from '../types/community';
 
 const EditPage = styled.div`
   padding: 0 1rem;
@@ -39,7 +40,6 @@ export const EditCommunityPage: FC = () => {
   }, [communityId]);
 
   const handleSave = async (values: Community) => {
-    console.log('saving community', values);
     if (communityId) {
       await updateCommunity(communityId, values, setSavingError, setIsSaving);
       navigate('/community/' + communityId);

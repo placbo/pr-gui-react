@@ -1,6 +1,8 @@
+import { FC, useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 import { Dialog, DialogTitle, Button, DialogContent, Autocomplete, CircularProgress, TextField } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+
 import { getAllCommunities } from '../api/api';
 import { Community } from '../types/community';
 import { ErrorAlert } from './ErrorAlert';

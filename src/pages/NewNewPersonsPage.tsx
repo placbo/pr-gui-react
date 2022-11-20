@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
-import { StyleWidths } from '../theme';
+
 import styled from '@emotion/styled';
-import HeadingWithLine from '../components/HeadingWithLine';
+
 import { AddNewPersonComponent } from '../components/AddNewPersonComponent';
+import HeadingWithLine from '../components/HeadingWithLine';
+import { StyleWidths } from '../theme';
 import { emptyPerson, Person } from '../types/person';
 
 const StyledLayout = styled.div`

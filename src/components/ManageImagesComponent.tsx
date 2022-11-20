@@ -1,27 +1,17 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Chip,
-  CircularProgress,
-  IconButton,
-  Typography,
-} from '@mui/material';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { getPersonsImages, removeImage } from '../api/api';
-import { Image } from '../types/image';
-import { Person } from '../types/person';
-import { ErrorAlert } from './ErrorAlert';
+
 import styled from '@emotion/styled';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Card, CardActions, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
+
+import { getPersonsImages, removeImage } from '../api/api';
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import placeholderPersonImage from '../resources/images/person.png';
 import { DeviceWidths } from '../theme';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Image } from '../types/image';
+import { Person } from '../types/person';
+import { ConfirmDialog } from './ConfirmDialog';
+import { ErrorAlert } from './ErrorAlert';
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -47,23 +37,6 @@ const StyledCardMedia: any = styled(CardMedia)`
     height: 4rem;
   }
 `;
-
-const StyledCardContent = styled(CardContent)`
-  padding: 0.5rem;
-  height: 4rem;
-  text-align: center;
-  font-weight: bold;
-  @media (max-width: ${DeviceWidths.sm}) {
-    text-align: left;
-  }
-`;
-
-const StyledTypography = styled(Typography)`
-  font-weight: 500;
-  text-overflow: ellipsis;
-  font-size: small;
-`;
-
 interface Props {
   person: Person;
 }
@@ -72,6 +45,11 @@ export const ManageImagesComponent: FC<Props> = ({ person }) => {
   const [images, setImages] = useState<Image[]>([]);
   const [isWaiting, setIsWaiting] = useState(false);
   const [apiError, setApiError] = useState<Error | undefined>(undefined);
+
+  const [imageIdToBeDeleted, setImageIdToBeDeleted] = useState('');
+
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
+  const [confirmationText, setConfirmationText] = useState<string>('');
 
   const retrieve = useCallback(() => {
     const asyncApiCalls = async () => {
@@ -86,13 +64,20 @@ export const ManageImagesComponent: FC<Props> = ({ person }) => {
     retrieve();
   }, [retrieve]);
 
-  const handleDelete = async (communityId: string) => {
-    setApiError(undefined);
-    await removeImage(person.id, setApiError, setIsWaiting);
-    retrieve();
+  const handleDeleteClick = (imageId: string) => {
+    setImageIdToBeDeleted(imageId);
+    setIsConfirmDialogOpen(true);
+    setConfirmationText(`Sikker på at du vil fjerne bildet`);
   };
 
-  //TODO: handle delete
+  const handleConfirmRemoveImage = async (shouldDelete: boolean) => {
+    setIsConfirmDialogOpen(false);
+    if (shouldDelete) {
+      await removeImage(imageIdToBeDeleted, setApiError, setIsWaiting);
+      retrieve();
+    }
+  };
+
   //TODO: sette som profilbilde
   //TODO: Vise hva som er profilbilde
   return (
@@ -111,8 +96,9 @@ export const ManageImagesComponent: FC<Props> = ({ person }) => {
                   image={image.filename ? `${PERSON_THUMBNAIL_URL}${image.filename}` : placeholderPersonImage}
                   title="Profile photo"
                 />
+                <pre> {image.id} </pre>
                 <CardActions>
-                  <IconButton aria-label="sletteknapp" size="small" onClick={() => alert('delete not implemented')}>
+                  <IconButton aria-label="sletteknapp" size="small" onClick={() => handleDeleteClick(image.id)}>
                     <DeleteIcon />
                   </IconButton>
                 </CardActions>
@@ -124,6 +110,7 @@ export const ManageImagesComponent: FC<Props> = ({ person }) => {
               <ErrorAlert errorMessage={apiError.message}></ErrorAlert>
             </Box>
           )}
+          <ConfirmDialog open={isConfirmDialogOpen} text={confirmationText} handleConfirm={handleConfirmRemoveImage} />
         </>
       )}
     </>

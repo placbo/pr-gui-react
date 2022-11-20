@@ -1,12 +1,13 @@
-import ReactDOM from 'react-dom/client';
+import * as ReactDOMClient from 'react-dom/client';
+
 import './index.css';
+import { interceptRequestsOnMock } from './api/mock-interceptor';
 import { App } from './App';
 import { USE_MOCK_DATA } from './constants';
-import { interceptRequestsOnMock } from './api/mock-interceptor';
 
 if (USE_MOCK_DATA) {
   interceptRequestsOnMock();
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOMClient.createRoot(document.getElementById('root') as HTMLElement);
 root.render(<App />);

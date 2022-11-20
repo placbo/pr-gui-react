@@ -1,12 +1,15 @@
-import { Box, Button, Chip, CircularProgress, Typography } from '@mui/material';
 import { FC, useCallback, useEffect, useState } from 'react';
+
+import styled from '@emotion/styled';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { Box, Button, Chip, CircularProgress, Typography } from '@mui/material';
+
 import { addPersonToCommunity, getCommunitiesForPerson, removePersonFromCommunity } from '../api/api';
 import { Community } from '../types/community';
 import { Person } from '../types/person';
 import { ErrorAlert } from './ErrorAlert';
 import { SelectCommunityDialog } from './SelectCommunityDialog';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import styled from '@emotion/styled';
+
 
 const StyledChipWrapper = styled.div`
   display: flex;

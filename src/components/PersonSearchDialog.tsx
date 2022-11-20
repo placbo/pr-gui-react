@@ -1,10 +1,12 @@
-import { CircularProgress, Dialog, DialogContent, InputAdornment, List, TextField } from '@mui/material';
-import { PersonResultList } from './PersonResultList';
-import { FC, useState } from 'react';
-import _ from 'lodash';
-import { usePersonsQuery } from '../api/api';
+import { FC, useState, ChangeEvent } from 'react';
+
 import SearchIcon from '@mui/icons-material/Search';
+import { CircularProgress, Dialog, DialogContent, InputAdornment, List, TextField } from '@mui/material';
+import _ from 'lodash';
+
+import { usePersonsQuery } from '../api/api';
 import { ErrorAlert } from './ErrorAlert';
+import { PersonResultList } from './PersonResultList';
 
 export interface props {
   isDialogOpen: boolean;
@@ -15,7 +17,7 @@ export const PersonSearchDialog: FC<props> = ({ isDialogOpen, setIsDialogOpen })
   const [searchTerm, setSearchTerm] = useState<null | string>(null);
   const { persons, isLoading, loadingError } = usePersonsQuery(searchTerm);
 
-  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchTermChange = (event: ChangeEvent<HTMLInputElement>) => {
     const setSearchTermDebounced = _.debounce(() => setSearchTerm(event.target.value), 500);
     if (event.target.value.length > 2) {
       setSearchTermDebounced();

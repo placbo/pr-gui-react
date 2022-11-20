@@ -1,12 +1,13 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
-import IconButton from '@mui/material/IconButton';
-import AddAPhoto from '@mui/icons-material/AddAPhoto';
+import { Dispatch, FC, SetStateAction, useState, ChangeEvent } from 'react';
+
 import styled from '@emotion/styled';
+import AddAPhoto from '@mui/icons-material/AddAPhoto';
 import { CircularProgress } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+
+import { uploadImage } from '../api/api';
 import { PERSON_IMAGE_URL } from '../constants';
 import { Colors } from '../theme';
-import personPlaceholderImage from '../resources/images/person.png';
-import { uploadImage } from '../api/api';
 import { Category } from './ChangeMainImageComponent';
 
 const StyledAddImageWrapper = styled.div`
@@ -62,7 +63,7 @@ export const AddImageComponent: FC<Props> = ({ personId, setError }) => {
             hidden
             accept="image/png, image/gif, image/jpeg"
             type="file"
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
               handleFileUpload(event.target.files && event.target.files[0]);
             }}
           />

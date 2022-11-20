@@ -1,11 +1,13 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
-import { Person } from '../types/person';
-import { Colors, DeviceWidths } from '../theme';
+
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import placeholder from '../resources/images/person.png';
-import { Link } from 'react-router-dom';
+import { Colors, DeviceWidths } from '../theme';
+import { Person } from '../types/person';
 
 const StyledCardActionArea: any = styled(CardActionArea)`
   @media (max-width: ${DeviceWidths.sm}) {

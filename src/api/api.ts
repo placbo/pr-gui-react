@@ -1,7 +1,11 @@
-import { Community } from './../types/community';
-import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, IMAGE_URL, PERSONS_URL } from '../constants';
+import { Dispatch, SetStateAction } from 'react';
+
 import axios from 'axios';
 import useSWR from 'swr';
+
+import { Category } from '../components/ChangeMainImageComponent';
+import { COMMUNITIES_URL, IMAGE_UPLOAD_URL, IMAGE_URL, PERSONS_URL } from '../constants';
+import { Person } from '../types/person';
 import {
   IS_MAIN_IMAGE,
   NUMBER_PR_PAGE_PARAM,
@@ -10,10 +14,8 @@ import {
   SORT_DESCENDING,
   SORT_PARAM,
 } from '../types/QueryParams';
-import { Person } from '../types/person';
+import { Community } from './../types/community';
 import { axiosDeleteHandler, axiosGetHandler, axiosPostHandler, axiosPutHandler } from './apiUtils';
-import { Dispatch, SetStateAction } from 'react';
-import { Category } from '../components/ChangeMainImageComponent';
 
 export const getPerson = async (personId: string, setError: any, setLoading: Dispatch<SetStateAction<boolean>>) => {
   return axiosGetHandler(`${PERSONS_URL}/${personId}`, setError, setLoading);

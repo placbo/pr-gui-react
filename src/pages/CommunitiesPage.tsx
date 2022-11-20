@@ -1,6 +1,8 @@
 import { FC } from 'react';
-import { CommunityResultGrid } from '../components/CommunityResultGrid';
+
 import styled from '@emotion/styled';
+
+import { CommunityResultGrid } from '../components/CommunityResultGrid';
 
 const StyledPage = styled.div`
   max-width: 60rem;

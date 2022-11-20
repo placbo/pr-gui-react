@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
-import { Person } from '../types/person';
+import { Link } from 'react-router-dom';
+
+import styled from '@emotion/styled';
 import {
   Alert,
   Avatar,
@@ -14,7 +16,7 @@ import {
   ListItemButton,
   ListItemText,
 } from '@mui/material';
-import { TableToolbar } from '../components/TableToolbar';
+
 import {
   deletePerson,
   getPersons,
@@ -22,13 +24,13 @@ import {
   getPersonsInCommunity,
   removePersonFromCommunity,
 } from '../api/api';
-import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
-import { ErrorAlert } from '../components/ErrorAlert';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { ErrorAlert } from '../components/ErrorAlert';
+import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
+import { TableToolbar } from '../components/TableToolbar';
 import { PERSON_THUMBNAIL_URL } from '../constants';
-import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 import { Community } from '../types/community';
+import { Person } from '../types/person';
 
 const HideOnMobile = styled.span`
   @media (max-width: 640px) {

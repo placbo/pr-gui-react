@@ -1,9 +1,11 @@
-import { Button } from '@mui/material';
 import { FC } from 'react';
+
 import styled from '@emotion/styled';
-import { Person } from '../types/person';
-import { DeviceWidths } from '../theme';
+import { Button } from '@mui/material';
+
 import PersonCard from '../components/PersonCard';
+import { DeviceWidths } from '../theme';
+import { Person } from '../types/person';
 
 const StyledResultList = styled.div`
   display: flex;

@@ -1,20 +1,22 @@
 import { FC, useEffect, useState } from 'react';
-import { Community } from '../types/community';
+import { useNavigate, useParams , Link as RouterLink } from 'react-router-dom';
+
 import styled from '@emotion/styled';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Colors, DeviceWidths } from '../theme';
-import communityPlaceholderImage from '../resources/images/group.webp';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
-import { COMMUNITY_IMAGES_MEDIUM_URL, COMMUNITY_IMAGE_URL } from '../constants';
+
+import { deleteCommunity, getCommunity, getPersonsInCommunity } from '../api/api';
+import { ConfirmDialog } from '../components/ConfirmDialog';
+import { ErrorAlert } from '../components/ErrorAlert';
 import HeadingWithLine from '../components/HeadingWithLine';
 import { PersonResultGrid } from '../components/PersonResultGrid';
+import { COMMUNITY_IMAGES_MEDIUM_URL, COMMUNITY_IMAGE_URL } from '../constants';
+import communityPlaceholderImage from '../resources/images/group.webp';
+import { Colors, DeviceWidths } from '../theme';
+import { Community } from '../types/community';
 import { Person } from '../types/person';
-import { deleteCommunity, getCommunity, getPersonsInCommunity } from '../api/api';
-import { ErrorAlert } from '../components/ErrorAlert';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { ConfirmDialog } from '../components/ConfirmDialog';
-import { Link as RouterLink } from 'react-router-dom';
+
 
 const StyledCommunityPresentation = styled.div`
   display: flex;

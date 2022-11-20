@@ -1,17 +1,18 @@
 import { FC, useEffect, useState } from 'react';
-import { Button, CircularProgress, Divider, TextField, Typography } from '@mui/material';
-
-import { Person } from '../types/person';
-import styled from '@emotion/styled';
-import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { getPerson, updatePerson } from '../api/api';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ErrorAlert } from '../components/ErrorAlert';
-import { ManageRelationsComponent } from '../components/ManageRelationsComponent';
+
+import styled from '@emotion/styled';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Button, CircularProgress, Divider, TextField, Typography } from '@mui/material';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+
+import { getPerson, updatePerson } from '../api/api';
+import { Category, ChangeMainImageComponent } from '../components/ChangeMainImageComponent';
+import { ErrorAlert } from '../components/ErrorAlert';
 import { ManageCommunitiesComponent } from '../components/ManageCommunityComponent';
 import { ManageImagesComponent } from '../components/ManageImagesComponent';
-import { Category, ChangeMainImageComponent } from '../components/ChangeMainImageComponent';
+import { ManageRelationsComponent } from '../components/ManageRelationsComponent';
+import { Person } from '../types/person';
 
 const EditPage = styled.div`
   padding: 0 1rem;

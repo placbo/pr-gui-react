@@ -1,3 +1,5 @@
+import { FC, useEffect, useState } from 'react';
+
 import styled from '@emotion/styled';
 import {
   Autocomplete,
@@ -9,7 +11,7 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+
 import { addRelation, queryPersons } from '../api/api';
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import { Person, RelationshipRole } from '../types/person';
@@ -67,7 +69,6 @@ export const AddRelation: FC<Props> = ({ personId, retrievAllRelations }) => {
   }, [queryValue]);
 
   const handleRelationValueChange = (event: any) => {
-    console.log('selected role', event.target.value);
     setSelectedRole(event.target.value as number);
   };
 

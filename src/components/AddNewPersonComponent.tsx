@@ -1,13 +1,15 @@
 import { FC, useState } from 'react';
-import { Button, CircularProgress, TextField, Card, Alert, AlertTitle } from '@mui/material';
-import { emptyPerson, Person } from '../types/person';
-import styled from '@emotion/styled';
-import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { addPerson } from '../api/api';
-import { ErrorAlert } from './ErrorAlert';
-import { DeviceWidths } from '../theme';
 import { Link } from 'react-router-dom';
+
+import styled from '@emotion/styled';
+import { Button, CircularProgress, TextField, Card, Alert, AlertTitle } from '@mui/material';
+import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
+
+import { addPerson } from '../api/api';
+import { DeviceWidths } from '../theme';
+import { emptyPerson, Person } from '../types/person';
 import { AddImageComponent } from './AddImageComponent';
+import { ErrorAlert } from './ErrorAlert';
 
 const StyledCard = styled(Card)`
   padding: 1rem;

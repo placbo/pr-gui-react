@@ -1,6 +1,8 @@
-import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, Typography } from '@mui/material';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+
+import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, Typography } from '@mui/material';
+
 import { PERSON_THUMBNAIL_URL } from '../constants';
 import { Person } from '../types/person';
 

@@ -1,21 +1,22 @@
-import { useNavigate } from 'react-router-dom';
 import { FC, useEffect, useState } from 'react';
-import { Container, Typography } from '@mui/material';
+import { useNavigate , Route, Routes } from 'react-router-dom';
+
 import styled from '@emotion/styled';
+import { Container, Typography } from '@mui/material';
+
 import { Header } from '../components/Header';
-import { Route, Routes } from 'react-router-dom';
-import { PersonPage } from './PersonPage';
-import { NotFoundPage } from './NotFoundPage';
-import { LastRegisteredPersonsPage } from './LastRegisteredPersonsPage';
+import { USE_MOCK_DATA } from '../constants';
+import { Colors } from '../theme';
+import { AdminPage } from './AdminPage';
 import { CommunitiesPage } from './CommunitiesPage';
 import { CommunityPage } from './CommunityPage';
-import { EditPersonPage } from './EditPersonPage';
-import { NewNewPersonsPage } from './NewNewPersonsPage';
-import { USE_MOCK_DATA } from '../constants';
-import { AdminPage } from './AdminPage';
-import { PersonGamePage } from './PersonGamePage';
-import { Colors } from '../theme';
 import { EditCommunityPage } from './EditCommunityPage';
+import { EditPersonPage } from './EditPersonPage';
+import { LastRegisteredPersonsPage } from './LastRegisteredPersonsPage';
+import { NewNewPersonsPage } from './NewNewPersonsPage';
+import { NotFoundPage } from './NotFoundPage';
+import { PersonGamePage } from './PersonGamePage';
+import { PersonPage } from './PersonPage';
 
 const App = styled.div`
   min-height: 100vh;

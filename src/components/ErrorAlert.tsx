@@ -1,6 +1,7 @@
-import { Alert, AlertTitle } from '@mui/material';
 import { FC } from 'react';
+
 import styled from '@emotion/styled';
+import { Alert, AlertTitle } from '@mui/material';
 
 const StyledAlert = styled(Alert)`
   width: 100%;

@@ -1,10 +1,13 @@
 import { FC, useEffect, useState } from 'react';
-import { StyleWidths } from '../theme';
-import { PersonResultGrid } from '../components/PersonResultGrid';
+import { useSearchParams } from 'react-router-dom';
+
 import styled from '@emotion/styled';
-import HeadingWithLine from '../components/HeadingWithLine';
 import axios from 'axios';
+
+import HeadingWithLine from '../components/HeadingWithLine';
+import { PersonResultGrid } from '../components/PersonResultGrid';
 import { PERSONS_URL } from '../constants';
+import { StyleWidths } from '../theme';
 import { Person } from '../types/person';
 import {
   DEFAULT_NUMBER_OF_RESULTS,
@@ -13,7 +16,7 @@ import {
   SORT_DESCENDING,
   SORT_PARAM,
 } from '../types/QueryParams';
-import { useSearchParams } from 'react-router-dom';
+
 
 const StyledLayout = styled.div`
   display: flex;

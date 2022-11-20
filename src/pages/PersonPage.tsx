@@ -1,25 +1,24 @@
 import { FC, useEffect, useState } from 'react';
-import styled from '@emotion/styled';
-import { useNavigate, useParams } from 'react-router-dom';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate, useParams, Link as RouterLink } from 'react-router-dom';
 
-import { Colors, DeviceWidths } from '../theme';
+import styled from '@emotion/styled';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
 import { FaCross } from 'react-icons/fa';
 
-import personPlaceholderImage from '../resources/images/person.png';
-import { CircularProgress, IconButton, Link, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { PERSON_IMAGE_URL } from '../constants';
-import HeadingWithLine from '../components/HeadingWithLine';
-import { CommunityResultGrid } from '../components/CommunityResultGrid';
 import { deletePerson, getPerson, getPersonsChildren, getPersonsParents, getPersonsImages } from '../api/api';
-import { Person } from '../types/person';
-import { Image } from '../types/image';
-import { ErrorAlert } from '../components/ErrorAlert';
-import { PersonResultGrid } from '../components/PersonResultGrid';
+import { CommunityResultGrid } from '../components/CommunityResultGrid';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { ErrorAlert } from '../components/ErrorAlert';
+import HeadingWithLine from '../components/HeadingWithLine';
+import { PersonResultGrid } from '../components/PersonResultGrid';
+import { PERSON_IMAGE_URL } from '../constants';
+import personPlaceholderImage from '../resources/images/person.png';
+import { Colors, DeviceWidths } from '../theme';
+import { Image } from '../types/image';
+import { Person } from '../types/person';
 
 const StyledPersonPresentation = styled.div`
   display: flex;

@@ -1,8 +1,10 @@
-import { Typography, List, ListItem, IconButton, Divider, CircularProgress } from '@mui/material';
 import { FC, useState } from 'react';
-import { Person } from '../types/person';
+
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Typography, List, ListItem, IconButton, Divider, CircularProgress } from '@mui/material';
+
 import { removeRelation } from '../api/api';
+import { Person } from '../types/person';
 import { ConfirmDialog } from './ConfirmDialog';
 import { ErrorAlert } from './ErrorAlert';
 

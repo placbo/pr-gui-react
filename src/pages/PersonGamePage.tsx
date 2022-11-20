@@ -1,12 +1,14 @@
+import { FC, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@mui/material';
-import { FC, useEffect, useState } from 'react';
+
 import { getRandomPerson } from '../api/api';
 import { PERSON_IMAGE_URL } from '../constants';
+import personPlaceholderImage from '../resources/images/person.png';
 import { Colors, DeviceWidths } from '../theme';
 import { Person } from '../types/person';
-import personPlaceholderImage from '../resources/images/person.png';
-import { Link } from 'react-router-dom';
 
 const PageWrapper = styled.div`
   margin-top: 2rem;
