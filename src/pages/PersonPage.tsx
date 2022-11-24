@@ -14,7 +14,7 @@ import { ConfirmDialog } from '../components/ConfirmDialog';
 import { ErrorAlert } from '../components/ErrorAlert';
 import HeadingWithLine from '../components/HeadingWithLine';
 import { PersonResultGrid } from '../components/PersonResultGrid';
-import { PERSON_IMAGE_URL } from '../constants';
+import { PERSON_IMAGES_MEDIUM_URL, PERSON_IMAGE_URL, PERSON_THUMBNAIL_URL } from '../constants';
 import personPlaceholderImage from '../resources/images/person.png';
 import { Colors, DeviceWidths } from '../theme';
 import { Image } from '../types/image';
@@ -75,10 +75,6 @@ const StyledImageSmall = styled.img`
   height: 50px;
   object-fit: cover;
   border: 1px solid ${Colors.PrimaryText};
-  @media (max-width: ${DeviceWidths.sm}) {
-    width: 15rem;
-    height: 15rem;
-  }
 `;
 
 const StyledNameTypography = styled(Typography)`
@@ -162,7 +158,7 @@ export const PersonPage: FC = () => {
               <Link href={`${PERSON_IMAGE_URL}${person.imageName}`} target="_blank" rel="noopener noreferrer">
                 <StyledImage
                   alt="Person"
-                  src={person.imageName ? `${PERSON_IMAGE_URL}${person.imageName}` : personPlaceholderImage}
+                  src={person.imageName ? `${PERSON_IMAGES_MEDIUM_URL}${person.imageName}` : personPlaceholderImage}
                   // onError={(event: any) => (event.target.src = personPlaceholderImage)}
                 />
               </Link>
@@ -209,7 +205,7 @@ export const PersonPage: FC = () => {
                     <Link href={`${PERSON_IMAGE_URL}${image.filename}`} target="_blank" rel="noopener noreferrer">
                       <StyledImageSmall
                         alt="Person"
-                        src={image.filename ? `${PERSON_IMAGE_URL}${image.filename}` : personPlaceholderImage}
+                        src={image.filename ? `${PERSON_THUMBNAIL_URL}${image.filename}` : personPlaceholderImage}
                         // onError={(event: any) => (event.target.src = personPlaceholderImage)}
                       />
                     </Link>
