@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@mui/material';
 
-import { getRandomPerson } from '../api/api';
+import { getRandomPerson, getRandomPersonFromCommunity } from '../api/api';
+import { SelectCommunityDialog } from '../components/SelectCommunityDialog';
 import { PERSON_IMAGE_URL } from '../constants';
 import personPlaceholderImage from '../resources/images/person.png';
 import { Colors, DeviceWidths } from '../theme';
@@ -15,6 +16,15 @@ const PageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`;
+
+const ActionWrapper = styled.div`
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const StyledCard = styled(Card)`
@@ -59,21 +69,41 @@ export const PersonGamePage: FC = () => {
   const [showName, setShowName] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0);
 
+  const [isSelectCommunityDialogOpen, setIsSelectCommunityDialogOpen] = useState(false);
+
+  const [selectedCommunitiyId, setSelectedCommunityId] = useState('');
+  const [selectedCommunitiyName, setSelectedCommunityName] = useState('');
+
   const increaseCounter = () => {
     setCounter((prev) => prev + 1);
   };
 
   useEffect(() => {
-    //todo: waiter og error
     setShowName(false);
     const getRandomPersonAsync = async () => {
-      setPerson(await getRandomPerson());
+      setPerson(
+        selectedCommunitiyId ? await getRandomPersonFromCommunity(selectedCommunitiyId) : await getRandomPerson()
+      );
     };
     getRandomPersonAsync().then();
-  }, [counter]);
+  }, [counter, selectedCommunitiyId]);
+
+  const handleSelectedCommunity = (communityId?: string, name?: string) => {
+    setIsSelectCommunityDialogOpen(false);
+    if (communityId) {
+      setSelectedCommunityId(communityId);
+      name && setSelectedCommunityName(name);
+    }
+  };
 
   return (
     <PageWrapper>
+      <ActionWrapper>
+        {selectedCommunitiyName && <div>{selectedCommunitiyName}</div>}
+        <Button onClick={() => setIsSelectCommunityDialogOpen(true)}>
+          {selectedCommunitiyId ? 'Velg annen gruppe' : 'Avgrens på gruppe'}
+        </Button>
+      </ActionWrapper>
       {person && (
         <StyledCard>
           <StyledCardContent>
@@ -100,6 +130,7 @@ export const PersonGamePage: FC = () => {
           </StyledCardActions>
         </StyledCard>
       )}
+      <SelectCommunityDialog open={isSelectCommunityDialogOpen} onClose={handleSelectedCommunity} />
     </PageWrapper>
   );
 };

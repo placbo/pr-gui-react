@@ -25,6 +25,14 @@ export const getRandomPerson = async (setError?: any, setLoading?: Dispatch<SetS
   return axiosGetHandler(`${PERSONS_URL}/random`, setError, setLoading);
 };
 
+export const getRandomPersonFromCommunity = async (
+  communityId: string,
+  setError?: any,
+  setLoading?: Dispatch<SetStateAction<boolean>>
+) => {
+  return axiosGetHandler(`${PERSONS_URL}/random/community/${communityId}`, setError, setLoading);
+};
+
 export const getPersons = async (
   max: number,
   showcommunities: boolean,
