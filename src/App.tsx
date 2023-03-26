@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { HomePage } from './pages/HomePage';
 import { Login } from './pages/Login';
@@ -12,12 +12,12 @@ export const App = () => {
 
   return (
     <AuthContext.Provider value={authContextValue}>
-      <Router>
+      <BrowserRouter basename="/pr">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<HomePage />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </AuthContext.Provider>
   );
 };
