@@ -136,7 +136,7 @@ export const mockChildren = [
 
 export const mockPerson = {
   id: 1234,
-  firstName: 'Trond',
+  firstName: 'Trond Trond TrondTrondTrondTrond Trond  Trond',
   lastName: 'Kobbeltvedt',
   note: '',
   facebookLink: '',

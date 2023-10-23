@@ -33,7 +33,6 @@ const StyledCard = styled(Card)`
   justify-content: space-between;
   align-items: center;
   max-width: 25rem;
-  height: 28rem;
   padding: 1rem 1rem 1rem 1rem;
 `;
 
