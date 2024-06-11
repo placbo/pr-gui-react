@@ -1,5 +1,6 @@
 import { createContext, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { FC } from 'react';
 
 import { HomePage } from './pages/HomePage';
 import { Login } from './pages/Login';
