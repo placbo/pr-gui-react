@@ -2,7 +2,7 @@
   "name": "pr-gui-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "/pr/",
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
